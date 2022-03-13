@@ -1,0 +1,1045 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load l10n %}
+{% load humanize %}
+
+{% block title %}{{block.super}} صفحه اصلی {% endblock %}
+
+
+{% block body%}
+
+		<!-- site__body -->
+		<div class="site__body">
+			<!-- .block-slideshow -->
+			<div class="block-slideshow block-slideshow--layout--full block">
+				<div class="container">
+					<div class="row">
+						<div class="col-12">
+							<div class="block-slideshow__body">
+								<div class="owl-carousel">
+									<a class="block-slideshow__slide" href="{% url 'CategoryListView' 'manual-tools' %}">
+										<div class="block-slideshow__slide-image block-slideshow__slide-image--desktop" style="background-image: url('static/images/slides/slide-1-full.jpg')"></div>
+										<div class="block-slideshow__slide-image block-slideshow__slide-image--mobile" style="background-image: url('static/images/slides/slide-1-mobile.jpg')"></div>
+										<div class="block-slideshow__slide-content">
+											<div class="block-slideshow__slide-title">انتخاب بهترین
+												<br>ابزار برای لوله کشی</div>
+											<div class="block-slideshow__slide-text">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
+												<br>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم</div>
+											<div class="block-slideshow__slide-button"><span class="btn btn-primary btn-lg">هم اکنون بخرید</span></div>
+										</div>
+									</a>
+									<a class="block-slideshow__slide" href="{% url 'KalaDetailView' 'graphic-dryl-brqy' %}">
+										<div class="block-slideshow__slide-image block-slideshow__slide-image--desktop" style="background-image: url('static/images/slides/slide-2-full.jpg')"></div>
+										<div class="block-slideshow__slide-image block-slideshow__slide-image--mobile" style="background-image: url('static/images/slides/slide-2-mobile.jpg')"></div>
+										<div class="block-slideshow__slide-content">
+											<div class="block-slideshow__slide-title">پیچ گوشتی برقی
+												<br>ابزار حرفه ای برای کار</div>
+											<div class="block-slideshow__slide-text">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
+												<br>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم</div>
+											<div class="block-slideshow__slide-button"><span class="btn btn-primary btn-lg">هم اکنون بخرید</span></div>
+										</div>
+									</a>
+									<a class="block-slideshow__slide" href="{% url 'CategoryListView' 'manual-tools' %}">
+										<div class="block-slideshow__slide-image block-slideshow__slide-image--desktop" style="background-image: url('static/images/slides/slide-3-full.jpg')"></div>
+										<div class="block-slideshow__slide-image block-slideshow__slide-image--mobile" style="background-image: url('static/images/slides/slide-3-mobile.jpg')"></div>
+										<div class="block-slideshow__slide-content">
+											<div class="block-slideshow__slide-title">یک کلاه ایمنی بیشتر
+												<br>برای امنیت بیشتر شما</div>
+											<div class="block-slideshow__slide-text">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
+												<br>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم</div>
+											<div class="block-slideshow__slide-button"><span class="btn btn-primary btn-lg">هم اکنون بخرید</span></div>
+										</div>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- .block-slideshow / end -->
+			<!-- .block-features -->
+			<div class="block block-features block-features--layout--classic">
+				<div class="container">
+					<div class="block-features__list">
+						<div class="block-features__item">
+							<div class="block-features__icon">
+								<svg width="48px" height="48px">
+									<use xlink:href="{% static 'images/sprite.svg' %}#fi-free-delivery-48"></use>
+								</svg>
+							</div>
+							<div class="block-features__content">
+								<div class="block-features__title">ارسال رایگان</div>
+								<div class="block-features__subtitle">لورم ایپسوم متن ساختگی</div>
+							</div>
+						</div>
+						<div class="block-features__divider"></div>
+						<div class="block-features__item">
+							<div class="block-features__icon">
+								<svg width="48px" height="48px">
+									<use xlink:href="{% static 'images/sprite.svg' %}#fi-24-hours-48"></use>
+								</svg>
+							</div>
+							<div class="block-features__content">
+								<div class="block-features__title">پشتیبانی 24 ساعته</div>
+								<div class="block-features__subtitle">هر زمان تماس بگیرید</div>
+							</div>
+						</div>
+						<div class="block-features__divider"></div>
+						<div class="block-features__item">
+							<div class="block-features__icon">
+								<svg width="48px" height="48px">
+									<use xlink:href="{% static 'images/sprite.svg' %}#fi-payment-security-48"></use>
+								</svg>
+							</div>
+							<div class="block-features__content">
+								<div class="block-features__title">100% امن</div>
+								<div class="block-features__subtitle">پرداخت های امن</div>
+							</div>
+						</div>
+						<div class="block-features__divider"></div>
+						<div class="block-features__item">
+							<div class="block-features__icon">
+								<svg width="48px" height="48px">
+									<use xlink:href="{% static 'images/sprite.svg' %}#fi-tag-48"></use>
+								</svg>
+							</div>
+							<div class="block-features__content">
+								<div class="block-features__title">پیشنهادات داغ</div>
+								<div class="block-features__subtitle">تخفیف تا 90%</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- .block-features / end -->
+			<!-- .block-products-carousel -->
+			<div class="block block-products-carousel" data-layout="grid-4">
+				<div class="container">
+					<div class="block-header">
+						<h3 class="block-header__title">محصولات جدید</h3>
+						<div class="block-header__divider"></div>
+						<ul class="block-header__groups-list">
+							<li>
+								<button type="button" class="block-header__group block-header__group--active">همه</button>
+							</li>
+							<li>
+								<button type="button" class="block-header__group">ابزار برقی</button>
+							</li>
+							<li>
+								<button type="button" class="block-header__group">ابزار دستی</button>
+							</li>
+							<li>
+								<button type="button" class="block-header__group">لوله کشی</button>
+							</li>
+						</ul>
+						<div class="block-header__arrows-list">
+							<button class="block-header__arrow block-header__arrow--left" type="button">
+								<svg width="7px" height="11px">
+									<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-left-7x11"></use>
+								</svg>
+							</button>
+							<button class="block-header__arrow block-header__arrow--right" type="button">
+								<svg width="7px" height="11px">
+									<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-7x11"></use>
+								</svg>
+							</button>
+						</div>
+					</div>
+					<div class="block-products-carousel__slider">
+					<div class="block-products-carousel__preloader"></div>
+						<div class="owl-carousel">
+							{% for k in kala %}
+							<div class="block-products-carousel__column">
+								<div class="block-products-carousel__cell">
+									<div class="product-card">
+									<form  method ='Post'>
+										{% csrf_token %}
+										<button class="product-card__quickview" type="button">
+											<svg width="16px" height="16px">
+												<use xlink:href="{% static 'images/sprite.svg' %}#quickview-16"></use>
+											</svg> <span class="fake-svg-icon"></span></button>
+										<div class="product-card__badges-list">
+											<div class="product-card__badge product-card__badge--new">جدید</div>
+										</div>
+										<div class="product-card__image">
+											<a href="{% url 'KalaDetailView' k.slug %}"><img src="{{ k.pic0.url }}" alt="{{ k.name }}" title="{{ k.name }}" class="img-responsive" /></a>
+										</div>
+										<div class="product-card__info">
+											<div class="product-card__name"><a href="{% url 'KalaDetailView' k.slug %}">{{ k.name }}</a></div>
+										
+											<div class="product-card__rating">
+												<div class="rating">
+													<div class="rating__body">
+														<svg class="rating__star rating__star--active" width="13px" height="12px">
+															<g class="rating__fill">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+															</g>
+															<g class="rating__stroke">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+															</g>
+														</svg>
+														<div class="rating__star rating__star--only-edge rating__star--active">
+															<div class="rating__fill">
+																<div class="fake-svg-icon"></div>
+															</div>
+															<div class="rating__stroke">
+																<div class="fake-svg-icon"></div>
+															</div>
+														</div>
+														<svg class="rating__star rating__star--active" width="13px" height="12px">
+															<g class="rating__fill">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+															</g>
+															<g class="rating__stroke">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+															</g>
+														</svg>
+														<div class="rating__star rating__star--only-edge rating__star--active">
+															<div class="rating__fill">
+																<div class="fake-svg-icon"></div>
+															</div>
+															<div class="rating__stroke">
+																<div class="fake-svg-icon"></div>
+															</div>
+														</div>
+														<svg class="rating__star rating__star--active" width="13px" height="12px">
+															<g class="rating__fill">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+															</g>
+															<g class="rating__stroke">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+															</g>
+														</svg>
+														<div class="rating__star rating__star--only-edge rating__star--active">
+															<div class="rating__fill">
+																<div class="fake-svg-icon"></div>
+															</div>
+															<div class="rating__stroke">
+																<div class="fake-svg-icon"></div>
+															</div>
+														</div>
+														<svg class="rating__star rating__star--active" width="13px" height="12px">
+															<g class="rating__fill">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+															</g>
+															<g class="rating__stroke">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+															</g>
+														</svg>
+														<div class="rating__star rating__star--only-edge rating__star--active">
+															<div class="rating__fill">
+																<div class="fake-svg-icon"></div>
+															</div>
+															<div class="rating__stroke">
+																<div class="fake-svg-icon"></div>
+															</div>
+														</div>
+														<svg class="rating__star" width="13px" height="12px">
+															<g class="rating__fill">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+															</g>
+															<g class="rating__stroke">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+															</g>
+														</svg>
+														<div class="rating__star rating__star--only-edge">
+															<div class="rating__fill">
+																<div class="fake-svg-icon"></div>
+															</div>
+															<div class="rating__stroke">
+																<div class="fake-svg-icon"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="product-card__rating-legend">9 نقد و بررسی</div>
+											</div>
+											<ul class="product-card__features-list">
+
+												<label>
+													{% for size in k.size.all %}
+													<input type="text" name="Size" value="{{ size.id }}"> <span>{{ k.productsize_id }}</span>
+													{% endfor %}
+												</label>
+												<label>
+													{% for color in k.color.all %}
+													<input type="text" name="Color" value="{{ color.id }}"> <span>{{ k.color.name }}</span>
+													{% endfor %}
+												</label>
+												<label>
+													{% for material in k.material.all %}
+													<input type="text" name="Material" value="{{ material.id }}"> <span>{{ k.material.name }}</span>
+													{% endfor %}
+												</label>
+												<label>
+													{% for saller in k.kalainstance.all %}
+													<input type="text" name="Saller" value="{{ saller.id }}"> <span>{{ saller.name }}</span>
+													{% endfor %}
+												</label>
+												<li>سرعت: 750 RPM</li>
+												<li>منبع تغزیه: برق</li>
+												<li>نوع باتری: لیتیوم</li>
+												<li>ولتاژ: 20 ولت</li>
+												<li>ظرفیت باتری: 2 ساعت</li>
+											</ul>
+										</div>
+										
+											<div class="product-card__actions">
+												<div class="product-card__availability">موجودی: <span class="text-success">موجود در انبار</span></div>
+												{% for i in k.kalainstance.all %}
+												{% if i.instock == 0 %}
+												{% else %}
+												<div class="product-card__prices">{% if i.off == 0 %}<span class="new-price">{{ i.new_price }}</span>{% else %}<span class="product-card__new-price">{{ i.new_price }} تومان</span>{% endif %}{% if i.off == 0 %}{% else %}<span  class="product-card__old-price">{{ i.price }} تومان</span>{% endif %}</div>
+												{% endif %}
+												{% endfor %}
+												<div class="product-card__buttons">
+													{% if user.is_authenticated %}
+														
+														{% for stok in k.kalainstance.all %}
+														{% if stok.instock != 0 %}
+															<button class="btn btn-primary product-card__addtocart" type="submit" id="button-cart" name='addCart'>افزودن به سبد</button>
+														{% else %}
+															<button type="submit" class="btn btn-danger btn-lg" disabled>ناموجود</button>
+														{% endif %}
+														{% endfor %}
+														
+													{% else %}
+														<a href={% url 'login' %}> <button type="button" id="Login" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
+													{% endif %}
+
+													<input type='hidden'  name='kala' value="{{ k.id }}" >
+													<button type="submit"  class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist" name="addWishlist" >
+														<svg width="16px" height="16px">
+															<use xlink:href="{% static 'images/sprite.svg' %}#wishlist-16"></use>
+														</svg> <span class="fake-svg-icon fake-svg-icon--wishlist-16"></span></button>
+														
+														<input type='hidden'  name='kala' value="{{ k.id }}" >
+														<button  type="submit"  class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__compare"  name="addCompare" >
+														<svg width="16px" height="16px">
+															<use xlink:href="{% static 'images/sprite.svg' %}#compare-16"></use>
+														</svg> <span class="fake-svg-icon fake-svg-icon--compare-16"></span></button>
+													</div>
+												</div>
+											</div>
+									</form>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- .block-products-carousel / end -->
+			<!-- .block-banner -->
+			<div class="block block-banner">
+				<div class="container">
+					<a href="{% url 'CategoryListView' 'manual-tools' %}" class="block-banner__body">
+						<div class="block-banner__image block-banner__image--desktop" style="background-image: url('static/images/banners/banner-1.jpg')"></div>
+						<div class="block-banner__image block-banner__image--mobile" style="background-image: url('static/images/banners/banner-1-mobile.jpg')"></div>
+						<div class="block-banner__title">صدها
+							<br class="block-banner__mobile-br">ابزار دستی</div>
+						<div class="block-banner__text">چکش ها، مته ها، انبرها، چاقوها، آچارها و اره ها</div>
+						<div class="block-banner__button"><span class="btn btn-sm btn-primary">هم اکنون بخرید</span></div>
+					</a>
+				</div>
+			</div>
+			<!-- .block-banner / end -->
+			<!-- .block-products -->
+			<div class="block block-products block-products--layout--large-first">
+				<div class="container">
+					<div class="block-header">
+						<h3 class="block-header__title">پرفروش ترین ها</h3>
+						<div class="block-header__divider"></div>
+					</div>
+					<div class="block-products__body">
+						{% for k in mostSalled %}
+						{% if  forloop.counter <= 7 %}	
+						{% if forloop.first %}
+						<div class="block-products__featured">
+							<div class="block-products__featured-item">
+								<div class="product-card">
+									<button class="product-card__quickview" type="button">
+									<form method="post">
+										{% csrf_token %}
+										<svg width="16px" height="16px">
+											<use xlink:href="{% static 'images/sprite.svg' %}#quickview-16"></use>
+										</svg> <span class="fake-svg-icon"></span></button>
+										<div class="product-card__badges-list">
+											<div class="product-card__badge product-card__badge--new">جدید</div>
+										</div>
+										<div class="product-card__image">
+											<a href="{% url 'KalaDetailView' k.product.slug %}"><img src="{{ k.product.pic0.url }}" alt="{{ k.product.name }}" title="{{ k.product.name }}" class="img-responsive" /></a>
+										</div>
+										<div class="product-card__info">
+											<div class="product-card__name"><a href="{% url 'KalaDetailView' k.product.slug %}">{{ k.product.name }}</a></div>
+											
+										<div class="product-card__rating">
+											<div class="rating">
+												<div class="rating__body">
+													<svg class="rating__star rating__star--active" width="13px" height="12px">
+														<g class="rating__fill">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+														</g>
+														<g class="rating__stroke">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+														</g>
+													</svg>
+													<div class="rating__star rating__star--only-edge rating__star--active">
+														<div class="rating__fill">
+															<div class="fake-svg-icon"></div>
+														</div>
+														<div class="rating__stroke">
+															<div class="fake-svg-icon"></div>
+														</div>
+													</div>
+													<svg class="rating__star rating__star--active" width="13px" height="12px">
+														<g class="rating__fill">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+														</g>
+														<g class="rating__stroke">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+														</g>
+													</svg>
+													<div class="rating__star rating__star--only-edge rating__star--active">
+														<div class="rating__fill">
+															<div class="fake-svg-icon"></div>
+														</div>
+														<div class="rating__stroke">
+															<div class="fake-svg-icon"></div>
+														</div>
+													</div>
+													<svg class="rating__star rating__star--active" width="13px" height="12px">
+														<g class="rating__fill">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+														</g>
+														<g class="rating__stroke">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+														</g>
+													</svg>
+													<div class="rating__star rating__star--only-edge rating__star--active">
+														<div class="rating__fill">
+															<div class="fake-svg-icon"></div>
+														</div>
+														<div class="rating__stroke">
+															<div class="fake-svg-icon"></div>
+														</div>
+													</div>
+													<svg class="rating__star rating__star--active" width="13px" height="12px">
+														<g class="rating__fill">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+														</g>
+														<g class="rating__stroke">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+														</g>
+													</svg>
+													<div class="rating__star rating__star--only-edge rating__star--active">
+														<div class="rating__fill">
+															<div class="fake-svg-icon"></div>
+														</div>
+														<div class="rating__stroke">
+															<div class="fake-svg-icon"></div>
+														</div>
+													</div>
+													<svg class="rating__star" width="13px" height="12px">
+														<g class="rating__fill">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+														</g>
+														<g class="rating__stroke">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+														</g>
+													</svg>
+													<div class="rating__star rating__star--only-edge">
+														<div class="rating__fill">
+															<div class="fake-svg-icon"></div>
+														</div>
+														<div class="rating__stroke">
+															<div class="fake-svg-icon"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="product-card__rating-legend">9 نقد و بررسی</div>
+										</div>
+										<ul class="product-card__features-list">
+
+											<label>
+												<input type="text" name="Size" value="{{ k.size_id }}"> <span>{{ k.size }}</span>
+											</label>
+											<label>
+												<input type="text" name="Color" value="{{ k.color_id }}"> <span>{{ k.color }}</span>
+											</label>
+											<label>
+												<input type="text" name="Material" value="{{ k.material_id }}"> <span>{{ k.material }}</span>
+											</label>
+											<label>
+												<input type="text" name="Saller" value="{{ k.saller_id }}"> <span>{{ k.saller }}</span>
+											</label>
+
+											<li>سرعت: 750 RPM</li>
+											<li>منبع تغزیه: برق</li>
+											<li>نوع باتری: لیتیوم</li>
+											<li>ولتاژ: 20 ولت</li>
+											<li>ظرفیت باتری: 2 ساعت</li>
+										</ul>
+									</div>
+									<div class="product-card__actions">
+										<div class="product-card__availability">موجودی: <span class="text-success">موجود در انبار</span></div>
+										{% if k.saller.instock == 0 %}
+										{% else %}
+										<div class="product-card__prices">{% if k.saller.off == 0 %}<span class="new-price">{{ k.saller.new_price }}</span>{% else %}<span class="product-card__new-price">{{ k.saller.new_price }} تومان</span>{% endif %}{% if k.saller.off == 0 %}{% else %}<span  class="product-card__old-price">{{ k.saller.price }} تومان</span>{% endif %}</div>
+										{% endif %}
+										<div class="product-card__buttons">
+											
+											{% if user.is_authenticated %}
+												{% if k.saller.instock != 0 %}
+												<button class="btn btn-primary product-card__addtocart" type="submit" id="button-cart" name='addCart'>افزودن به سبد</button>
+												{% else %}
+												<button type="submit" class="btn btn-danger btn-lg" disabled>ناموجود</button>
+												{% endif %}
+											{% else %}
+											<a href={% url 'login' %}> <button type="button" id="Login" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
+                							{% endif %}
+											<input type='hidden'  name='kala' value="{{ k.product.id }}" >
+											<button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist" type="submit" name="addWishlist" >
+												<svg width="16px" height="16px">
+													<use xlink:href="{% static 'images/sprite.svg' %}#wishlist-16"></use>
+												</svg> <span class="fake-svg-icon fake-svg-icon--wishlist-16"></span></button>
+											<input type='hidden'  name='kala' value="{{ k.product.id }}" >
+											<button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__compare" type="submit" name="addCompare">
+												<svg width="16px" height="16px">
+													<use xlink:href="{% static 'images/sprite.svg' %}#compare-16"></use>
+												</svg> <span class="fake-svg-icon fake-svg-icon--compare-16"></span>
+											</button>
+										</div>
+										
+									</div>
+									</div>
+									</form>
+								</div>
+							</div>
+							<div class="block-products__list">
+							{% else %}	
+								<div class="block-products__list-item">
+								<div class="product-card">
+									<button class="product-card__quickview" type="button">
+										<svg width="16px" height="16px">
+											<use xlink:href="{% static 'images/sprite.svg' %}#quickview-16"></use>
+										</svg> <span class="fake-svg-icon"></span></button>
+									<div class="product-card__badges-list">
+										<div class="product-card__badge product-card__badge--hot">داغ</div>
+									</div>
+									<div class="product-card__image">
+										<a href="{% url 'KalaDetailView' k.product.slug %}"><img src="{{ k.product.pic0.url }}" alt="{{ k.product.name }}" title="{{ k.product.name }}" class="img-responsive" /></a>
+									</div>
+									<form method="post">
+										{% csrf_token %}
+									<div class="product-card__info">
+										<div class="product-card__name"><a href="{% url 'KalaDetailView' k.product.slug %}">{{ k.product.name }}</a></div>
+										<div class="product-card__rating">
+											<div class="rating">
+												<div class="rating__body">
+													<svg class="rating__star rating__star--active" width="13px" height="12px">
+														<g class="rating__fill">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+														</g>
+														<g class="rating__stroke">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+														</g>
+													</svg>
+													<div class="rating__star rating__star--only-edge rating__star--active">
+														<div class="rating__fill">
+															<div class="fake-svg-icon"></div>
+														</div>
+														<div class="rating__stroke">
+															<div class="fake-svg-icon"></div>
+														</div>
+													</div>
+													<svg class="rating__star rating__star--active" width="13px" height="12px">
+														<g class="rating__fill">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+														</g>
+														<g class="rating__stroke">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+														</g>
+													</svg>
+													<div class="rating__star rating__star--only-edge rating__star--active">
+														<div class="rating__fill">
+															<div class="fake-svg-icon"></div>
+														</div>
+														<div class="rating__stroke">
+															<div class="fake-svg-icon"></div>
+														</div>
+													</div>
+													<svg class="rating__star rating__star--active" width="13px" height="12px">
+														<g class="rating__fill">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+														</g>
+														<g class="rating__stroke">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+														</g>
+													</svg>
+													<div class="rating__star rating__star--only-edge rating__star--active">
+														<div class="rating__fill">
+															<div class="fake-svg-icon"></div>
+														</div>
+														<div class="rating__stroke">
+															<div class="fake-svg-icon"></div>
+														</div>
+													</div>
+													<svg class="rating__star rating__star--active" width="13px" height="12px">
+														<g class="rating__fill">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+														</g>
+														<g class="rating__stroke">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+														</g>
+													</svg>
+													<div class="rating__star rating__star--only-edge rating__star--active">
+														<div class="rating__fill">
+															<div class="fake-svg-icon"></div>
+														</div>
+														<div class="rating__stroke">
+															<div class="fake-svg-icon"></div>
+														</div>
+													</div>
+													<svg class="rating__star rating__star--active" width="13px" height="12px">
+														<g class="rating__fill">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+														</g>
+														<g class="rating__stroke">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+														</g>
+													</svg>
+													<div class="rating__star rating__star--only-edge rating__star--active">
+														<div class="rating__fill">
+															<div class="fake-svg-icon"></div>
+														</div>
+														<div class="rating__stroke">
+															<div class="fake-svg-icon"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="product-card__rating-legend">11 نقد و بررسی</div>
+										</div>
+										<ul class="product-card__features-list">
+											
+												<label>
+													<input type="text" name="Size" value="{{ k.size_id }}"> <span>{{ k.size }}</span>
+												</label>
+												<label>
+													<input type="text" name="Color" value="{{ k.color_id }}"> <span>{{ k.color }}</span>
+												</label>
+												<label>
+													<input type="text" name="Material" value="{{ k.material_id }}"> <span>{{ k.material }}</span>
+												</label>
+												<label>
+													<input type="text" name="Saller" value="{{ k.saller_id }}"> <span>{{ k.saller }}</span>
+												</label>
+												
+												
+											<li>منبع تغزیه: برق</li>
+											<li>نوع باتری: لیتیوم</li>
+											<li>ظرفیت باتری: 2 ساعت</li>
+											<li>ولتاژ: 20 ولت</li>
+										</ul>
+									</div>
+									<div class="product-card__actions">
+										<div class="product-card__availability">موجودی: <span class="text-success">موجود در انبار</span></div>
+										{% if k.saller.instock == 0 %}
+										{% else %}
+										<div class="product-card__prices">{% if k.saller.off == 0 %}<span class="new-price">{{ k.saller.new_price }}</span>{% else %}<span class="product-card__new-price">{{ k.saller.new_price }} تومان</span>{% endif %}{% if k.saller.off == 0 %}{% else %}<span  class="product-card__old-price">{{ k.saller.price }} تومان</span>{% endif %}</div>
+										{% endif %}
+										
+										<div class="product-card__buttons">
+											{% if user.is_authenticated %}
+												{% if k.saller.instock != 0 %}
+												<button class="btn btn-primary product-card__addtocart" type="submit" id="button-cart" name='addCart'>افزودن به سبد</button>
+												{% else %}
+												<button type="submit" class="btn btn-danger btn-lg" disabled>ناموجود</button>
+												{% endif %}
+											{% else %}
+											<a href={% url 'login' %}> <button type="button" id="Login" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
+                							{% endif %}
+											<input type='hidden'  name='kala' value="{{ k.product.id }}" >
+											<button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist" type="submit" name="addWishlist">
+												<svg width="16px" height="16px">
+													<use xlink:href="{% static 'images/sprite.svg' %}#wishlist-16"></use>
+												</svg> <span class="fake-svg-icon fake-svg-icon--wishlist-16"></span></button>
+											
+											<input type='hidden'  name='kala' value="{{ k.product.id }}" >
+											<button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__compare" type="submit" name="addCompare">
+												<svg width="16px" height="16px">
+													<use xlink:href="{% static 'images/sprite.svg' %}#compare-16"></use>
+												</svg> <span class="fake-svg-icon fake-svg-icon--compare-16"></span></button>
+										</div>
+									</div>
+									</form>
+								</div>
+							</div>
+							{% endif %}
+							{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+							
+			<!-- .block-products / end -->
+			<!-- .block-categories -->
+			<div class="block block--highlighted block-categories block-categories--layout--compact">
+				<div class="container">
+					<div class="block-header">
+						<h3 class="block-header__title">دسته های محبوب</h3>
+						<div class="block-header__divider"></div>
+					</div>
+					<div class="block-categories__list">
+						<div class="block-categories__item category-card category-card--layout--compact">
+							<div class="category-card__body">
+								<div class="category-card__image">
+									<a href="#"><img src="static/images/categories/category-1.jpg" alt=""></a>
+								</div>
+								<div class="category-card__content">
+									<div class="category-card__name"><a href="{% url 'CategoryListView' 'electronic-tools' %}">ابزار برقی</a></div>
+									<ul class="category-card__links">
+										<li><a href="#">پیچ گوشتی ها</a></li>
+										<li><a href="#">برش فرز</a></li>
+										<li><a href="#">ماشین آلات شن و ماسه</a></li>
+										<li><a href="#">آچار ها</a></li>
+										<li><a href="#">دریل ها</a></li>
+									</ul>
+									<div class="category-card__all"><a href="#">نمایش همه</a></div>
+									<div class="category-card__products">572 محصول</div>
+								</div>
+							</div>
+						</div>
+						<div class="block-categories__item category-card category-card--layout--compact">
+							<div class="category-card__body">
+								<div class="category-card__image">
+									<a href="#"><img src="static/images/categories/category-2.jpg" alt=""></a>
+								</div>
+								<div class="category-card__content">
+									<div class="category-card__name"><a href="{% url 'CategoryListView' 'manual-tools' %}">ابزار دستی</a></div>
+									<ul class="category-card__links">
+										<li><a href="#">پیچ گوشتی ها</a></li>
+										<li><a href="#">چکش ها</a></li>
+										<li><a href="#">پیچ و مهره</a></li>
+										<li><a href="#">اره دستی</a></li>
+										<li><a href="#">ابزار نقاشی</a></li>
+									</ul>
+									<div class="category-card__all"><a href="#">نمایش همه</a></div>
+									<div class="category-card__products">134 محصول</div>
+								</div>
+							</div>
+						</div>
+						<div class="block-categories__item category-card category-card--layout--compact">
+							<div class="category-card__body">
+								<div class="category-card__image">
+									<a href="#"><img src="static/images/categories/category-4.jpg" alt=""></a>
+								</div>
+								<div class="category-card__content">
+									<div class="category-card__name"><a href="{% url 'CategoryListView' 'electronic-tools' %}">ابزار ماشینی</a></div>
+									<ul class="category-card__links">
+										<li><a href="#">ماشین آلات</a></li>
+										<li><a href="#">ماشین آلات فرز</a></li>
+										<li><a href="#">ماشین آلات سنگ زنی</a></li>
+										<li><a href="#">ماشین های CNC</a></li>
+										<li><a href="#">ماشین های تیز کننده</a></li>
+									</ul>
+									<div class="category-card__all"><a href="#">نمایش همه</a></div>
+									<div class="category-card__products">301 محصول</div>
+								</div>
+							</div>
+						</div>
+						<div class="block-categories__item category-card category-card--layout--compact">
+							<div class="category-card__body">
+								<div class="category-card__image">
+									<a href="#"><img src="static/images/categories/category-3.jpg" alt=""></a>
+								</div>
+								<div class="category-card__content">
+									<div class="category-card__name"><a href="{% url 'CategoryListView' 'electronic-tools' %}">ماشین آلات برقی</a></div>
+									<ul class="category-card__links">
+										<li><a href="#">ژنراتور ها</a></li>
+										<li><a href="#">کمپرسور ها</a></li>
+										<li><a href="#">جک برقی</a></li>
+										<li><a href="#">برش پلاسما</a></li>
+										<li><a href="#">موتورهای الکتریکی</a></li>
+									</ul>
+									<div class="category-card__all"><a href="#">نمایش همه</a></div>
+									<div class="category-card__products">79 محصول</div>
+								</div>
+							</div>
+						</div>
+						<div class="block-categories__item category-card category-card--layout--compact">
+							<div class="category-card__body">
+								<div class="category-card__image">
+									<a href="#"><img src="static/images/categories/category-5.jpg" alt=""></a>
+								</div>
+								<div class="category-card__content">
+									<div class="category-card__name"><a href="{% url 'CategoryListView' 'manual-tools' %}">اندازه گیری</a></div>
+									<ul class="category-card__links">
+										<li><a href="#">اندازه گیری نواری</a></li>
+										<li><a href="#">دوربین های مهندسی</a></li>
+										<li><a href="#">تصویربرداری حرارتی</a></li>
+										<li><a href="#">کولیس ها</a></li>
+										<li><a href="#">تراز ها</a></li>
+									</ul>
+									<div class="category-card__all"><a href="#">نمایش همه</a></div>
+									<div class="category-card__products">366 محصول</div>
+								</div>
+							</div>
+						</div>
+						<div class="block-categories__item category-card category-card--layout--compact">
+							<div class="category-card__body">
+								<div class="category-card__image">
+									<a href="#"><img src="static/images/categories/category-6.jpg" alt=""></a>
+								</div>
+								<div class="category-card__content">
+									<div class="category-card__name"><a href="{% url 'CategoryListView' 'manual-tools' %}">لباس کار</a></div>
+									<ul class="category-card__links">
+										<li><a href="#">لباس کار زمستانی</a></li>
+										<li><a href="#">لباس کار تابستانی</a></li>
+										<li><a href="#">کلاه ایمنی</a></li>
+										<li><a href="#">کمربند ایمنی</a></li>
+										<li><a href="#">کفش های کار</a></li>
+									</ul>
+									<div class="category-card__all"><a href="#">نمایش همه</a></div>
+									<div class="category-card__products">81 محصول</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- .block-categories / end -->
+			<!-- .block-products-carousel -->
+			<div class="block block-products-carousel" data-layout="horizontal">
+				<div class="container">
+					<div class="block-header">
+						<h3 class="block-header__title">محصولات ویژه</h3>
+						<div class="block-header__divider"></div>
+						<ul class="block-header__groups-list">
+							<li>
+								<button type="button" class="block-header__group block-header__group--active">همه</button>
+							</li>
+							<li>
+								<button type="button" class="block-header__group">ابزار برقی</button>
+							</li>
+							<li>
+								<button type="button" class="block-header__group">ابزار دستی</button>
+							</li>
+							<li>
+								<button type="button" class="block-header__group">لوله کشی</button>
+							</li>
+						</ul>
+						<div class="block-header__arrows-list">
+							<button class="block-header__arrow block-header__arrow--left" type="button">
+								<svg width="7px" height="11px">
+									<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-left-7x11"></use>
+								</svg>
+							</button>
+							<button class="block-header__arrow block-header__arrow--right" type="button">
+								<svg width="7px" height="11px">
+									<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-7x11"></use>
+								</svg>
+							</button>
+						</div>
+					</div>
+					<div class="block-products-carousel__slider">
+						<div class="block-products-carousel__preloader"></div>
+						<div class="owl-carousel">
+							{% for k in kala %}
+							{% for i in k.kalainstance.all %}
+							{% if i.instock != 0 %}
+							<div class="block-products-carousel__column">
+								<div class="block-products-carousel__cell">
+									<div class="product-card">
+										<button class="product-card__quickview" type="button">
+											<svg width="16px" height="16px">
+												<use xlink:href="{% static 'images/sprite.svg' %}#quickview-16"></use>
+											</svg> <span class="fake-svg-icon"></span></button>
+										<div class="product-card__badges-list">
+											<div class="product-card__badge product-card__badge--sale">شگفت انگیز</div>
+										</div>
+										<div class="product-card__image">
+											<a href="{% url 'KalaDetailView' k.slug %}"><img src="{{ k.pic0.url }}" alt="{{ k.name }}" title="{{ k.name }}" class="img-responsive" /></a>
+										</div>
+										<div class="product-card__info">
+											<div class="product-card__name"><a href="{% url 'KalaDetailView' k.slug %}">{{ k.name }}</a></div>
+											<div class="product-card__rating">
+												<div class="rating">
+													<div class="rating__body">
+														<svg class="rating__star rating__star--active" width="13px" height="12px">
+															<g class="rating__fill">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+															</g>
+															<g class="rating__stroke">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+															</g>
+														</svg>
+														<div class="rating__star rating__star--only-edge rating__star--active">
+															<div class="rating__fill">
+																<div class="fake-svg-icon"></div>
+															</div>
+															<div class="rating__stroke">
+																<div class="fake-svg-icon"></div>
+															</div>
+														</div>
+														<svg class="rating__star rating__star--active" width="13px" height="12px">
+															<g class="rating__fill">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+															</g>
+															<g class="rating__stroke">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+															</g>
+														</svg>
+														<div class="rating__star rating__star--only-edge rating__star--active">
+															<div class="rating__fill">
+																<div class="fake-svg-icon"></div>
+															</div>
+															<div class="rating__stroke">
+																<div class="fake-svg-icon"></div>
+															</div>
+														</div>
+														<svg class="rating__star rating__star--active" width="13px" height="12px">
+															<g class="rating__fill">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+															</g>
+															<g class="rating__stroke">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+															</g>
+														</svg>
+														<div class="rating__star rating__star--only-edge rating__star--active">
+															<div class="rating__fill">
+																<div class="fake-svg-icon"></div>
+															</div>
+															<div class="rating__stroke">
+																<div class="fake-svg-icon"></div>
+															</div>
+														</div>
+														<svg class="rating__star rating__star--active" width="13px" height="12px">
+															<g class="rating__fill">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+															</g>
+															<g class="rating__stroke">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+															</g>
+														</svg>
+														<div class="rating__star rating__star--only-edge rating__star--active">
+															<div class="rating__fill">
+																<div class="fake-svg-icon"></div>
+															</div>
+															<div class="rating__stroke">
+																<div class="fake-svg-icon"></div>
+															</div>
+														</div>
+														<svg class="rating__star" width="13px" height="12px">
+															<g class="rating__fill">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+															</g>
+															<g class="rating__stroke">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+															</g>
+														</svg>
+														<div class="rating__star rating__star--only-edge">
+															<div class="rating__fill">
+																<div class="fake-svg-icon"></div>
+															</div>
+															<div class="rating__stroke">
+																<div class="fake-svg-icon"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="product-card__rating-legend">9 نقد و بررسی</div>
+											</div>
+											<ul class="product-card__features-list">
+												<li>سرعت: 750 RPM</li>
+												<li>منبع تغزیه: برق</li>
+												<li>نوع باتری: لیتیوم</li>
+												<li>ولتاژ: 20 ولت</li>
+												<li>ظرفیت باتری: 2 ساعت</li>
+											</ul>
+										</div>
+										<div class="product-card__actions">
+											<div class="product-card__availability">موجودی: <span class="text-success">موجود در انبار</span></div>
+							
+											<div class="product-card__prices">{% if i.off == 0 %}<span class="new-price">{{ i.new_price }}</span>{% else %}<span class="product-card__new-price">{{ i.new_price }} تومان</span>{% endif %}{% if i.off == 0 %}{% else %}<span  class="product-card__old-price">{{ i.price }} تومان</span>{% endif %}</div>
+											
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endif %}
+							{% endfor %}
+							{% endfor %}	
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- .block-products-carousel / end -->
+			<!-- .block-posts -->
+			<div class="block block-posts block-posts--layout--list-sm" data-layout="list-sm">
+				<div class="container">
+					<div class="block-header">
+						<h3 class="block-header__title">آخرین اخبار</h3>
+						<div class="block-header__divider"></div>
+						<div class="block-header__arrows-list">
+							<button class="block-header__arrow block-header__arrow--left" type="button">
+								<svg width="7px" height="11px">
+									<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-left-7x11"></use>
+								</svg>
+							</button>
+							<button class="block-header__arrow block-header__arrow--right" type="button">
+								<svg width="7px" height="11px">
+									<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-7x11"></use>
+								</svg>
+							</button>
+						</div>
+					</div>
+					<div class="block-posts__slider">
+						<div class="owl-carousel">
+							{% for p in posts %}
+							<div class="post-card">
+								<div class="post-card__image">
+									<a href="#"><img src="{{ p.pic.url }}" class="img-responsive" /></a>
+								</div>
+								<div class="post-card__info">
+									<div class="post-card__category"><a href="#">پیشنهادهای ویژه</a></div>
+									<div class="post-card__name"><a href="{% url 'PostDetailView' p.slug %}">{{ p.title }}</a></div>
+									{% localize on %}
+									<div class="post-card__date">{{ p.published_date |naturaltime }}</div>
+									{% endlocalize %}
+									<div class="post-card__content">{{p.short_description}}</div>
+									<div class="post-card__read-more"><a href="{% url 'PostDetailView' p.slug %}" class="btn btn-secondary btn-sm">بیشتر بخوانید</a></div>
+								</div>
+							</div>
+							{% endfor %}
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- .block-posts / end -->
+			<!-- .block-brands -->
+			<div class="block block-brands">
+				<div class="container">
+					<div class="block-brands__slider">
+						<div class="owl-carousel  ">
+							{% for b in Brands %}
+							<div class="block-brands__item">
+								<a href="{% url 'BrandListView' b.slug %}"><img src="{{ b.logo.url }}" alt="{{ b.name }}" class="img-responsive" /></a>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- .block-brands / end -->
+			<!-- .block-product-columns -->
+			
+			<!-- .block-product-columns / end -->
+		</div>
+		<!-- site__body / end -->
+		
+{% endblock %}

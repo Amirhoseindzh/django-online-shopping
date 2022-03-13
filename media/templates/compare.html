@@ -1,0 +1,262 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}{{ block.super }} مقایسه محصول {% endblock %}
+
+{% block body %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'index' %}">خانه</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								
+								<li class="breadcrumb-item active" aria-current="page">مقایسه</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title">
+						<h1>مقایسه</h1></div>
+				</div>
+			</div>
+			<div class="block">
+				<div class="container">
+					<div class="table-responsive">
+						<table class="compare-table">
+							{% if compare %}
+							<tbody>
+								<tr>
+									<th>محصول</th>
+									{% for p in compare %}
+									<td>
+										<a class="compare-table__product-link" href="{% url 'KalaDetailView' p.product.slug %}">
+											<div class="compare-table__product-image"><img src="{{ p.product.pic0.url }}" alt="{{ p.product.name }}"></div>
+											<div class="compare-table__product-name">{{ p.product.name }}</div>
+										</a>
+									</td>
+									{% endfor %}	
+								</tr>
+								<tr>
+									<th>امتیاز</th>
+									<td>
+										<div class="compare-table__product-rating">
+											<div class="rating">
+												<div class="rating__body">
+													<svg class="rating__star rating__star--active" width="13px" height="12px">
+														<g class="rating__fill">
+															<use xlink:href="{% static  'images/sprite.svg' %}' %}#star-normal"></use>
+														</g>
+														<g class="rating__stroke">
+															<use xlink:href="{% static 'images/sprite.svg' %}' %}#star-normal-stroke"></use>
+														</g>
+													</svg>
+													<div class="rating__star rating__star--only-edge rating__star--active">
+														<div class="rating__fill">
+															<div class="fake-svg-icon"></div>
+														</div>
+														<div class="rating__stroke">
+															<div class="fake-svg-icon"></div>
+														</div>
+													</div>
+													<svg class="rating__star rating__star--active" width="13px" height="12px">
+														<g class="rating__fill">
+															<use xlink:href="{% static 'images/sprite.svg' %}' %}#star-normal"></use>
+														</g>
+														<g class="rating__stroke">
+															<use xlink:href="{% static 'images/sprite.svg' %}' %}#star-normal-stroke"></use>
+														</g>
+													</svg>
+													<div class="rating__star rating__star--only-edge rating__star--active">
+														<div class="rating__fill">
+															<div class="fake-svg-icon"></div>
+														</div>
+														<div class="rating__stroke">
+															<div class="fake-svg-icon"></div>
+														</div>
+													</div>
+													<svg class="rating__star rating__star--active" width="13px" height="12px">
+														<g class="rating__fill">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+														</g>
+														<g class="rating__stroke">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+														</g>
+													</svg>
+													<div class="rating__star rating__star--only-edge rating__star--active">
+														<div class="rating__fill">
+															<div class="fake-svg-icon"></div>
+														</div>
+														<div class="rating__stroke">
+															<div class="fake-svg-icon"></div>
+														</div>
+													</div>
+													<svg class="rating__star rating__star--active" width="13px" height="12px">
+														<g class="rating__fill">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+														</g>
+														<g class="rating__stroke">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+														</g>
+													</svg>
+													<div class="rating__star rating__star--only-edge rating__star--active">
+														<div class="rating__fill">
+															<div class="fake-svg-icon"></div>
+														</div>
+														<div class="rating__stroke">
+															<div class="fake-svg-icon"></div>
+														</div>
+													</div>
+													<svg class="rating__star" width="13px" height="12px">
+														<g class="rating__fill">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+														</g>
+														<g class="rating__stroke">
+															<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+														</g>
+													</svg>
+													<div class="rating__star rating__star--only-edge">
+														<div class="rating__fill">
+															<div class="fake-svg-icon"></div>
+														</div>
+														<div class="rating__stroke">
+															<div class="fake-svg-icon"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="compare-table__product-rating-legend">7 نقد و بررسی</div>
+									</td>
+									
+								</tr>
+								
+								<tr>
+									<th>موجودی</th>
+									
+									{% for p in compare %}
+									<td>
+										{% for dtl in detail %}
+										{% if p.product.id == dtl.kala_id %}
+										{% if dtl.instock != 0 %}
+											<span class="compare-table__product-badge badge badge-success">موجود می باشد</span>
+									
+										{% else %}
+									
+										<span class="compare-table__product-badge badge badge-danger">ناموجود </span>
+										
+										{% endif %}
+										{% endif %}
+										{% endfor %}
+									</td>
+									{% endfor %}
+								</tr>
+								<tr>
+									<th>قیمت</th>
+									{% for p in compare %}
+									<td>
+									{% for dtl in detail %}
+									{% if dtl.instock != 0 %}
+									{% if p.product.id == dtl.kala_id %}	
+									{% if dtl.off == 0 %}<span class="new-price">{{ dtl.new_price }}</span>{% else %}<span class="product-card__new-price">{{ dtl.new_price }} تومان</span>{% endif %}{% if dtl.off == 0 %}{% else %}<span  class="product-card__old-price">{{ dtl.price }} تومان</span>{% endif %}
+									{% endif %}
+									{% endif %}		
+									{% endfor %}
+									</td>
+									{% endfor %}
+								</tr>
+								<tr>
+									<th>شناسه</th>
+									{% for p in compare %}
+									<td>
+										{% for dtl in detail %}
+										{% if p.product.id == dtl.kala_id %}
+										{{ p.product.id }}
+										
+										{% endif %}
+										{% endfor %}
+									</td>
+									{% endfor %}
+								</tr>
+								
+								<tr>
+									<th>رنگ</th>
+									
+									{% for p in compare %}
+									<td>
+										{% for dtl in detail %}
+										{% if p.product.id == dtl.kala_id %}
+										{{ p.product.color }}
+										
+										{% endif %}
+										{% endfor %}
+									</td>
+									{% endfor %}
+								</tr>
+								<tr>
+									<th>جنس</th>
+									
+									{% for p in compare %}
+									<td>
+										{% for dtl in detail %}
+										{% if p.product.id == dtl.kala_id %}
+										{{ p.product.material }}
+										
+										{% endif %}
+										{% endfor %}
+									</td>
+									{% endfor %}
+								</tr>
+								<tr>
+									<tr>
+										<th>افزودن به سبد</th>
+										{% for p in compare %}
+									<td>
+										{% for dtl in detail %}
+										{% if dtl.instock != 0 %}
+										{% if p.product.id == dtl.kala_id %}
+										
+										<button class="btn btn-primary">افزودن به سبد</button>
+										
+										{% endif %}
+										{% endif %}
+										{% endfor %}
+									</td>
+									{% endfor %}
+									</tr>
+									<th></th>
+									
+									{% for p in compare %}
+									<td>
+										{% for dtl in detail %}
+										{% if p.product.id == dtl.kala_id %}
+
+										<form method="post">
+											{% csrf_token %}
+											<input type='hidden'  name='product_slug' value="{{ p.product.slug }}" >
+										<button type="submit" class="btn btn-secondary btn-sm" name="delete" >حذف</button>
+										
+										{% endif %}
+										{% endfor %}
+									</td>
+									{% endfor %}
+
+								</tr>
+							</tbody>
+						</table>
+						{% else %}
+						<br/><br/><center> هیچ مقایسه ای برای شما وجود ندارد  </center><br/><br/><br/><br/><br/><br/><br/>
+						
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- site__body / end -->
+{% endblock %}
+		

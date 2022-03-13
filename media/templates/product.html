@@ -1,0 +1,884 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}{{ block.super }} {{ kala.name }} {% endblock %}
+
+{% block body %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'index' %}">خانه</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								<li class="breadcrumb-item"><a href="{% url 'CategoryListView' kala.category.slug %}">{{ kala.category }}</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								<li class="breadcrumb-item active" aria-current="page">{{ kala.name }}</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<div class="block">
+				<div class="container">
+					<div class="product product--layout--standard" data-layout="standard">
+						<div class="product__content">
+							<!-- .product__gallery -->
+							<div class="product__gallery">
+								<div class="product-gallery">
+									<div class="product-gallery__featured">
+										<div class="owl-carousel" id="product-image">
+											{% if kala.pic1.url != "/media/static/no-image.jpg" %}<a href="{{ kala.pic0.url }}" target="_blank"><img src={{ kala.pic0.url }} title={{ kala.name }} alt={{ kala.name }} /></a>{% endif %}
+											{% if kala.pic1.url != "/media/static/no-image.jpg" %}<a href="{{ kala.pic1.url }}" target="_blank"><img src={{ kala.pic1.url }} title={{ kala.name }} alt={{ kala.name }} /></a>{% endif %}
+											{% if kala.pic1.url != "/media/static/no-image.jpg" %}<a href="{{ kala.pic2.url }}" target="_blank"><img src={{ kala.pic2.url }} title={{ kala.name }} alt={{ kala.name }} /></a>{% endif %}
+											{% if kala.pic1.url != "/media/static/no-image.jpg" %}<a href="{{ kala.pic3.url }}" target="_blank"><img src={{ kala.pic3.url }} title={{ kala.name }} alt={{ kala.name }} /></a>{% endif %}
+											{% if kala.pic1.url != "/media/static/no-image.jpg" %}<a href="{{ kala.pic4.url }}" target="_blank"><img src={{ kala.pic4.url }} title={{ kala.name }} alt={{ kala.name }} /></a>{% endif %}										</div>
+									</div>
+									<div class="product-gallery__carousel">
+										<div class="owl-carousel" id="product-carousel">
+											<a href="{{ kala.pic0.url }}" class="product-gallery__carousel-item"><img class="product-gallery__carousel-image" src='{{ kala.pic0.url }}' alt=""> </a>
+											<a href="{{ kala.pic1.url }}" class="product-gallery__carousel-item"><img class="product-gallery__carousel-image" src='{{ kala.pic1.url }}' alt=""> </a>
+											<a href="{{ kala.pic2.url }}" class="product-gallery__carousel-item"><img class="product-gallery__carousel-image" src='{{ kala.pic2.url }}' alt=""> </a>
+											<a href="{{ kala.pic3.url }}" class="product-gallery__carousel-item"><img class="product-gallery__carousel-image" src='{{ kala.pic3.url }}' alt=""> </a>
+											<a href="{{ kala.pic4.url }}" class="product-gallery__carousel-item"><img class="product-gallery__carousel-image" src='{{ kala.pic4.url }}' alt=""></a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- .product__gallery / end -->
+							<!-- .product__info -->
+							<div class="product__info">
+								<div class="product__wishlist-compare">
+									<button type="button" class="btn btn-sm btn-light btn-svg-icon " data-toggle="tooltip" data-placement="right" title="Wishlist">
+										<svg width="16px" height="16px">
+											<use xlink:href="{% static 'images/sprite.svg' %}#wishlist-16"></use>
+										</svg>
+									</button>
+									<button type="button" class="btn btn-sm btn-light btn-svg-icon" data-toggle="tooltip" data-placement="right" title="Compare">
+										<svg width="16px" height="16px">
+											<use xlink:href="{% static 'images/sprite.svg' %}#compare-16"></use>
+										</svg>
+									</button>
+								</div>
+								<h1 class="product__name">{{ kala.name }}</h1>
+								<div class="product__rating">
+									<div class="product__rating-stars">
+										<div class="rating">
+											<div class="rating__body">
+												<svg class="rating__star rating__star--active" width="13px" height="12px">
+													<g class="rating__fill">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+													</g>
+													<g class="rating__stroke">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+													</g>
+												</svg>
+												<div class="rating__star rating__star--only-edge rating__star--active">
+													<div class="rating__fill">
+														<div class="fake-svg-icon"></div>
+													</div>
+													<div class="rating__stroke">
+														<div class="fake-svg-icon"></div>
+													</div>
+												</div>
+												<svg class="rating__star rating__star--active" width="13px" height="12px">
+													<g class="rating__fill">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+													</g>
+													<g class="rating__stroke">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+													</g>
+												</svg>
+												<div class="rating__star rating__star--only-edge rating__star--active">
+													<div class="rating__fill">
+														<div class="fake-svg-icon"></div>
+													</div>
+													<div class="rating__stroke">
+														<div class="fake-svg-icon"></div>
+													</div>
+												</div>
+												<svg class="rating__star rating__star--active" width="13px" height="12px">
+													<g class="rating__fill">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+													</g>
+													<g class="rating__stroke">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+													</g>
+												</svg>
+												<div class="rating__star rating__star--only-edge rating__star--active">
+													<div class="rating__fill">
+														<div class="fake-svg-icon"></div>
+													</div>
+													<div class="rating__stroke">
+														<div class="fake-svg-icon"></div>
+													</div>
+												</div>
+												<svg class="rating__star rating__star--active" width="13px" height="12px">
+													<g class="rating__fill">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+													</g>
+													<g class="rating__stroke">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+													</g>
+												</svg>
+												<div class="rating__star rating__star--only-edge rating__star--active">
+													<div class="rating__fill">
+														<div class="fake-svg-icon"></div>
+													</div>
+													<div class="rating__stroke">
+														<div class="fake-svg-icon"></div>
+													</div>
+												</div>
+												<svg class="rating__star rating__star--active" width="13px" height="12px">
+													<g class="rating__fill">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+													</g>
+													<g class="rating__stroke">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+													</g>
+												</svg>
+												<div class="rating__star rating__star--only-edge rating__star--active">
+													<div class="rating__fill">
+														<div class="fake-svg-icon"></div>
+													</div>
+													<div class="rating__stroke">
+														<div class="fake-svg-icon"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="product__rating-legend"><a href="#">7 نقد و بررسی</a><span>/</span><a href="#">یک نقد و بررسی بنویسید</a></div>
+								</div>
+								<div class="product__description">{{ kala.mini_description }}</div>
+								<ul class="product__features">
+									<li>سرعت: 750 RPM</li>
+									<li>منبع تغزیه: برق</li>
+									<li>نوع باتری: لیتیوم</li>
+									<li>ولتاژ: 20 ولت</li>
+									<li>ظرفیت باتری: 2 ساعت</li>
+								</ul>
+								<ul class="product__meta">
+									<li class="product__meta-availability">موجودی: {% if inst %} <span class="text-success">موجود در انبار</span>{% else %}<span class="text-danger">ناموجود</span>{% endif %}</li>
+									<li>برند: <a href="#">{{ kala.brand }}</a></li>
+									<li>شناسه: {{ kala.id }}</li>
+									
+								</ul>
+							</div>
+							<!-- .product__info / end -->
+							<!-- .product__sidebar -->
+							<div class="product__sidebar">
+								<div class="product__availability">موجودی: {% if inst %} <span class="text-success">موجود در انبار</span>{% else %}<span class="text-danger">ناموجود</span>{% endif %}</div>
+								<div class="product__prices">
+									{% if inst %}
+									{% if finst.off == 0 %}<span class="new-price">{{ finst.new_price }}</span>{% else %}<span class="product-card__new-price">{{ finst.new_price }} تومان</span>{% endif %}{% if finst.off == 0 %}{% else %}<span  class="product-card__old-price">{{ finst.price }} تومان</span>{% endif %}
+								  	{% endif %}
+								</div>
+								<!-- .product__options -->
+								<form class="product__options" method ='Post'>
+									{% csrf_token %}
+									<div class="form-group product__option">
+										<label class="product__option-label">رنگ</label>
+										<div class="input-radio-color">
+											<div class="input-radio-color__list">
+												{% for i in kala.color.all %}
+												<label class="input-radio-color__item input-radio-color__item--white" style="color: {{ i.name }}" data-toggle="tooltip" title="{{ i.name }}">
+													<input type="radio" name="Color" value="{{ i.id }}"> <span></span></label>
+												
+												{% endfor %}
+											</div>
+										</div>
+									</div>
+									<div class="form-group product__option">
+										<label class="product__option-label">جنس</label>
+										<div class="input-radio-label">
+											<div class="input-radio-label__list">
+												{% for k in kala.material.all %}
+												<label>
+													<input type="radio" name="Material" value="{{ k.id }}"> <span>{{ k.name }}</span>
+												</label>
+												
+												{% endfor %}
+											</div>
+										</div>
+									</div>
+									<div class="form-group product__option">
+										<label class="product__option-label">اندازه</label>
+										<div class="input-radio-label">
+											<div class="input-radio-label__list">
+												{% for k in kala.size.all %}
+												<label>
+													<input type="radio" name="Size" value="{{ k.id }}"> <span>{{ k.sizeno }}</span>
+												</label>
+												
+												{% endfor %}
+											</div>
+										</div>
+									</div>
+									<div>
+										<label class="control-label">انتخاب فروشنده</label>
+										<select class="form-control" id="input-option200" name="Saller">
+									  {% for i in inst %}
+										<option value ={{ i.id }}><li>نام :{{ i.saller }} &nbsp;  قیمت اصلی :{{ i.price }} &nbsp;   تخفیف :  {{ i.off }}تومان</li></option>
+									  {% endfor %}
+									</select>
+									</div><br/>
+									<div class="form-group product__option">
+										<label class="product__option-label" for="product-quantity">تعداد</label>
+										<div class="product__actions">
+											<div class="product__actions-item">
+												<div class="input-number product__quantity">
+													<input type='hidden'  name='product_slug' value="{{ i.product.slug }}" >
+													<input class="form-control input-number__input" type="number" name="quantity"  min="1" value="{{ i.count }}" max = "{{ i.saler.instock }}" id="count" onchange="refresh()">
+													<div class="input-number__add"></div>
+													<div class="input-number__sub"></div>
+												</div>
+											</div>
+											
+											<div class="product__actions-item product__actions-item--addtocart">
+											{% if user.is_authenticated %}
+												{% if inst %}
+												<button type="submit" id="button-cart" class="btn btn-primary btn-lg" name='addCart'>افزودن به سبد</button>
+												{% else %}
+												<button type="submit" class="btn btn-danger btn-lg" disabled>ناموجود</button>
+												{% endif %}
+											{% else %}
+                  								<a href={% url 'login' %}> <button type="button" id="Login" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
+                							{% endif %}
+											</div>
+											
+											{% if user.is_authenticated %}
+											<div class="product__actions-item product__actions-item--wishlist">
+												<input type='hidden'  name='kala' value="{{ kala.id }}" >
+												<button type="submit"  class="btn btn-secondary btn-svg-icon btn-lg" data-toggle="tooltip" name="addWishlist" aria-pressed="false" autocomplete="off">
+													<svg width="16px" height="16px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#wishlist-16"></use>
+													</svg>
+												</button>
+											</div>
+											<div class="product__actions-item product__actions-item--compare">
+												<input type='hidden'  name='kala' value="{{ kala.id }}" >
+												<button type="submit" class="btn btn-secondary btn-svg-icon btn-lg" data-toggle="tooltip" name="addCompare" title="Compare" aria-pressed="false" autocomplete="off">
+													<svg width="16px" height="16px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#compare-16"></use>
+													</svg>
+												</button>
+												
+											</div>
+										{% endif %}
+										</div>
+									</div>
+								</form>
+								<!-- .product__options / end -->
+							</div>
+							<!-- .product__end -->
+							<div class="product__footer">
+								<div class="product__tags tags">
+									<div class="tags__list"><a href="#">پایه</a> <a href="#">الکترود</a> <a href="#">اره برقی</a></div>
+								</div>
+								<div class="product__share-links share-links">
+									<ul class="share-links__list">
+										<li class="share-links__item share-links__item--type--like"><a href="#">لایک</a></li>
+										<li class="share-links__item share-links__item--type--tweet"><a href="#">توییت</a></li>
+										<li class="share-links__item share-links__item--type--pin"><a href="#">پین کردن</a></li>
+										<li class="share-links__item share-links__item--type--counter"><a href="#">4K</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="product-tabs">
+						<div class="product-tabs__list"><a href="#tab-description" class="product-tabs__item product-tabs__item--active">توضیحات</a> <a href="#tab-specification" class="product-tabs__item">مشخصات فنی</a> <a href="#tab-reviews" class="product-tabs__item">نقد و بررسی ها</a></div>
+						<div class="product-tabs__content">
+							<div class="product-tabs__pane product-tabs__pane--active" id="tab-description">
+								<div class="typography">
+									{{ kala.description }}
+								</div>
+							</div>
+							<div class="product-tabs__pane" id="tab-specification">
+								<div class="spec">
+									<h3 class="spec__header">مشخصات فنی</h3>
+									<div class="spec__section">
+										<h4 class="spec__section-title">عمومی</h4>
+										<div class="spec__row">
+											<div class="spec__name">جنس</div>
+											<div class="spec__value">آلومینیوم، پلاستیک</div>
+										</div>
+										<div class="spec__row">
+											<div class="spec__name">نوع موتور</div>
+											<div class="spec__value">بدون برس</div>
+										</div>
+										<div class="spec__row">
+											<div class="spec__name">ولتاژ باتری</div>
+											<div class="spec__value">18 ولت</div>
+										</div>
+										<div class="spec__row">
+											<div class="spec__name">نوع باتری</div>
+											<div class="spec__value">لیتیوم یون</div>
+										</div>
+										<div class="spec__row">
+											<div class="spec__name">تعداد سرعت ها</div>
+											<div class="spec__value">2</div>
+										</div>
+										<div class="spec__row">
+											<div class="spec__name">زمان شارژ</div>
+											<div class="spec__value">2 ساعت</div>
+										</div>
+										<div class="spec__row">
+											<div class="spec__name">وزن</div>
+											<div class="spec__value">1.5 کیلوگرم</div>
+										</div>
+									</div>
+									<div class="spec__section">
+										<h4 class="spec__section-title">ابعاد</h4>
+										<div class="spec__row">
+											<div class="spec__name">طول</div>
+											<div class="spec__value">99 mm</div>
+										</div>
+										<div class="spec__row">
+											<div class="spec__name">عرض</div>
+											<div class="spec__value">207 mm</div>
+										</div>
+										<div class="spec__row">
+											<div class="spec__name">ارتفاع</div>
+											<div class="spec__value">208 mm</div>
+										</div>
+									</div>
+									<div class="spec__disclaimer">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با</div>
+								</div>
+							</div>
+							<div class="product-tabs__pane" id="tab-reviews">
+								<div class="reviews-view">
+									<div class="reviews-view__list">
+										<h3 class="reviews-view__header">نقد و بررسی مشتریان</h3>
+										<div class="reviews-list">
+											<ol class="reviews-list__content">
+												<li class="reviews-list__item">
+													<div class="review">
+														<div class="review__avatar"><img src="images/avatars/avatar-1.jpg" alt=""></div>
+														<div class="review__content">
+															<div class="review__author">اولیور کوئین</div>
+															<div class="review__rating">
+																<div class="rating">
+																	<div class="rating__body">
+																		<svg class="rating__star rating__star--active" width="13px" height="12px">
+																			<g class="rating__fill">
+																				<use xlink:href="images/sprite.svg#star-normal"></use>
+																			</g>
+																			<g class="rating__stroke">
+																				<use xlink:href="images/sprite.svg#star-normal-stroke"></use>
+																			</g>
+																		</svg>
+																		<div class="rating__star rating__star--only-edge rating__star--active">
+																			<div class="rating__fill">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																			<div class="rating__stroke">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																		</div>
+																		<svg class="rating__star rating__star--active" width="13px" height="12px">
+																			<g class="rating__fill">
+																				<use xlink:href="images/sprite.svg#star-normal"></use>
+																			</g>
+																			<g class="rating__stroke">
+																				<use xlink:href="images/sprite.svg#star-normal-stroke"></use>
+																			</g>
+																		</svg>
+																		<div class="rating__star rating__star--only-edge rating__star--active">
+																			<div class="rating__fill">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																			<div class="rating__stroke">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																		</div>
+																		<svg class="rating__star rating__star--active" width="13px" height="12px">
+																			<g class="rating__fill">
+																				<use xlink:href="images/sprite.svg#star-normal"></use>
+																			</g>
+																			<g class="rating__stroke">
+																				<use xlink:href="images/sprite.svg#star-normal-stroke"></use>
+																			</g>
+																		</svg>
+																		<div class="rating__star rating__star--only-edge rating__star--active">
+																			<div class="rating__fill">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																			<div class="rating__stroke">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																		</div>
+																		<svg class="rating__star rating__star--active" width="13px" height="12px">
+																			<g class="rating__fill">
+																				<use xlink:href="images/sprite.svg#star-normal"></use>
+																			</g>
+																			<g class="rating__stroke">
+																				<use xlink:href="images/sprite.svg#star-normal-stroke"></use>
+																			</g>
+																		</svg>
+																		<div class="rating__star rating__star--only-edge rating__star--active">
+																			<div class="rating__fill">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																			<div class="rating__stroke">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																		</div>
+																		<svg class="rating__star" width="13px" height="12px">
+																			<g class="rating__fill">
+																				<use xlink:href="images/sprite.svg#star-normal"></use>
+																			</g>
+																			<g class="rating__stroke">
+																				<use xlink:href="images/sprite.svg#star-normal-stroke"></use>
+																			</g>
+																		</svg>
+																		<div class="rating__star rating__star--only-edge">
+																			<div class="rating__fill">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																			<div class="rating__stroke">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="review__text">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز</div>
+															<div class="review__date">27 اردیبهشت 1398</div>
+														</div>
+													</div>
+												</li>
+												<li class="reviews-list__item">
+													<div class="review">
+														<div class="review__avatar"><img src="images/avatars/avatar-2.jpg" alt=""></div>
+														<div class="review__content">
+															<div class="review__author">تونی استارک</div>
+															<div class="review__rating">
+																<div class="rating">
+																	<div class="rating__body">
+																		<svg class="rating__star rating__star--active" width="13px" height="12px">
+																			<g class="rating__fill">
+																				<use xlink:href="images/sprite.svg#star-normal"></use>
+																			</g>
+																			<g class="rating__stroke">
+																				<use xlink:href="images/sprite.svg#star-normal-stroke"></use>
+																			</g>
+																		</svg>
+																		<div class="rating__star rating__star--only-edge rating__star--active">
+																			<div class="rating__fill">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																			<div class="rating__stroke">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																		</div>
+																		<svg class="rating__star rating__star--active" width="13px" height="12px">
+																			<g class="rating__fill">
+																				<use xlink:href="images/sprite.svg#star-normal"></use>
+																			</g>
+																			<g class="rating__stroke">
+																				<use xlink:href="images/sprite.svg#star-normal-stroke"></use>
+																			</g>
+																		</svg>
+																		<div class="rating__star rating__star--only-edge rating__star--active">
+																			<div class="rating__fill">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																			<div class="rating__stroke">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																		</div>
+																		<svg class="rating__star rating__star--active" width="13px" height="12px">
+																			<g class="rating__fill">
+																				<use xlink:href="images/sprite.svg#star-normal"></use>
+																			</g>
+																			<g class="rating__stroke">
+																				<use xlink:href="images/sprite.svg#star-normal-stroke"></use>
+																			</g>
+																		</svg>
+																		<div class="rating__star rating__star--only-edge rating__star--active">
+																			<div class="rating__fill">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																			<div class="rating__stroke">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																		</div>
+																		<svg class="rating__star" width="13px" height="12px">
+																			<g class="rating__fill">
+																				<use xlink:href="images/sprite.svg#star-normal"></use>
+																			</g>
+																			<g class="rating__stroke">
+																				<use xlink:href="images/sprite.svg#star-normal-stroke"></use>
+																			</g>
+																		</svg>
+																		<div class="rating__star rating__star--only-edge">
+																			<div class="rating__fill">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																			<div class="rating__stroke">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																		</div>
+																		<svg class="rating__star" width="13px" height="12px">
+																			<g class="rating__fill">
+																				<use xlink:href="images/sprite.svg#star-normal"></use>
+																			</g>
+																			<g class="rating__stroke">
+																				<use xlink:href="images/sprite.svg#star-normal-stroke"></use>
+																			</g>
+																		</svg>
+																		<div class="rating__star rating__star--only-edge">
+																			<div class="rating__fill">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																			<div class="rating__stroke">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="review__text">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته،</div>
+															<div class="review__date">12 اردیبهشت 1398</div>
+														</div>
+													</div>
+												</li>
+												<li class="reviews-list__item">
+													<div class="review">
+														<div class="review__avatar"><img src="images/avatars/avatar-3.jpg" alt=""></div>
+														<div class="review__content">
+															<div class="review__author">استیو راجرز</div>
+															<div class="review__rating">
+																<div class="rating">
+																	<div class="rating__body">
+																		<svg class="rating__star rating__star--active" width="13px" height="12px">
+																			<g class="rating__fill">
+																				<use xlink:href="images/sprite.svg#star-normal"></use>
+																			</g>
+																			<g class="rating__stroke">
+																				<use xlink:href="images/sprite.svg#star-normal-stroke"></use>
+																			</g>
+																		</svg>
+																		<div class="rating__star rating__star--only-edge rating__star--active">
+																			<div class="rating__fill">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																			<div class="rating__stroke">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																		</div>
+																		<svg class="rating__star rating__star--active" width="13px" height="12px">
+																			<g class="rating__fill">
+																				<use xlink:href="images/sprite.svg#star-normal"></use>
+																			</g>
+																			<g class="rating__stroke">
+																				<use xlink:href="images/sprite.svg#star-normal-stroke"></use>
+																			</g>
+																		</svg>
+																		<div class="rating__star rating__star--only-edge rating__star--active">
+																			<div class="rating__fill">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																			<div class="rating__stroke">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																		</div>
+																		<svg class="rating__star rating__star--active" width="13px" height="12px">
+																			<g class="rating__fill">
+																				<use xlink:href="images/sprite.svg#star-normal"></use>
+																			</g>
+																			<g class="rating__stroke">
+																				<use xlink:href="images/sprite.svg#star-normal-stroke"></use>
+																			</g>
+																		</svg>
+																		<div class="rating__star rating__star--only-edge rating__star--active">
+																			<div class="rating__fill">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																			<div class="rating__stroke">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																		</div>
+																		<svg class="rating__star rating__star--active" width="13px" height="12px">
+																			<g class="rating__fill">
+																				<use xlink:href="images/sprite.svg#star-normal"></use>
+																			</g>
+																			<g class="rating__stroke">
+																				<use xlink:href="images/sprite.svg#star-normal-stroke"></use>
+																			</g>
+																		</svg>
+																		<div class="rating__star rating__star--only-edge rating__star--active">
+																			<div class="rating__fill">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																			<div class="rating__stroke">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																		</div>
+																		<svg class="rating__star rating__star--active" width="13px" height="12px">
+																			<g class="rating__fill">
+																				<use xlink:href="images/sprite.svg#star-normal"></use>
+																			</g>
+																			<g class="rating__stroke">
+																				<use xlink:href="images/sprite.svg#star-normal-stroke"></use>
+																			</g>
+																		</svg>
+																		<div class="rating__star rating__star--only-edge rating__star--active">
+																			<div class="rating__fill">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																			<div class="rating__stroke">
+																				<div class="fake-svg-icon"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="review__text">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون</div>
+															<div class="review__date">2 اردیبهشت 1398</div>
+														</div>
+													</div>
+												</li>
+											</ol>
+											<div class="reviews-list__pagination">
+												<ul class="pagination justify-content-center">
+													<li class="page-item disabled">
+														<a class="page-link page-link--with-arrow" href="#" aria-label="Previous">
+															<svg class="page-link__arrow page-link__arrow--left" aria-hidden="true" width="8px" height="13px">
+																<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-left-8x13"></use>
+															</svg>
+														</a>
+													</li>
+													<li class="page-item"><a class="page-link" href="#">1</a></li>
+													<li class="page-item active"><a class="page-link" href="#">2 <span class="sr-only">(کنونی)</span></a></li>
+													<li class="page-item"><a class="page-link" href="#">3</a></li>
+													<li class="page-item">
+														<a class="page-link page-link--with-arrow" href="#" aria-label="Next">
+															<svg class="page-link__arrow page-link__arrow--right" aria-hidden="true" width="8px" height="13px">
+																<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-8x13"></use>
+															</svg>
+														</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<form class="reviews-view__form">
+										<h3 class="reviews-view__header">یک نقد و بررسی بنویسید</h3>
+										<div class="row">
+											<div class="col-12 col-lg-9 col-xl-8">
+												<div class="form-row">
+													<div class="form-group col-md-4">
+														<label for="review-stars">تعداد ستاره</label>
+														<select id="review-stars" class="form-control">
+															<option>امتیاز 5 ستاره</option>
+															<option>امتیاز 4 ستاره</option>
+															<option>امتیاز 3 ستاره</option>
+															<option>امتیاز 2 ستاره</option>
+															<option>امتیاز 1 ستاره</option>
+														</select>
+													</div>
+													<div class="form-group col-md-4">
+														<label for="review-author">نام شما</label>
+														<input type="text" class="form-control" id="review-author" placeholder="نام شما">
+													</div>
+													<div class="form-group col-md-4">
+														<label for="review-email">آدرس ایمیل</label>
+														<input type="text" class="form-control" id="review-email" placeholder="آدرس ایمیل">
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="review-text">نقد و بررسی شما</label>
+													<textarea class="form-control" id="review-text" rows="6"></textarea>
+												</div>
+												<div class="form-group mb-0">
+													<button type="submit" class="btn btn-primary btn-lg">ارسال نقد و بررسی</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- .block-products-carousel -->
+			<div class="block block-products-carousel" data-layout="grid-5">
+				<div class="container">
+					<div class="block-header">
+						<h3 class="block-header__title">محصولات مرتبط</h3>
+						<div class="block-header__divider"></div>
+						<div class="block-header__arrows-list">
+							<button class="block-header__arrow block-header__arrow--left" type="button">
+								<svg width="7px" height="11px">
+									<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-left-7x11"></use>
+								</svg>
+							</button>
+							<button class="block-header__arrow block-header__arrow--right" type="button">
+								<svg width="7px" height="11px">
+									<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-7x11"></use>
+								</svg>
+							</button>
+						</div>
+					</div>
+					<div class="block-products-carousel__slider">
+						<div class="block-products-carousel__preloader"></div>
+						<div class="owl-carousel">
+							{% for ak in Allkala %}
+							{% if ak.id != kala.id %}
+							<div class="block-products-carousel__column">
+								<div class="block-products-carousel__cell">
+									<div class="product-card">
+										<button class="product-card__quickview" type="button">
+											<svg width="16px" height="16px">
+												<use xlink:href="{% static 'images/sprite.svg' %}#quickview-16"></use>
+											</svg> <span class="fake-svg-icon"></span></button>
+										<div class="product-card__badges-list">
+											<div class="product-card__badge product-card__badge--new">جدید</div>
+										</div>
+										<div class="product-card__image">
+											<a href="{% url 'KalaDetailView' ak.slug %}">
+												<img src='{{ ak.pic0.url }}' alt='{{ ak.name }}' title='{{ ak.name }}' class="img-responsive" />
+											</a>
+										</div>
+										<div class="product-card__info">
+											<div class="product-card__name"><a href="{% url 'KalaDetailView' ak.slug %}">{{ ak.name }}</a></div>
+											<div class="product-card__rating">
+												<div class="rating">
+													<div class="rating__body">
+														<svg class="rating__star rating__star--active" width="13px" height="12px">
+															<g class="rating__fill">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+															</g>
+															<g class="rating__stroke">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+															</g>
+														</svg>
+														<div class="rating__star rating__star--only-edge rating__star--active">
+															<div class="rating__fill">
+																<div class="fake-svg-icon"></div>
+															</div>
+															<div class="rating__stroke">
+																<div class="fake-svg-icon"></div>
+															</div>
+														</div>
+														<svg class="rating__star rating__star--active" width="13px" height="12px">
+															<g class="rating__fill">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+															</g>
+															<g class="rating__stroke">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+															</g>
+														</svg>
+														<div class="rating__star rating__star--only-edge rating__star--active">
+															<div class="rating__fill">
+																<div class="fake-svg-icon"></div>
+															</div>
+															<div class="rating__stroke">
+																<div class="fake-svg-icon"></div>
+															</div>
+														</div>
+														<svg class="rating__star rating__star--active" width="13px" height="12px">
+															<g class="rating__fill">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+															</g>
+															<g class="rating__stroke">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+															</g>
+														</svg>
+														<div class="rating__star rating__star--only-edge rating__star--active">
+															<div class="rating__fill">
+																<div class="fake-svg-icon"></div>
+															</div>
+															<div class="rating__stroke">
+																<div class="fake-svg-icon"></div>
+															</div>
+														</div>
+														<svg class="rating__star rating__star--active" width="13px" height="12px">
+															<g class="rating__fill">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+															</g>
+															<g class="rating__stroke">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+															</g>
+														</svg>
+														<div class="rating__star rating__star--only-edge rating__star--active">
+															<div class="rating__fill">
+																<div class="fake-svg-icon"></div>
+															</div>
+															<div class="rating__stroke">
+																<div class="fake-svg-icon"></div>
+															</div>
+														</div>
+														<svg class="rating__star" width="13px" height="12px">
+															<g class="rating__fill">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+															</g>
+															<g class="rating__stroke">
+																<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+															</g>
+														</svg>
+														<div class="rating__star rating__star--only-edge">
+															<div class="rating__fill">
+																<div class="fake-svg-icon"></div>
+															</div>
+															<div class="rating__stroke">
+																<div class="fake-svg-icon"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="product-card__rating-legend">9 نقد و بررسی</div>
+											</div>
+											<ul class="product-card__features-list">
+												<li>سرعت: 750 RPM</li>
+												<li>منبع تغزیه: برق</li>
+												<li>نوع باتری: لیتیوم</li>
+												<li>ولتاژ: 20 ولت</li>
+												<li>ظرفیت باتری: 2 ساعت</li>
+											</ul>
+										</div>
+										<div class="product-card__actions">
+											{% for i in ak.kalainstance.all %}
+											<div class="product-card__availability">موجودی: <span class="text-success">موجود در انبار</span></div>
+											<div class="product-card__prices">{% if i.off == 0 %}<span class="new-price">{{ i.new_price }}</span>{% else %}<span class="product-card__new-price">{{ i.new_price }} تومان</span>{% endif %}{% if i.off == 0 %}{% else %}<span  class="product-card__old-price">{{ i.price }} تومان</span>{% endif %}</div>
+											{% endfor %}
+											<div class="product-card__buttons">
+												<button class="btn btn-primary product-card__addtocart" type="button">افزودن به سبد</button>
+												<button class="btn btn-secondary product-card__addtocart product-card__addtocart--list" type="button">افزودن به سبد</button>
+												<button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist" type="button">
+													<svg width="16px" height="16px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#wishlist-16"></use>
+													</svg> <span class="fake-svg-icon fake-svg-icon--wishlist-16"></span></button>
+												<button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__compare" type="button">
+													<svg width="16px" height="16px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#compare-16"></use>
+													</svg> <span class="fake-svg-icon fake-svg-icon--compare-16"></span></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endif %}
+							{% endfor %}	
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- .block-products-carousel / end -->
+		</div>
+		<!-- site__body / end -->
+
+{% endblock %}
+		

@@ -1,0 +1,168 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}{{block.super}} سبد خرید {% endblock %}
+
+
+{% block body %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'index' %}">خانه</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								
+								<li class="breadcrumb-item active" aria-current="page">سبد خرید</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title">
+						<h1>سبد خرید</h1></div>
+				</div>
+			</div>
+			<div class="cart block">
+				<form method = "post">
+				{% csrf_token %}
+				<div class="container">
+					<table class="cart__table cart-table">
+						<thead class="cart-table__head">
+							<tr class="cart-table__row">
+								<th class="cart-table__column cart-table__column--image">تصویر</th>
+								<th class="cart-table__column cart-table__column--product">محصول</th>
+								<th class="cart-table__column cart-table__column--price">قیمت</th>
+								<th class="cart-table__column cart-table__column--quantity">تعداد</th>
+								<th class="cart-table__column cart-table__column--total">جمع کل</th>
+								<th class="cart-table__column cart-table__column--remove"></th>
+							</tr>
+						</thead>
+						<tbody class="cart-table__body">
+							{% for i in carts %}
+							<tr class="cart-table__row">
+								<td class="cart-table__column cart-table__column--image">
+									<a href="{% url 'KalaDetailView' i.product.slug %}"><img src='{{ i.product.pic0.url }}' alt='{{i.product.name}}' title='{{i.product.name}}'  style="width: 50px; height: 50px;" /></a>
+								</td>
+								<td class="cart-table__column cart-table__column--product"><a href="{% url 'KalaDetailView' i.product.slug %}" class="cart-table__product-name">{{i.product.name}}</a>
+									<ul class="cart-table__options">
+										<li>رنگ: {{ i.color.name }}</li>
+										<li>جنس: {{ i.material.name }}</li>
+										<li>اندازه:{{ i.size.sizeno }}</li>
+									</ul>
+								</td>
+								<td class="cart-table__column cart-table__column--price" data-title="قیمت">{{ i.saller.price }}</td>
+
+								<td class="cart-table__column cart-table__column--quantity" data-title="تعداد">
+									
+									<div class="input-number">
+										
+										<div class="input-number__add"></div>
+										<div class="input-number__sub" ></div>
+										<input type='hidden'  name='product_slug' value="{{ i.product.slug }}" >
+										<input class="form-control input-number__input" type="number" name="quantity"  min="1" value="{{ i.count }}" max = "{{ i.saller.instock }}" id="count" onchange="refresh()">
+										
+										<script type="text/javascript">
+											function refresh()
+											{
+												var count = document.getElementById('count').value;
+												var single = "{{ i.saller.price }}";
+												var off = "{{ i.saller.off }}";
+												var result = (count * single) * (1 - off);
+												document.getElementById('total').innerHTML = result;
+											}
+										</script>
+									</div>
+								</td>
+								<td class="cart-table__column cart-table__column--total" data-title="جمع کل">{{ i.total }}</td>
+								
+								</td>
+								<td class="cart-table__column cart-table__column--remove">
+									<button type="submit" name="delete" class="btn btn-light btn-sm btn-svg-icon">
+										<svg width="12px" height="12px">
+											<use xlink:href="{% static 'images/sprite.svg' %}#cross-12"></use>
+										</svg>
+									</button>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<table class="table-responsive">
+						
+						<tbody>
+							
+							<div class="cart__actions">
+								<th>
+									<form class="cart__coupon-form" method="post">
+										{% csrf_token %}
+										<label for="input-coupon-code" class="sr-only">رمز عبور</label>
+										<input type="text" class="form-control" id="input-coupon" placeholder="کد تخفیف" name="couponCode">
+									</form>
+								</th>
+								<th>
+									<button type="submit" name='applyCoupon' class="btn btn-primary" id="button-coupon">اعمال کد تخفیف</button>	
+								</th>
+								<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+								<th>
+									{% if not user.is_authenticated %}
+									<div class="cart__buttons"><a href="{% url 'track-order' %}" class="btn btn-light">ادامه خرید</a></div>
+									{% endif %}
+									<a  href="" class="btn btn-primary cart__update-button" type="submit" name="update" >به روز رسانی سبد</a></i>
+								</th>
+							</div>
+							
+						</tbody>
+						
+						
+						
+					</table>	
+					
+					<div class="row justify-content-end pt-5">
+						<div class="col-12 col-md-7 col-lg-6 col-xl-5">
+							<div class="card">
+								<div class="card-body">
+									<h3 class="card-title">مجموع سبد</h3>
+									<table class="cart__totals">
+										<thead class="cart__totals-header">
+											<tr>
+												<th>جمع جزء</th>
+												<td>{{ totalPrice }} تومان</td>
+											</tr>
+										</thead>
+										<tbody class="cart__totals-body">
+											<tr>
+												<th>حمل و نقل</th>
+												<td>{{ sendCost }} تومان
+													<div class="cart__calc-shipping"></div>
+												</td>
+											</tr>
+											<tr>
+												<th>کپن تخفیف</th>
+												<td>{{ coupon }} تومان</td>
+											</tr>
+											<tr>
+												<th>مالیات</th>
+												<td>{{ tax }} تومان</td>
+											</tr>
+										</tbody>
+										<tfoot class="cart__totals-footer">
+											<tr>
+												<th>جمع کل</th>
+												<td>{{ toPay }} تومان</td>
+											</tr>
+										</tfoot>
+									</table><a class="btn btn-primary btn-xl btn-block cart__checkout-button" href="{% url 'checkout' %}">پرداخت</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+		<!-- site__body / end -->
+{% endblock %}
+		

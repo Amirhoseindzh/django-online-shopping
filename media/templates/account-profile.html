@@ -1,0 +1,127 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% load widget_tweaks %}
+
+{% block title%}{{ block.super }} پروفایل {% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'index' %}">خانه</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								<li class="breadcrumb-item"><a href="#">تکه مسیر</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								<li class="breadcrumb-item active" aria-current="page">حساب کاربری</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title">
+						<h1>حساب کاربری</h1></div>
+				</div>
+			</div>
+			<div class="block">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 col-lg-3 d-flex">
+							<div class="account-nav flex-grow-1">
+								
+									<h4 class="account-nav__title">ناوبری</h4>
+									<ul>
+										<li class="account-nav__item"><a href="{% url 'dashboard' %}">داشبورد</a></li>
+										<li class="account-nav__item account-nav__item--active"><a href="{% url 'profile' %}">ویرایش پروفایل</a></li>
+										<li class="account-nav__item"><a href="{% url 'orders' %}">سابقه خرید</a></li>
+										<li class="account-nav__item"><a href="{% url 'addresses' %}">آدرس ها</a></li>
+										<li class="account-nav__item"><a href="{% url 'change-password' %}">رمز عبور</a></li>
+										
+										<li class="account-nav__item"><a href="{% url 'logout'%}">خروج</a></li>
+										
+									</ul>
+								</div>
+							</div>
+							<div class="col-12 col-lg-9 mt-4 mt-lg-0">
+								<div class="card">
+									<div class="card-header">
+										<h5>ویرایش پروفایل</h5></div>
+									<div class="card-divider"></div>
+									<div class="card-body">
+										<div class="row no-gutters">
+											<div class="col-12 col-lg-7 col-xl-6">
+												<form method="POST" action="{% url 'profile' %}">{% csrf_token %}
+
+													<div class="profile-card__avatar"><img src="{{ user.avatar.url }}" alt=""></div>
+		
+													<br>
+													<div class="form-group">
+														<label for="profile-username"> نام کاربری</label>
+														{{ form.username |add_class:"form-control" }}
+													</div>
+													<div class="form-group">
+														<label for="profile-first-name">نام</label>
+														{{ form.first_name |add_class:"form-control" }}
+													</div>
+													<div class="form-group">
+														<label for="profile-last-name">نام خانوادگی</label>
+														{{ form.last_name |add_class:"form-control" }}
+													</div>
+													<div class="form-group">
+														<label for="profile-email">آدرس ایمیل</label>
+														{{ form.email |add_class:"form-control" }}
+													</div>
+													<div class="form-group">
+														<label for="profile-phone">شماره تلفن</label>
+														{{ form.phone |add_class:"form-control" }}
+													</div>
+													<div class="form-group">
+														<label for="profile-city">شهر</label>
+														{{ form.city |add_class:"form-control" }}
+													</div>
+													<div class="form-group">
+														<label for="profile-state">استان</label>
+														{{ form.state |add_class:"form-control" }}
+													</div>
+													<div class="form-group">
+														<label for="profile-postcode">کد پستی</label>
+														{{ form.postcode |add_class:"form-control" }}
+													</div>
+													
+													<div class="form-group">
+														<label for="profile-khabarname">خبرنامه</label>
+														{{ form.khabarname |add_class:"form-control" }}
+													</div>
+													<div class="form-group">
+														<label for="profile-address">ادرس</label>
+														{{ form.address |add_class:"form-control" }}
+													</div>
+													<div class="form-group mt-5 mb-0">
+														<button class="btn btn-primary">ذخیره</button>
+													</div>
+										
+											
+											</form>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- site__body / end -->
+{% endif %}	
+{% endblock %}
+		

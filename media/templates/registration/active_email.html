@@ -1,0 +1,6 @@
+{% autoescape off %}  
+سلام ,  
+برای فعال سازی اکانت خود بر روی این لینک کلیک کنید,
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}  
+اگر فکر میکنید این ایمیل شما نیست ِان را رها کنید.  
+{% endautoescape %}

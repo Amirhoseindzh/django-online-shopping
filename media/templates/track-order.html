@@ -1,0 +1,64 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block department %}
+	{% include 'main/includes/department_not_open.html'%}
+{% endblock %}
+
+{% block body %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="index-2.html">خانه</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								<li class="breadcrumb-item"><a href="#">تکه مسیر</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								<li class="breadcrumb-item active" aria-current="page">پیگیری سفارش</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<div class="block">
+				<div class="container">
+					<div class="row justify-content-center">
+						<div class="col-xl-5 col-lg-6 col-md-8">
+							<div class="card flex-grow-1 mb-0 mt-5">
+								<div class="card-body">
+									<div class="card-title text-center">
+										<h1>پیگیری سفارش</h1></div>
+									<p class="mb-4 pt-2">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه</p>
+									<form>
+										<div class="form-group">
+											<label for="track-order-id">کد سفارش</label>
+											<input id="track-order-id" type="text" class="form-control" placeholder="کد سفارش">
+										</div>
+										<div class="form-group">
+											<label for="track-email">آدرس ایمیل</label>
+											<input id="track-email" type="email" class="form-control" placeholder="آدرس ایمیل">
+										</div>
+										<div class="pt-3">
+											<button type="submit" class="btn btn-primary btn-lg btn-block">پیگیری</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- site__body / end -->
+
+{% endblock %}
+		

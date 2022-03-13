@@ -1,0 +1,392 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load l10n %}
+{% load humanize %}
+
+{% block title %}{{ block.super }} {{ post.title }} {% endblock %}
+
+{% block body %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'index' %}">خانه</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								<li class="breadcrumb-item"><a href="{% url 'PostDetailView' post.slug %}">{{ post.slug }}</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								<li class="breadcrumb-item active" aria-current="page">{{ post.title }}</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				<div class="row">
+					<div class="col-12 col-lg-8">
+						<div class="block post post--layout--classic">
+							<div class="post__header post-header post-header--layout--classic">
+								<div class="post-header__categories"><a href="#">آخرین اخبار</a></div>
+								<h1 class="post-header__title">{{ post.title }}</h1>
+								<div class="post-header__meta">
+									<div class="post-header__meta-item">توسط جان اسنو</div>
+									<div class="post-header__meta-item">{{ post.published_date| naturaltime }}</div>
+									<div class="post-header__meta-item"><a href="#">4 دیدگاه</a></div>
+								</div>
+							</div>
+							<div class="post__featured">
+								<a href="#"><img src="{{ post.pic.url }}" class="img-responsive" /></a>
+							</div>
+							<div class="post__content typography">
+								{{ post.body }}
+							</div>
+							<div class="post__footer">
+								<div class="post__tags-share-links">
+									<div class="post__tags tags">
+										<div class="tags__list"><a href="#">ترفیع</a> <a href="#">ابزار برقی</a> <a href="#">آچار</a> <a href="#">الکترود</a></div>
+									</div>
+									<div class="post__share-links share-links">
+										<ul class="share-links__list">
+											<li class="share-links__item share-links__item--type--like"><a href="#">لایک</a></li>
+											<li class="share-links__item share-links__item--type--tweet"><a href="#">توییت</a></li>
+											<li class="share-links__item share-links__item--type--pin"><a href="#">پین کردن</a></li>
+											<li class="share-links__item share-links__item--type--counter"><a href="#">4K</a></li>
+										</ul>
+									</div>
+								</div>
+								<div class="post-author">
+									<div class="post-author__avatar">
+										<a href="#"><img src="images/avatars/avatar-1.jpg" alt=""></a>
+									</div>
+									<div class="post-author__info">
+										<div class="post-author__name"><a href="#">جان اسنو</a></div>
+										<div class="post-author__about">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی</div>
+									</div>
+								</div>
+							</div>
+							<section class="post__section">
+								<h4 class="post__section-title">مطالب مرتبط</h4>
+								<div class="related-posts">
+									<div class="related-posts__list">
+										<div class="related-posts__item post-card post-card--layout--related">
+											<div class="post-card__image">
+												<a href="#"><img src="images/posts/post-1.jpg" alt=""></a>
+											</div>
+											<div class="post-card__info">
+												<div class="post-card__name"><a href="#">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت</a></div>
+												<div class="post-card__date">19 اردیبهشت 1398</div>
+											</div>
+										</div>
+										<div class="related-posts__item post-card post-card--layout--related">
+											<div class="post-card__image">
+												<a href="#"><img src="images/posts/post-2.jpg" alt=""></a>
+											</div>
+											<div class="post-card__info">
+												<div class="post-card__name"><a href="#">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت</a></div>
+												<div class="post-card__date">5 فروردین 1398</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</section>
+							<section class="post__section">
+								<h4 class="post__section-title">دیدگاه ها (4)</h4>
+								<ol class="comments-list comments-list--level--0">
+									<li class="comments-list__item">
+										<div class="comment">
+											<div class="comment__avatar">
+												<a href="#"><img src="images/avatars/avatar-1.jpg" alt=""></a>
+											</div>
+											<div class="comment__content">
+												<div class="comment__header">
+													<div class="comment__author"><a href="#">جان اسنو</a></div>
+													<div class="comment__reply">
+														<button type="button" class="btn btn-xs btn-light">پاسخ</button>
+													</div>
+												</div>
+												<div class="comment__text">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در</div>
+												<div class="comment__date">30 اردیبهشت 1398</div>
+											</div>
+										</div>
+										<div class="comment-list__children">
+											<ol class="comments-list comments-list--level--1">
+												<li class="comments-list__item">
+													<div class="comment">
+														<div class="comment__avatar">
+															<a href="#"><img src="images/avatars/avatar-2.jpg" alt=""></a>
+														</div>
+														<div class="comment__content">
+															<div class="comment__header">
+																<div class="comment__author"><a href="#">تونی استارک</a></div>
+																<div class="comment__reply">
+																	<button type="button" class="btn btn-xs btn-light">پاسخ</button>
+																</div>
+															</div>
+															<div class="comment__text">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز</div>
+															<div class="comment__date">4 فروردین 1398</div>
+														</div>
+													</div>
+												</li>
+												<li class="comments-list__item">
+													<div class="comment">
+														<div class="comment__avatar">
+															<a href="#"><img src="images/avatars/avatar-3.jpg" alt=""></a>
+														</div>
+														<div class="comment__content">
+															<div class="comment__header">
+																<div class="comment__author"><a href="#">استیو راجرز</a></div>
+																<div class="comment__reply">
+																	<button type="button" class="btn btn-xs btn-light">پاسخ</button>
+																</div>
+															</div>
+															<div class="comment__text">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی</div>
+															<div class="comment__date">12 اسفند 1397</div>
+														</div>
+													</div>
+												</li>
+											</ol>
+										</div>
+									</li>
+									<li class="comments-list__item">
+										<div class="comment">
+											<div class="comment__avatar">
+												<a href="#"><img src="images/avatars/avatar-4.jpg" alt=""></a>
+											</div>
+											<div class="comment__content">
+												<div class="comment__header">
+													<div class="comment__author"><a href="#">اولیور کوئین</a></div>
+													<div class="comment__reply">
+														<button type="button" class="btn btn-xs btn-light">پاسخ</button>
+													</div>
+												</div>
+												<div class="comment__text">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</div>
+												<div class="comment__date">5 بهمن 1397</div>
+											</div>
+										</div>
+									</li>
+								</ol>
+							</section>
+							<section class="post__section">
+								<h4 class="post__section-title">یک دیدگاه بنویسید</h4>
+								<form>
+									<div class="form-row">
+										<div class="form-group col-md-4">
+											<label for="comment-first-name">نام</label>
+											<input type="text" class="form-control" id="comment-first-name" placeholder="نام">
+										</div>
+										<div class="form-group col-md-4">
+											<label for="comment-last-name">نام خانوادگی</label>
+											<input type="text" class="form-control" id="comment-last-name" placeholder="نام خانوادگی">
+										</div>
+										<div class="form-group col-md-4">
+											<label for="comment-email">آدرس ایمیل</label>
+											<input type="email" class="form-control" id="comment-email" placeholder="آدرس ایمیل" dir="ltr">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="comment-content">دیدگاه</label>
+										<textarea class="form-control" id="comment-content" rows="6"></textarea>
+									</div>
+									<div class="form-group mt-4">
+										<button type="submit" class="btn btn-primary btn-lg">ارسال دیدگاه</button>
+									</div>
+								</form>
+							</section>
+						</div>
+					</div>
+					<div class="col-12 col-lg-4">
+						<div class="block block-sidebar block-sidebar--position--end">
+							<div class="block-sidebar__item">
+								<div class="widget-search">
+									<form class="widget-search__body">
+										<input class="widget-search__input" placeholder="جستجوی بلاگ ..." type="text" autocomplete="off" spellcheck="false">
+										<button class="widget-search__button" type="submit">
+											<svg width="20px" height="20px">
+												<use xlink:href="{% static 'images/sprite.svg' %}#search-20"></use>
+											</svg>
+										</button>
+									</form>
+								</div>
+							</div>
+							<div class="block-sidebar__item">
+								<div class="widget-aboutus widget">
+									<h4 class="widget__title">درباره بلاگ</h4>
+									<div class="widget-aboutus__text">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی</div>
+									<div class="widget-aboutus__socials">
+										<ul>
+											<li><a class="widget-aboutus__link widget-aboutus__link--rss" href="#" target="_blank"><i class="widget-social__icon fas fa-rss"></i></a></li>
+											<li><a class="widget-aboutus__link widget-aboutus__link--youtube" href="#" target="_blank"><i class="widget-aboutus__icon fab fa-youtube"></i></a></li>
+											<li><a class="widget-aboutus__link widget-aboutus__link--facebook" href="#" target="_blank"><i class="widget-aboutus__icon fab fa-facebook-f"></i></a></li>
+											<li><a class="widget-aboutus__link widget-aboutus__link--twitter" href="#" target="_blank"><i class="widget-aboutus__icon fab fa-twitter"></i></a></li>
+											<li><a class="widget-aboutus__link widget-aboutus__link--instagram" href="#" target="_blank"><i class="widget-aboutus__icon fab fa-instagram"></i></a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="block-sidebar__item">
+								<div class="widget-categories widget-categories--location--blog widget">
+									<h4 class="widget__title">دسته ها</h4>
+									<ul class="widget-categories__list" data-collapse data-collapse-opened-class="widget-categories__item--open">
+										<li class="widget-categories__item" data-collapse-item>
+											<div class="widget-categories__row">
+												<a href="#">
+													<svg class="widget-categories__arrow" width="6px" height="9px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+													</svg> آخرین اخبار</a>
+											</div>
+										</li>
+										<li class="widget-categories__item" data-collapse-item>
+											<div class="widget-categories__row">
+												<a href="#">
+													<svg class="widget-categories__arrow" width="6px" height="9px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+													</svg> پیشنهادهای ویژه </a>
+												<button class="widget-categories__expander" type="button" data-collapse-trigger></button>
+											</div>
+											<div class="widget-categories__subs" data-collapse-content>
+												<ul>
+													<li><a href="#">فروش های بهاره</a></li>
+													<li><a href="#">فروش های تابستانی</a></li>
+													<li><a href="#">فروش های پاییزی</a></li>
+													<li><a href="#">فروش های زمستانی</a></li>
+													<li><a href="#">سایر فروش ها</a></li>
+												</ul>
+											</div>
+										</li>
+										<li class="widget-categories__item" data-collapse-item>
+											<div class="widget-categories__row">
+												<a href="#">
+													<svg class="widget-categories__arrow" width="6px" height="9px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+													</svg> محصولات جدید</a>
+											</div>
+										</li>
+										<li class="widget-categories__item" data-collapse-item>
+											<div class="widget-categories__row">
+												<a href="#">
+													<svg class="widget-categories__arrow" width="6px" height="9px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+													</svg> نقد و بررسی ها</a>
+											</div>
+										</li>
+										<li class="widget-categories__item" data-collapse-item>
+											<div class="widget-categories__row">
+												<a href="#">
+													<svg class="widget-categories__arrow" width="6px" height="9px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+													</svg> دریل ها و مخلوط کن ها</a>
+											</div>
+										</li>
+										<li class="widget-categories__item" data-collapse-item>
+											<div class="widget-categories__row">
+												<a href="#">
+													<svg class="widget-categories__arrow" width="6px" height="9px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+													</svg> پیچ گوشتی برقی</a>
+											</div>
+										</li>
+										<li class="widget-categories__item" data-collapse-item>
+											<div class="widget-categories__row">
+												<a href="#">
+													<svg class="widget-categories__arrow" width="6px" height="9px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+													</svg> پیچ گوشتی ها</a>
+											</div>
+										</li>
+										<li class="widget-categories__item" data-collapse-item>
+											<div class="widget-categories__row">
+												<a href="#">
+													<svg class="widget-categories__arrow" width="6px" height="9px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+													</svg> آچار ها</a>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="block-sidebar__item">
+								<div class="widget-posts widget">
+									<h4 class="widget__title">آخرین مطالب</h4>
+									<div class="widget-posts__list">
+										{% for p in latest_posts_list %}
+										{% if  forloop.counter <= 3 %}
+										<div class="widget-posts__item">
+											<div class="widget-posts__image">
+												<a href="{% url 'PostDetailView' p.slug %}"><img src="{{ p.pic.url }}" alt=""></a>
+											</div>
+											<div class="widget-posts__info">
+												<div class="widget-posts__name"><a href="{% url 'PostDetailView' p.slug %}">{{ p.title }}</a></div>
+												<div class="widget-posts__date">{{ p.published_date|naturaltime }}</div>
+											</div>
+										</div>
+										{% endif %}
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+							<div class="block-sidebar__item">
+								<div class="widget-newsletter widget">
+									<h4 class="widget-newsletter__title">خبرنامه</h4>
+									<div class="widget-newsletter__text">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان</div>
+									<form class="widget-newsletter__form" action="#">
+										<label for="widget-newsletter-email" class="sr-only">آدرس ایمیل</label>
+										<input id="widget-newsletter-email" type="text" class="form-control" placeholder="آدرس ایمیل" dir="ltr">
+										<button type="submit" class="btn btn-primary mt-3">اشتراک</button>
+									</form>
+								</div>
+							</div>
+							<div class="block-sidebar__item">
+								<div class="widget-comments widget">
+									<h4 class="widget__title">آخرین دیدگاه ها</h4>
+									<ul class="widget-comments__list">
+										<li class="widget-comments__item">
+											<div class="widget-comments__author"><a href="#">امیلیا کلارک</a></div>
+											<div class="widget-comments__content">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه</div>
+											<div class="widget-comments__meta">
+												<div class="widget-comments__date">3 دقیقه پیش</div>
+												<div class="widget-comments__name">در <a href="#" title="Nullam at varius sapien sed sit amet condimentum elit">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت</a></div>
+											</div>
+										</li>
+										<li class="widget-comments__item">
+											<div class="widget-comments__author"><a href="#">تونی استارک</a></div>
+											<div class="widget-comments__content">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه</div>
+											<div class="widget-comments__meta">
+												<div class="widget-comments__date">25 دقیقه پیش</div>
+												<div class="widget-comments__name">در <a href="#" title="Integer efficitur efficitur velit non pulvinar pellentesque dictum viverra">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان</a></div>
+											</div>
+										</li>
+										<li class="widget-comments__item">
+											<div class="widget-comments__author"><a href="#">اولیور کوئین</a></div>
+											<div class="widget-comments__content">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه</div>
+											<div class="widget-comments__meta">
+												<div class="widget-comments__date">2 ساعت پیش</div>
+												<div class="widget-comments__name">در <a href="#" title="Curabitur quam augue vestibulum in mauris fermentum pellentesque libero">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</a></div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="block-sidebar__item">
+								<div class="widget-tags widget">
+									<h4 class="widget__title">ابر برچسب ها</h4>
+									<div class="tags tags--lg">
+										<div class="tags__list"><a href="#">ترفیع</a> <a href="#">ابزار برقی</a> <a href="#">محصولات جدید</a> <a href="#">پیچ گوشتی</a> <a href="#">آچار</a> <a href="#">پایه</a> <a href="#">الکترود</a> <a href="#">اره برقی</a> <a href="#">مانومتر</a> <a href="#">میخ</a> <a href="#">تفنگ بادی</a> <a href="#">دیسک برش</a></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- site__body / end -->
+
+{% endblock %}

@@ -1,0 +1,465 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}{{block.super}} دسته بندی {% endblock %}
+
+{% block body %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'index' %}">خانه</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								
+								{% if cate %}
+								<li class="breadcrumb-item active" aria-current="page" ><a href={% url 'CategoryListView' cate.slug %}>{{ cate.name }}</a></li>
+								{% elif brand %}
+    							<li class="breadcrumb-item active" aria-current="page" ><a href={% url 'BrandListView' brand.slug %}>{{ brand.name }}</a></li>
+    							{% else %}
+								{% endif %}
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title">
+						<h1>
+						{% if cate %}
+							{{ cate.name }}
+						{% else %}
+							{{ brand.name }}
+						{% endif %}
+						</h1>
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				<div class="shop-layout shop-layout--sidebar--start">
+					<div class="shop-layout__sidebar">
+						<div class="block block-sidebar">
+							<div class="block-sidebar__item">
+								<div class="widget-filters widget" data-collapse data-collapse-opened-class="filter--opened">
+									<h4 class="widget__title">فیلتر ها</h4>
+									<div class="widget-filters__list">
+										<div class="widget-filters__item">
+											<div class="filter filter--opened" data-collapse-item>
+												<button type="button" class="filter__title" data-collapse-trigger>دسته ها
+													<svg class="filter__arrow" width="12px" height="7px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-down-12x7"></use>
+													</svg>
+												</button>
+												<div class="filter__body" data-collapse-content>
+													<div class="filter__container">
+														<div class="filter-categories">
+															
+															<ul class="filter-categories__list">
+																{% if cate %}
+																
+																<li class="filter-categories__item filter-categories__item--parent">
+																	<svg class="filter-categories__arrow" width="6px" height="9px">
+																		<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-left-6x9"></use>
+																	</svg> <a href="{% url 'CategoryListView' cate.slug %}">{{ category.name }}</a>
+																	<div class="filter-categories__counter">254</div>
+																</li>
+																
+																{% endif %}
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="widget-filters__item">
+											<div class="filter filter--opened" data-collapse-item>
+												<button type="button" class="filter__title" data-collapse-trigger>قیمت
+													<svg class="filter__arrow" width="12px" height="7px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-down-12x7"></use>
+													</svg>
+												</button>
+												<div class="filter__body" data-collapse-content>
+													<div class="filter__container">
+														<div class="filter-price" data-min="5000" data-max="500000000" data-from="25000" data-to="110000">
+															<div class="filter-price__slider"></div>
+															<div class="filter-price__title"><span class="filter-price__min-value"></span> تومان - <span class="filter-price__max-value"></span> تومان</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="widget-filters__item">
+											<div class="filter filter--opened" data-collapse-item>
+												<button type="button" class="filter__title" data-collapse-trigger>برند
+													<svg class="filter__arrow" width="12px" height="7px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-down-12x7"></use>
+													</svg>
+												</button>
+												<div class="filter__body" data-collapse-content>
+													<div class="filter__container">
+														<div class="filter-list">
+															<div class="filter-list__list">
+																<label class="filter-list__item"><span class="filter-list__input input-check"><span class="input-check__body"><input class="input-check__input" type="checkbox"> <span class="input-check__box"></span>
+																	<svg class="input-check__icon" width="9px" height="7px">
+																		<use xlink:href="{% static 'images/sprite.svg' %}#check-9x7"></use>
+																	</svg>
+																	</span>
+																</span>
+																{% for b in brands %}
+																<span class="filter-list__title">
+																	<li><a href="{% if cate %}{% url 'BrandCategory' cate.slug b.slug %}{% else %}{% url 'BrandListView' b.slug %}{% endif %}">{{ b.name }}</a></li>
+																</span><span class="filter-list__counter">7</span></label>
+																<label class="filter-list__item"><span class="filter-list__input input-check"><span class="input-check__body"><input class="input-check__input" type="checkbox" checked> <span class="input-check__box"></span>
+																	<svg class="input-check__icon" width="9px" height="7px">
+																		<use xlink:href="{% static 'images/sprite.svg' %}#check-9x7"></use>
+																	</svg>
+																	</span>
+																	</span>
+																{% endfor %}	
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>							
+										<div class="widget-filters__item">
+											<div class="filter filter--opened" data-collapse-item>
+												<button type="button" class="filter__title" data-collapse-trigger>رنگ
+													<svg class="filter__arrow" width="12px" height="7px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-down-12x7"></use>
+													</svg>
+												</button>
+												<div class="filter__body" data-collapse-content>
+													<div class="filter__container">
+														<div class="filter-color">
+															<div class="filter-color__list">
+																{% for i in colors %}
+																<label class="filter-color__item"><span class="filter-color__check input-check-color" style="color: {{ i.name }};"><label class="input-check-color__body"><input class="input-check-color__input" type="checkbox"> <span class="input-check-color__box"></span>
+																	<svg class="input-check-color__icon" width="12px" height="9px">
+																		<use xlink:href="{% static 'images/sprite.svg' %}#check-12x9"></use>
+																	</svg> <span class="input-check-color__stick"></span></label>
+																</span>
+																</label>
+																{% endfor %}
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="widget-filters__actions d-flex">
+										<button class="btn btn-primary btn-sm">فیلتر</button>
+										<button class="btn btn-secondary btn-sm">بازنشانی</button>
+									</div>
+								</div>
+							</div>
+							<div class="block-sidebar__item d-none d-lg-block">
+								<div class="widget-products widget">
+									<h4 class="widget__title">محصولات جدید</h4>
+									<div class="widget-products__list">
+										{% for k in kalas %}
+										{% if  forloop.counter <= 4 %}
+										<div class="widget-products__item">
+											<div class="widget-products__image">
+												<a href="{% url 'KalaDetailView' k.slug %}">
+													<img src='{{ k.pic0.url }}' alt='{{ k.name }}' title='{{ k.name }}' class="img-responsive" />
+												</a>
+											</div>
+											<div class="widget-products__info">
+												<div class="widget-products__name"><a href="{% url 'KalaDetailView' k.slug %}">{{ k.name }}</a></div>
+												{% for i in k.kalainstance.all %}
+												<div class="product-card__prices">{% if i.off == 0 %}<span class="new-price">{{ i.new_price }}</span>{% else %}<span class="product-card__new-price">{{ i.new_price }} تومان</span>{% endif %}{% if i.off == 0 %}{% else %}<span  class="product-card__old-price">{{ i.price }} تومان</span>{% endif %}</div>
+												{% endfor %}
+											</div>
+										</div>
+										{% endif %}
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="shop-layout__content">
+						<div class="block">
+							<div class="products-view">
+								<div class="products-view__options">
+									<div class="view-options">
+										<div class="view-options__layout">
+											<div class="layout-switcher">
+												<div class="layout-switcher__list">
+													<button data-layout="grid-3-sidebar" data-with-features="false" title="Grid" type="button" class="layout-switcher__button layout-switcher__button--active">
+														<svg width="16px" height="16px">
+															<use xlink:href="{% static 'images/sprite.svg' %}#layout-grid-16x16"></use>
+														</svg>
+													</button>
+													<button data-layout="grid-3-sidebar" data-with-features="true" title="Grid With Features" type="button" class="layout-switcher__button">
+														<svg width="16px" height="16px">
+															<use xlink:href="{% static 'images/sprite.svg' %}#layout-grid-with-details-16x16"></use>
+														</svg>
+													</button>
+													<button data-layout="list" data-with-features="false" title="List" type="button" class="layout-switcher__button">
+														<svg width="16px" height="16px">
+															<use xlink:href="{% static 'images/sprite.svg' %}#layout-list-16x16"></use>
+														</svg>
+													</button>
+												</div>
+											</div>
+										</div>
+										<div class="view-options__legend">در حال نمایش 6 از 98 محصول</div>
+										<div class="view-options__divider"></div>
+										<div class="view-options__control">
+											<label for="">مرتب‌سازی بر اساس</label>
+											<div>
+												<select class="form-control form-control-sm" name="" id="">
+													<option value="">پیش فرض</option>
+													<option value="">نام (صعودی)</option>
+												</select>
+											</div>
+										</div>
+										<div class="view-options__control">
+											<label for="">نمایش</label>
+											<div>
+												<select class="form-control form-control-sm" name="" id="">
+													<option value="">12</option>
+													<option value="">24</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="products-view__list products-list" data-layout="grid-3-sidebar" data-with-features="false">
+									<div class="products-list__body">
+										{% for k in kalas %}
+										<div class="products-list__item">
+											<div class="product-card">
+												<button class="product-card__quickview" type="button">
+													<svg width="16px" height="16px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#quickview-16"></use>
+													</svg> <span class="fake-svg-icon"></span></button>
+												<div class="product-card__badges-list">
+													<div class="product-card__badge product-card__badge--new">جدید</div>
+												</div>
+												<div class="product-card__image">
+													<a href="{% url 'KalaDetailView' k.slug %}"><img src='{{ k.pic0.url }}' alt='{{ k.name }}' title='{{ k.name }}' class="img-responsive" /></a>
+												</div>
+												<div class="product-card__info">
+													<div class="product-card__name"><a href="{% url 'KalaDetailView' k.slug %}"> {{ k.name }} </a></div>
+													<div class="product-card__rating">
+														<div class="rating">
+															<div class="rating__body">
+																<svg class="rating__star rating__star--active" width="13px" height="12px">
+																	<g class="rating__fill">
+																		<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+																	</g>
+																	<g class="rating__stroke">
+																		<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+																	</g>
+																</svg>
+																<div class="rating__star rating__star--only-edge rating__star--active">
+																	<div class="rating__fill">
+																		<div class="fake-svg-icon"></div>
+																	</div>
+																	<div class="rating__stroke">
+																		<div class="fake-svg-icon"></div>
+																	</div>
+																</div>
+																<svg class="rating__star rating__star--active" width="13px" height="12px">
+																	<g class="rating__fill">
+																		<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+																	</g>
+																	<g class="rating__stroke">
+																		<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+																	</g>
+																</svg>
+																<div class="rating__star rating__star--only-edge rating__star--active">
+																	<div class="rating__fill">
+																		<div class="fake-svg-icon"></div>
+																	</div>
+																	<div class="rating__stroke">
+																		<div class="fake-svg-icon"></div>
+																	</div>
+																</div>
+																<svg class="rating__star rating__star--active" width="13px" height="12px">
+																	<g class="rating__fill">
+																		<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+																	</g>
+																	<g class="rating__stroke">
+																		<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+																	</g>
+																</svg>
+																<div class="rating__star rating__star--only-edge rating__star--active">
+																	<div class="rating__fill">
+																		<div class="fake-svg-icon"></div>
+																	</div>
+																	<div class="rating__stroke">
+																		<div class="fake-svg-icon"></div>
+																	</div>
+																</div>
+																<svg class="rating__star rating__star--active" width="13px" height="12px">
+																	<g class="rating__fill">
+																		<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+																	</g>
+																	<g class="rating__stroke">
+																		<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+																	</g>
+																</svg>
+																<div class="rating__star rating__star--only-edge rating__star--active">
+																	<div class="rating__fill">
+																		<div class="fake-svg-icon"></div>
+																	</div>
+																	<div class="rating__stroke">
+																		<div class="fake-svg-icon"></div>
+																	</div>
+																</div>
+																<svg class="rating__star" width="13px" height="12px">
+																	<g class="rating__fill">
+																		<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+																	</g>
+																	<g class="rating__stroke">
+																		<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+																	</g>
+																</svg>
+																<div class="rating__star rating__star--only-edge">
+																	<div class="rating__fill">
+																		<div class="fake-svg-icon"></div>
+																	</div>
+																	<div class="rating__stroke">
+																		<div class="fake-svg-icon"></div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="product-card__rating-legend">9 نقد و بررسی</div>
+													</div>
+													<ul class="product-card__features-list">
+														
+														<label>
+															{% for size in k.size.all %}
+															<input type="text" name="Size" value="{{ size.id }}"> <span>{{ k.productsize_id }}</span>
+															{% endfor %}
+														</label>
+														<label>
+															{% for color in k.color.all %}
+															<input type="text" name="Color" value="{{ color.id }}"> <span>{{ k.color.name }}</span>
+															{% endfor %}
+														</label>
+														<label>
+															{% for material in k.material.all %}
+															<input type="text" name="Material" value="{{ material.id }}"> <span>{{ k.material.name }}</span>
+															{% endfor %}
+														</label>
+														<label>
+															{% for saller in k.kalainstance.all %}
+															<input type="text" name="Saller" value="{{ saller.id }}"> <span>{{ saller.name }}</span>
+															{% endfor %}
+														
+														<li>ولتاژ: 20 ولت</li>
+														<li>ظرفیت باتری: 2 ساعت</li>
+														
+													</ul>
+												</div>
+												<div class="product-card__actions">
+													{% for i in k.kalainstance.all %}
+													{% if i.instock == 0 %}
+													{% else %}
+													<div class="product-card__prices">
+														
+														{% if i.off == 0 %}<span class="new-price">{{ i.new_price }}</span>{% else %}<span class="product-card__new-price">{{ i.new_price }} تومان</span>{% endif %}{% if i.off == 0 %}{% else %}<span  class="product-card__old-price">{{ i.price }} تومان</span>{% endif %}
+													</div>
+													{% endif %}
+													{% endfor %}
+
+													<div class="product-card__buttons">
+														{% if user.is_authenticated %}
+														
+														{% for stok in k.kalainstance.all %}
+														{% if stok.instock != 0 %}
+															<button class="btn btn-primary product-card__addtocart" type="submit" id="button-cart" name='addCart'>افزودن به سبد</button>
+														{% else %}
+															<button type="submit" class="btn btn-danger btn-lg" disabled>ناموجود</button>
+														{% endif %}
+														{% endfor %}
+														
+													{% else %}
+														<a href={% url 'login' %}> <button type="button" id="Login" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
+													{% endif %}
+
+													<input type='hidden'  name='kala' value="{{ k.id }}" >
+													<button type="submit"  class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist" name="addWishlist" >
+														<svg width="16px" height="16px">
+															<use xlink:href="{% static 'images/sprite.svg' %}#wishlist-16"></use>
+														</svg> <span class="fake-svg-icon fake-svg-icon--wishlist-16"></span></button>
+														
+														<input type='hidden'  name='kala' value="{{ k.id }}" >
+														<button  type="submit"  class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__compare"  name="addCompare" >
+															<svg width="16px" height="16px">
+																<use xlink:href="{% static 'images/sprite.svg' %}#compare-16"></use>
+															</svg> <span class="fake-svg-icon fake-svg-icon--compare-16"></span></button>
+													</div>
+												</div>
+											</div>
+										</div>
+										{% endfor %}		
+									</div>	
+								</div>
+								<div class="products-view__pagination">
+									{% if is_paginated %}
+									<ul class="pagination justify-content-center">
+										
+										{% if page_obj.has_previous %}
+										<li class="page-item">
+											<a class="page-link page-link--with-arrow" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+												<svg class="page-link__arrow page-link__arrow--left" aria-hidden="true" width="8px" height="13px">
+													<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-left-8x13"></use>
+												</svg>
+											</a>
+											{% else %}
+											<li class="page-item disabled">
+												<a class="page-link page-link--with-arrow" href="#" aria-label="Previous">
+													<svg class="page-link__arrow page-link__arrow--left" aria-hidden="true" width="8px" height="13px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-left-8x13"></use>
+													</svg>
+												</a>
+											{% endif %}
+											</li>
+										</li>
+										{% for i in paginator.page_range %}
+      									{% if page_obj.number == i %} 
+										<li class="page-item active"><a class="page-link" href="#">{{ i }} <span class="sr-only">(کنونی)</span></a></li>
+										{% else %}
+										<li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+										{% endif %}
+										{% endfor %}
+										{% if page_obj.has_next %}
+										<li class="page-item">
+											<a class="page-link page-link--with-arrow" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+												<svg class="page-link__arrow page-link__arrow--right" aria-hidden="true" width="8px" height="13px">
+													<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-8x13"></use>
+												</svg>
+											</a>
+										</li>
+										{% else %}
+										<li class="page-item disabled">
+											<a class="page-link page-link--with-arrow" href="#" aria-label="Next">
+												<svg class="page-link__arrow page-link__arrow--right" aria-hidden="true" width="8px" height="13px">
+													<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-8x13"></use>
+												</svg>
+											</a>
+										</li>
+										{% endif %}
+									</ul>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- site__body / end -->
+
+
+{% endblock %}	

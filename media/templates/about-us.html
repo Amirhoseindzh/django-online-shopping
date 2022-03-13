@@ -1,0 +1,50 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block body %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="block about-us">
+				<div class="about-us__image"></div>
+				<div class="container">
+					<div class="row justify-content-center">
+						<div class="col-12 col-xl-10">
+							<div class="about-us__body">
+								<h1 class="about-us__title">درباره ما</h1>
+								<div class="about-us__text typography">
+									<p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای</p>
+									<p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی</p>
+								</div>
+								<div class="about-us__team">
+									<h2 class="about-us__team-title">با تیم ما آشنا شوید</h2>
+									<div class="about-us__team-subtitle text-muted">آیا میخواهید در تیم دوستانه ما کار کنید؟
+										<br><a href="{% url 'contact-us' %}">تماس با ما</a> لورم ایپسوم متن ساختگی با تولید سادگی</div>
+									<div class="about-us__teammates teammates">
+										<div class="owl-carousel">
+											<div class="teammates__item teammate">
+												<div class="teammate__avatar"><img src='{% static "images/teammates/teammate-1.jpg" %}' alt=""></div>
+												<div class="teammate__name">بیل گیتس</div>
+												<div class="teammate__position text-muted">مدیر اجرایی</div>
+											</div>
+											<div class="teammates__item teammate">
+												<div class="teammate__avatar"><img src="{% static 'images/teammates/teammate-2.jpg' %}" alt=""></div>
+												<div class="teammate__name">استیو جابز</div>
+												<div class="teammate__position text-muted">مدیر بازاریابی</div>
+											</div>
+											<div class="teammates__item teammate">
+												<div class="teammate__avatar"><img src="{% static 'images/teammates/teammate-3.jpg' %}" alt=""></div>
+												<div class="teammate__name">تونی استارک</div>
+												<div class="teammate__position text-muted">مدیر مالی</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- site__body / end -->
+{% endblock %}
+		

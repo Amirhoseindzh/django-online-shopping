@@ -1,0 +1,85 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+{% block body %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="block-map block">
+				<div class="block-map__body">
+					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d207373.42908741214!2d51.32200196465098!3d35.69645374990931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8e00491ff3dcd9%3A0xf0b3697c567024bc!2sTehran%2C%20Tehran%20Province%2C%20Iran!5e0!3m2!1sen!2s!4v1639590566598!5m2!1sen!2s" width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+				</div>
+			</div>
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'index' %}">خانه</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								
+								<li class="breadcrumb-item active" aria-current="page">تماس با ما</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title">
+						<h1>تماس با ما</h1></div>
+				</div>
+			</div>
+			<div class="block">
+				<div class="container">
+					<div class="card mb-0">
+						<div class="card-body contact-us">
+							<div class="contact-us__container">
+								<div class="row">
+									<div class="col-12 col-lg-6 pb-4 pb-lg-0">
+										<h4 class="contact-us__header card-title">آدرس ما</h4>
+										<div class="contact-us__address">
+											<p>شبکه های اجتماعی :
+												<br><a href="https://www.linkedin.com/in/amirhossein-d-9729b2193" class="link"><h3>Linkedin</h3></a>
+												<a href="https://github.com/Amirhoseindzh" class="link"><h3>Github</h3></a>
+												
+											<p><strong>ساعات کاری</strong>
+												<br>شنبه تا چهارشنبه: 8 صبح - 8 شب
+												
+											<p><strong>دیدگاه</strong>
+												<br>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی</p>
+										</div>
+									</div>
+									<div class="col-12 col-lg-6">
+										<h4 class="contact-us__header card-title">یک پیام برای ما بگذارید</h4>
+										<form>
+											<div class="form-row">
+												<div class="form-group col-md-6">
+													<label for="form-name">نام شما</label>
+													<input type="text" id="form-name" class="form-control" placeholder="نام شما">
+												</div>
+												<div class="form-group col-md-6">
+													<label for="form-email">ایمیل</label>
+													<input type="email" id="form-email" class="form-control" placeholder="آدرس ایمیل" dir="ltr">
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="form-subject">موضوع</label>
+												<input type="text" id="form-subject" class="form-control" placeholder="موضوع">
+											</div>
+											<div class="form-group">
+												<label for="form-message">پیام</label>
+												<textarea id="form-message" class="form-control" rows="4"></textarea>
+											</div>
+											<button type="submit" class="btn btn-primary">ارسال پیام</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- site__body / end -->
+{% endblock %}
+		

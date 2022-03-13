@@ -1,0 +1,118 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title%}{{ block.super }} داشبورد {% endblock %}
+
+
+{% block body %}
+{% if user.is_authenticated %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'index' %}">خانه</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								
+								<li class="breadcrumb-item active" aria-current="page">حساب کاربری</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title">
+						<h1>حساب کاربری</h1></div>
+				</div>
+			</div>
+			<div class="block">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 col-lg-3 d-flex">
+							<div class="account-nav flex-grow-1">
+								<h4 class="account-nav__title">ناوبری</h4>
+								<ul>
+									<li class="account-nav__item account-nav__item--active"><a href="{% url 'dashboard' %}">داشبورد</a></li>
+									<li class="account-nav__item"><a href="{% url 'profile' %}">ویرایش پروفایل</a></li>
+									<li class="account-nav__item"><a href="{% url 'orders' %}">سابقه خرید</a></li>
+									<li class="account-nav__item"><a href="{% url 'addresses' %}">آدرس ها</a></li>
+									<li class="account-nav__item"><a href="{% url 'change-password' %}">رمز عبور</a></li>
+									
+									<li class="account-nav__item"><a href="{% url 'logout'%}">خروج</a></li>
+									
+								</ul>
+							</div>
+						</div>
+						<div class="col-12 col-lg-9 mt-4 mt-lg-0">
+							<div class="dashboard">
+								<div class="dashboard__profile card profile-card">
+									<div class="card-body profile-card__body">
+										<div class="profile-card__avatar"><img src="{{ user.avatar.url }}" alt=""></div>
+										<div class="profile-card__name">{{user.first_name}} {{user.last_name}}</div>
+										<div class="profile-card__email">{{user.email}}</div>
+										<div class="profile-card__edit"><a href="{% url 'profile' %}" class="btn btn-secondary btn-sm">ویرایش پروفایل</a></div>
+									</div>
+								</div>
+								<div class="dashboard__address card address-card address-card--featured">
+									<div class="address-card__badge">آدرس پیشفرض</div>
+									<div class="address-card__body">
+										<div class="address-card__name">{{user.first_name}} {{user.last_name}}</div>
+										<div class="address-card__row">{{user.address}}</div>
+										<div class="address-card__row">
+											<div class="address-card__row-title">شماره تلفن</div>
+											<div class="address-card__row-content"><span class="ltr_text">{{user.phone}}</span></div>
+										</div>
+										<div class="address-card__row">
+											<div class="address-card__row-title">آدرس ایمیل</div>
+											<div class="address-card__row-content">{{user.email}}</div>
+										</div>
+										<div class="address-card__footer"><a href="{% url 'profile' %}">ویرایش آدرس</a></div>
+									</div>
+								</div>
+								<div class="dashboard__orders card">
+									<div class="card-header">
+										<h5>سفارشات اخیر</h5></div>
+									<div class="card-divider"></div>
+									<div class="card-table">
+										<div class="table-responsive-sm">
+											<table>
+												<thead>
+													<tr>
+														<th>سفارش</th>
+														<th>نام کالا</th>
+														<th>وضعیت</th>
+														<th>فروشنده</th>
+														<th>تعداد</th>
+														<th>جمع کل</th>
+													</tr>
+												</thead>
+												<tbody>
+													{% for cart in salled %}
+													{% if  forloop.counter < lenSalled %}
+													<tr>
+														<td><a href="#">#{{ cart.id }}</a></td>
+														<td>{{ cart.product }}</td>
+														<td>{{ cart.payed }}</td>
+														<td>{{ cart.saller }}</td>
+														<td>{{ cart.count }}</td>
+														<td>{{ cart.finally_price }}</td>
+													</tr>
+													{% endif %}
+													{% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- site__body / end -->
+{% endif %}
+{% endblock %}
+		

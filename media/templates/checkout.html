@@ -1,0 +1,256 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}{{ block.super }} تسویه حساب {% endblock %}
+
+{% block body %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'index' %}">خانه</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								<li class="breadcrumb-item"><a href={% url 'cart' %}>سبد خرید</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								<li class="breadcrumb-item active" aria-current="page"><a href={% url 'checkout' %}>تسویه</a></li>
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title">
+						<h1>تسویه</h1></div>
+				</div>
+			</div>
+			<form method = 'post'>
+				{% csrf_token %}
+			<div class="checkout block" >
+				<div class="container" >
+					<div class="row" >
+						{% if not user.is_authenticated %}
+						<div class="col-12 mb-3">
+							<div class="alert alert-lg alert-primary">حساب کاربری دارید؟ <a href="{% url 'login' %}">وارد حساب خود شوید</a></div>
+						</div>
+						
+						<div class="col-12 col-lg-6 col-xl-7">
+							<div class="card mb-lg-0">
+								<div class="card-body">
+									<h3 class="card-title">جزئیات پرداخت</h3>
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label for="checkout-first-name">نام</label>
+											<input type="text" class="form-control" id="checkout-first-name" placeholder="نام">
+										</div>
+										<div class="form-group col-md-6">
+											<label for="checkout-last-name">نام خانوادگی</label>
+											<input type="text" class="form-control" id="checkout-last-name" placeholder="نام خانوادگی">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="checkout-company-name">نام شرکت <span class="text-muted">(اختیاری)</span></label>
+										<input type="text" class="form-control" id="checkout-company-name" placeholder="نام شرکت">
+									</div>
+									<div class="form-group">
+										<label for="checkout-country">کشور</label>
+										<select id="checkout-country" class="form-control">
+											<option>یک کشور انتخاب کنید ...</option>
+											<option>ایران</option>
+											<option>ایالات متحده</option>
+											<option>روسیه</option>
+											<option>ایتالیا</option>
+											<option>فرانسه</option>
+											<option>اوکراین</option>
+											<option>آلمان</option>
+											<option>استرالیا</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="checkout-street-address">آدرس خیابان</label>
+										<input type="text" class="form-control" id="checkout-street-address" placeholder="آدرس خیابان">
+									</div>
+									<div class="form-group">
+										<label for="checkout-address">آپارتمان، منزل، اتاق و غیره. <span class="text-muted">(اختیاری)</span></label>
+										<input type="text" class="form-control" id="checkout-address">
+									</div>
+									<div class="form-group">
+										<label for="checkout-city">شهر / شهرستان</label>
+										<input type="text" class="form-control" id="checkout-city">
+									</div>
+									<div class="form-group">
+										<label for="checkout-state">استان</label>
+										<input type="text" class="form-control" id="checkout-state">
+									</div>
+									<div class="form-group">
+										<label for="checkout-postcode">کد پستی</label>
+										<input type="text" class="form-control" id="checkout-postcode">
+									</div>
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label for="checkout-email">آدرس ایمیل</label>
+											<input type="email" class="form-control" id="checkout-email" placeholder="آدرس ایمیل">
+										</div>
+										<div class="form-group col-md-6">
+											<label for="checkout-phone">تلفن</label>
+											<input type="text" class="form-control" id="checkout-phone" placeholder="تلفن">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="form-check"><span class="form-check-input input-check"><span class="input-check__body"><input class="input-check__input" type="checkbox" id="checkout-create-account"> <span class="input-check__box"></span>
+											<svg class="input-check__icon" width="9px" height="7px">
+												<use xlink:href="{% static 'images/sprite.svg' %}#check-9x7"></use>
+											</svg>
+											</span>
+											</span>
+											<label class="form-check-label" for="checkout-create-account">ساخت حساب کاربری؟</label>
+										</div>
+									</div>
+								</div>
+								<div class="card-divider"></div>
+								<div class="card-body">
+									<h3 class="card-title">جزئیات حمل و نقل</h3>
+									<div class="form-group">
+										<div class="form-check"><span class="form-check-input input-check"><span class="input-check__body"><input class="input-check__input" type="checkbox" id="checkout-different-address"> <span class="input-check__box"></span>
+											<svg class="input-check__icon" width="9px" height="7px">
+												<use xlink:href="{% static 'images/sprite.svg' %}#check-9x7"></use>
+											</svg>
+											</span>
+											</span>
+											<label class="form-check-label" for="checkout-different-address">ارسال به آدرسی دیگر؟</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="checkout-comment">توضیحات سفارش <span class="text-muted">(اختیاری)</span></label>
+										<textarea id="checkout-comment" class="form-control" rows="4"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% endif %}
+						<center>
+						<div class="col-12 col-lg-6 col-xl-5 mt-4 mt-lg-0" >
+							<div class="card mb-0" >
+								<div class="card-body">
+									<h3 class="card-title">سفارش شما</h3>
+									<table class="checkout__totals">
+										<thead class="checkout__totals-header">
+											<tr>
+												<th>محصول</th>
+												<th>تعداد</th>
+												<th>قیمت محصول</th>
+												<th>تخفیف</th>
+												<th>جمع کل</th>
+											</tr>
+										</thead>
+										<tbody class="checkout__totals-products">
+											{% for i in carts %}
+											<tr>
+												<td class="text-right"><a href={% url 'KalaDetailView' i.product.slug %}><img style="width: 50px; height: 70px;" src={{ i.product.pic0.url }} alt={{ i.product.name }} title={{ i.product.name }} class="img-thumbnail"></a><br/><a href={% url 'KalaDetailView' i.product.slug %}>{{ i.product.name }}</a></td>
+												<td class="text-right">{{ i.count }}</td>
+												<td class="text-right">{{ i.saller.price }}</td>
+												<td class="text-right"> {% if i.saller.off %}{{ i.saller.off }}{% else %} ندارد {% endif %}</td>
+												<td class="text-right" >{{ i.finally_price }}</td>
+											</tr>
+											
+											{% endfor %}
+										</tbody>
+										
+										<tbody class="checkout__totals-subtotals" >
+											
+											<tr>
+												<th  colspan="4">جمع جزء</th>
+												<td>{{ totalPrice }} تومان</td>
+											</tr>
+											<tr>
+												<th  colspan="4">کپن تخفیف</th>
+												<td>{{ coupon }} تومان</td>
+											</tr>
+											<tr>
+												<th  colspan="4">حمل و نقل</th>
+												<td>{{ sendCost }} تومان</td>
+											</tr>
+											<tr>
+												<th  colspan="4">مالیات</th>
+												<td>{{ tax }} تومان</td>
+											</tr>
+										</tbody>
+										
+										<tfoot class="checkout__totals-footer">
+											<tr>
+												<th  colspan="3">جمع کل</th>
+												<td  colspan="4" >{{ toPay }} تومان</td>
+											</tr>
+										</tfoot>
+										
+									</table>
+										
+									{% for field in form %}
+									<div class="form-group required">
+										<label for="input-payment-lastname" class="control-label">{{ field.label_tag }}</label>
+										{{ field }}
+									</div>
+									{% endfor %}
+									
+									<div class="payment-methods">
+										<ul class="payment-methods__list">
+											<li class="payment-methods__item payment-methods__item--active">
+												<label class="payment-methods__item-header"><span class="payment-methods__item-radio input-radio"><span class="input-radio__body"><input class="input-radio__input" name="checkout_payment_method" type="radio" checked> <span class="input-radio__circle"></span> </span>
+													</span><span class="payment-methods__item-title">فیش بانکی</span></label>
+												<div class="payment-methods__item-container">
+													<div class="payment-methods__item-description text-muted">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی</div>
+												</div>
+											</li>
+											<li class="payment-methods__item">
+												<label class="payment-methods__item-header"><span class="payment-methods__item-radio input-radio"><span class="input-radio__body"><input class="input-radio__input" name="checkout_payment_method" type="radio"> <span class="input-radio__circle"></span> </span>
+													</span><span class="payment-methods__item-title">پرداخت با چک</span></label>
+												<div class="payment-methods__item-container">
+													<div class="payment-methods__item-description text-muted">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها</div>
+												</div>
+											</li>
+											<li class="payment-methods__item">
+												<label class="payment-methods__item-header"><span class="payment-methods__item-radio input-radio"><span class="input-radio__body"><input class="input-radio__input" name="checkout_payment_method" type="radio"> <span class="input-radio__circle"></span> </span>
+													</span><span class="payment-methods__item-title">پرداخت در محل</span></label>
+												<div class="payment-methods__item-container">
+													<div class="payment-methods__item-description text-muted">لورم ایپسوم متن ساختگی با تولید</div>
+												</div>
+											</li>
+											<li class="payment-methods__item">
+												<label class="payment-methods__item-header"><span class="payment-methods__item-radio input-radio"><span class="input-radio__body"><input class="input-radio__input" name="checkout_payment_method" type="radio"> <span class="input-radio__circle"></span> </span>
+													</span><span class="payment-methods__item-title">پرداخت آنلاین</span></label>
+												<div class="payment-methods__item-container">
+													<div class="payment-methods__item-description text-muted">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+									<div class="checkout__agree form-group">
+										<div class="form-check"><span class="form-check-input input-check"><span class="input-check__body"><input class="input-check__input" type="checkbox" required="" class="validate required" id="confirm_agree" name="confirm agree" onchange="document.getElementById('button-confirm').disabled = !this.checked;"> <span class="input-check__box"></span>
+											<svg class="input-check__icon" width="9px" height="7px">
+												<use xlink:href="{% static 'images/sprite.svg' %}#check-9x7"></use>
+											</svg>
+											</span>
+											</span>
+											
+											<label  class="form-check-label" for="checkout-terms">من <a target="_blank" href="{% url 'terms_and_conditions' %}">قوانین و مقررات</a> را خوانده و موافقم *</label>
+										</div>
+									</div>
+									
+									<button type="submit" name="GoToPay" class="btn btn-primary btn-xl btn-block" id="button-confirm" disabled>ثبت سفارش</button>
+								</div>
+							</div>
+						</div>
+						</center>
+					</div>
+				</div>
+			</div>
+			</form>
+		</div>
+		<!-- site__body / end -->
+{% endblock %}
+		

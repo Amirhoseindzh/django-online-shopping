@@ -1,0 +1,56 @@
+
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block department %}
+	{% include 'main/includes/department_not_open.html'%}
+{% endblock %}
+
+{% block body %}
+
+<main>               
+    <div class="site__body">
+        <div class="page-header">
+            <div class="page-header__container container">
+                <div class="page-header__breadcrumb">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'index' %}">خانه</a>
+                                <svg class="breadcrumb-arrow" width="6px" height="9px">
+                                    <use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+                                </svg>
+                            </li>
+                            
+                            <li class="breadcrumb-item active" aria-current="page">برندها</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="page-header__title">
+                    <h1>برندها</h1></div>
+            </div>
+        </div>
+    </div>
+    <br><br>   <br>
+    <section class="section">
+    <div class="container">
+    <div class="row page-products-brands">
+                
+            {% for i in brands %}
+                <div class="col-12 col-md-4 col-lg-3">
+                
+                    <div class="block-products-brand">
+                        <div class="products-brand-image-row">
+                            <img <a target="_blank" href="{% url 'BrandListView' i.slug %}"><img src="{{ i.logo.url }}" alt="{{ i.name }}" title="{{ i.name }}" width = 200px; height = 200px; />
+                        </div>
+                        <div class="products-brand-text">
+                            <a href="{% url 'BrandListView' i.slug %}">{{ i.name }}</a>
+                        </div>
+                    </div>
+                </a>
+                </div>      
+            {% endfor %}
+        </div>
+    </section>
+<br><br><br><br>   <br><br>               
+</main>
+{% endblock %}

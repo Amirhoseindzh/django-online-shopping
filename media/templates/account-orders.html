@@ -1,0 +1,137 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+
+{% block body %}
+<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'index' %}">خانه</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								
+								<li class="breadcrumb-item active" aria-current="page">حساب کاربری</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title">
+						<h1>حساب کاربری</h1></div>
+				</div>
+			</div>
+			<div class="block">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 col-lg-3 d-flex">
+							<div class="account-nav flex-grow-1">
+								<h4 class="account-nav__title">ناوبری</h4>
+								<ul>
+									<li class="account-nav__item "><a href="{% url 'dashboard' %}">داشبورد</a></li>
+									<li class="account-nav__item"><a href="{% url 'profile' %}">ویرایش پروفایل</a></li>
+									<li class="account-nav__item account-nav__item--active "><a href="{% url 'orders' %}">سابقه خرید</a></li>
+									<li class="account-nav__item"><a href="{% url 'addresses' %}">آدرس ها</a></li>
+									<li class="account-nav__item"><a href="{% url 'change-password' %}">رمز عبور</a></li>
+									{% if user.is_authenticated %}
+										<li class="account-nav__item"><a href="{% url 'logout'%}">خروج</a></li>
+									{% endif %}
+								</ul>
+							</div>
+						</div>
+						<div class="col-12 col-lg-9 mt-4 mt-lg-0">
+							<div class="card">
+								<div class="card-header">
+									<h5>سابقه خرید</h5></div>
+								<div class="card-divider"></div>
+								<div class="card-table">
+									<div class="table-responsive-sm">
+										<table>
+											<thead>
+												<tr>
+													<th>سفارش</th>
+													<th>نام کالا</th>
+													<th>وضعیت</th>
+													<th>فروشنده</th>
+													<th>تعداد</th>
+													<th>جمع کل</th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for cart in salled %}
+													
+													<tr>
+														<td><a href="#">#{{ cart.id }}</a></td>
+														<td>{{ cart.product }}</td>
+														<td>{{ cart.payed }}</td>
+														<td>{{ cart.saller }}</td>
+														<td>{{ cart.count }}</td>
+														<td>{{ cart.finally_price }}</td>
+													</tr>
+													{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="card-divider"></div>
+								<div class="card-footer">
+									{% if page_obj.has_other_pages %}
+									<ul class="pagination justify-content-center">
+										
+										{% if page_obj.has_previous %}
+										<li class="page-item">
+											<a class="page-link page-link--with-arrow"  href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+												<svg class="page-link__arrow page-link__arrow--left" aria-hidden="true" width="8px" height="13px">
+													<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-left-8x13"></use>
+												</svg>
+											</a>
+											{% else %}
+											<li class="page-item disabled">
+												<a class="page-link page-link--with-arrow" href="#" aria-label="Previous">
+													<svg class="page-link__arrow page-link__arrow--left" aria-hidden="true" width="8px" height="13px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-left-8x13"></use>
+													</svg>
+												</a>
+											{% endif %}
+											</li>
+										</li>
+										{% for i in page_obj.paginator.page_range %}
+      									{% if page_obj.number == i %} 
+										<li class="page-item active"><a class="page-link"   href="#">{{ i }} <span class="sr-only">(کنونی)</span></a></li>
+										{% else %}
+										<li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+										{% endif %}
+										{% endfor %}
+										{% if page_obj.has_next %}
+										<li class="page-item">
+											<a class="page-link page-link--with-arrow"  href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+												<svg class="page-link__arrow page-link__arrow--right" aria-hidden="true" width="8px" height="13px">
+													<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-8x13"></use>
+												</svg>
+											</a>
+										</li>
+										{% else %}
+										<li class="page-item disabled">
+											<a class="page-link page-link--with-arrow"   href="#" aria-label="Next">
+												<svg class="page-link__arrow page-link__arrow--right" aria-hidden="true" width="8px" height="13px">
+													<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-8x13"></use>
+												</svg>
+											</a>
+										</li>
+										{% endif %}
+									</ul>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- site__body / end -->
+{% endblock %}
+		

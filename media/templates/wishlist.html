@@ -1,0 +1,219 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}{{ block.super }} علاقه مندی ها {% endblock %}
+
+{% block body %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'index' %}">خانه</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								<li class="breadcrumb-item"><a href="#">تکه مسیر</a>
+									<svg class="breadcrumb-arrow" width="6px" height="9px">
+										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+									</svg>
+								</li>
+								<li class="breadcrumb-item active" aria-current="page">علاقه‌مندی‌ها</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title">
+						<h1>علاقه‌مندی‌ها</h1></div>
+				</div>
+			</div>
+			<div class="block">
+				<div class="container">
+					
+					{% if wishlist %}
+					<table class="wishlist">
+						
+						<thead class="wishlist__head">
+							
+							<tr class="wishlist__row">
+								<th class="wishlist__column wishlist__column--image">تصویر</th>
+								<th class="wishlist__column wishlist__column--product">محصول</th>
+								<th class="wishlist__column wishlist__column--stock">وضعیت انبار</th>
+								<th class="wishlist__column wishlist__column--price">قیمت</th>
+								<th class="wishlist__column wishlist__column--tocart"></th>
+								<th class="wishlist__column wishlist__column--remove"></th>
+							</tr>
+							
+						</thead>
+						<tbody class="wishlist__body">
+							{% for p in wishlist %}
+							<tr class="wishlist__row">
+								<td class="wishlist__column wishlist__column--image">
+									<a href="{% url 'KalaDetailView' p.product.slug %}"><img src="{{ p.product.pic0.url }}" alt=" {{ p.product.name }}"></a>
+								</td>
+								<td class="wishlist__column wishlist__column--product"><a href={% url 'KalaDetailView' p.product.slug %} class="wishlist__product-name"> {{ p.product.name }} </a>
+									<div class="wishlist__product-rating">
+										<div class="rating">
+											<div class="rating__body">
+												<svg class="rating__star rating__star--active" width="13px" height="12px">
+													<g class="rating__fill">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+													</g>
+													<g class="rating__stroke">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+													</g>
+												</svg>
+												<div class="rating__star rating__star--only-edge rating__star--active">
+													<div class="rating__fill">
+														<div class="fake-svg-icon"></div>
+													</div>
+													<div class="rating__stroke">
+														<div class="fake-svg-icon"></div>
+													</div>
+												</div>
+												<svg class="rating__star rating__star--active" width="13px" height="12px">
+													<g class="rating__fill">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+													</g>
+													<g class="rating__stroke">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+													</g>
+												</svg>
+												<div class="rating__star rating__star--only-edge rating__star--active">
+													<div class="rating__fill">
+														<div class="fake-svg-icon"></div>
+													</div>
+													<div class="rating__stroke">
+														<div class="fake-svg-icon"></div>
+													</div>
+												</div>
+												<svg class="rating__star rating__star--active" width="13px" height="12px">
+													<g class="rating__fill">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+													</g>
+													<g class="rating__stroke">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+													</g>
+												</svg>
+												<div class="rating__star rating__star--only-edge rating__star--active">
+													<div class="rating__fill">
+														<div class="fake-svg-icon"></div>
+													</div>
+													<div class="rating__stroke">
+														<div class="fake-svg-icon"></div>
+													</div>
+												</div>
+												<svg class="rating__star rating__star--active" width="13px" height="12px">
+													<g class="rating__fill">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+													</g>
+													<g class="rating__stroke">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+													</g>
+												</svg>
+												<div class="rating__star rating__star--only-edge rating__star--active">
+													<div class="rating__fill">
+														<div class="fake-svg-icon"></div>
+													</div>
+													<div class="rating__stroke">
+														<div class="fake-svg-icon"></div>
+													</div>
+												</div>
+												<svg class="rating__star" width="13px" height="12px">
+													<g class="rating__fill">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal"></use>
+													</g>
+													<g class="rating__stroke">
+														<use xlink:href="{% static 'images/sprite.svg' %}#star-normal-stroke"></use>
+													</g>
+												</svg>
+												<div class="rating__star rating__star--only-edge">
+													<div class="rating__fill">
+														<div class="fake-svg-icon"></div>
+													</div>
+													<div class="rating__stroke">
+														<div class="fake-svg-icon"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="wishlist__product-rating-legend">9 نقد و بررسی</div>
+									</div>
+								</td>
+								<td class="wishlist__column wishlist__column--stock">
+									<div class="badge badge-light">
+										{% for dtl in detail %}
+										{% if p.product.id == dtl.kala_id %}
+											{% if dtl.instock != 0 %}
+													<span class="text-success">موجود در انبار</span>
+										
+											{% else %}
+										
+											<span class="text-danger">ناموجود</span>
+										
+										{% endif %}
+										{% endif %}
+										{% endfor %}
+									</div>
+										
+								</td>
+								<td class="wishlist__column wishlist__column--price">
+									
+									
+									{% for dtl in detail %}
+									{% if dtl.instock != 0 %}
+									{% if p.product.id == dtl.kala_id %}	
+									{% if dtl.off == 0 %}<span class="new-price">{{ dtl.new_price }}</span>{% else %}<span class="product-card__new-price">{{ dtl.new_price }} تومان</span>{% endif %}{% if dtl.off == 0 %}{% else %}<span  class="product-card__old-price">{{ dtl.price }} تومان</span>{% endif %}
+									{% endif %}
+									{% endif %}		
+									{% endfor %}
+								</td>
+								
+								
+								<td class="wishlist__column wishlist__column--tocart"  >
+									<button type="button" class="btn btn-primary btn-sm">افزودن به سبد</button>
+								</td>
+								<form method="post">
+								{% csrf_token %}
+								<td class="wishlist__column wishlist__column--remove"  >
+									<input type='hidden'  name='product_slug' value="{{ p.product.slug }}" >
+									<button type="submit"  class="btn btn-light btn-sm btn-svg-icon"  name="delete" >
+										<svg width="12px" height="12px">
+											<use xlink:href="{% static 'images/sprite.svg' %}#cross-12"></use>
+										</svg>
+									</button>
+								</td>
+								</form>
+							</tr>
+							{% endfor %}
+						</tbody>
+						
+						
+					</table>
+					{% else %}
+					<table class="wishlist">
+						<thead class="wishlist__head">
+							
+							<tr class="wishlist__row">
+								<th class="wishlist__column wishlist__column--image">تصویر</th>
+								<th class="wishlist__column wishlist__column--product">محصول</th>
+								<th class="wishlist__column wishlist__column--stock">وضعیت انبار</th>
+								<th class="wishlist__column wishlist__column--price">قیمت</th>
+								<th class="wishlist__column wishlist__column--tocart"></th>
+								<th class="wishlist__column wishlist__column--remove"></th>
+							</tr>
+							
+						</thead>
+					</table>
+					<td><br/><br/><center> لیست علاقه مندی شما خالی است </center></td>
+					{% endif %}
+
+				</div>
+			</div>
+		</div>
+		<!-- site__body / end -->
+
+{% endblock %}
+		
