@@ -6,7 +6,6 @@ This is a web shopping which designed by django framework, in this site you can 
 sites admin panel and any thing that admin do, wrote English but, the site front-end wrote in Persian Language.
 
 ## requirments
-* asgiref==3.4.1
 * Django==4.0
 * django-bootstrap-static==4.2.1
 * django-inline-svg==0.1.1
@@ -15,11 +14,9 @@ sites admin panel and any thing that admin do, wrote English but, the site front
 * Pillow==8.4.0
 * python-decouple==3.5
 * python-utils==3.1.0
-* pytz==2021.3
 * six==1.16.0
 * sqlparse==0.4.2
 * tzdata==2021.5
-* Unidecode==1.3.2
 * [there are avalaible in requirements.txt]
 
 ## run project
