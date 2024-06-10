@@ -1,34 +1,81 @@
-# Abzarkade
+<h1 align="center">
+    <a href=""> Online Shopping  by Django</a>
+</h1>
 
-This is a web shopping which designed by django framework, in this site you can do shop or any thing that people do in shopping sites :)
+<p align="center">
+  <i align="center">
+    This is an Ecommerce websites that help you sell and represent your products  🚀</i>
+</p>
 
-## Languages
-sites admin panel and any thing that admin do, wrote English but, the site front-end wrote in Persian Language.
 
-## requirments
-* asgiref==3.4.1
-* Django==4.0
-* django-bootstrap-static==4.2.1
-* django-inline-svg==0.1.1
-* django-widget-tweaks==1.4.9
-* djangorestframework==3.13.1
-* Pillow==8.4.0
-* python-decouple==3.5
-* python-utils==3.1.0
-* pytz==2021.3
-* six==1.16.0
-* sqlparse==0.4.2
-* tzdata==2021.5
-* Unidecode==1.3.2
-* [there are avalaible in requirements.txt]
 
-## run project
-to run project you need to create a new virtualenv and active it, so now you can just go to the project folder and run the manage.py file.
+## Introduction
+This is my first real project with `django` and i had many challenges to make this. django is very simple and nice framework i have ever seen.
+beause its powered and developed with `python` and i love python too.
+Actually, i just developed a backend side of this website and frontend side of it is pre-created and i just downloaded.
+everything that a Ecommerce website needed is available in the following website and can used by everyone who wants to start or have small shopping.
+Enjoy it. :)
 
-<pre>
->> virtualenv venv <br/>
->> venv\scripts\activate <br/>
-(venv) >> cd project_folder <br/>
-(venv) >> python manage.py runserver <br/>
-</pre>
-Now you can open a browser like chrome and just type url as <a href='http://localhost:8000/'>http://localhost:8000/</a>.
+
+<details open>
+<summary>
+ Features
+</summary> <br />
+
+
+<table>
+  <tr>
+    <td rowspan="3"><img src="Github/assets/admin_page.png" alt="admin page" height="400px"></td>
+    <td rowspan="3"><img src="Github/assets/abzarkade_wholesite.png" alt="whole main page" height="700px"></td>
+  </tr>
+  <tr>
+  </tr>
+  <tr>
+  </tr>
+</table>
+    
+</details>
+
+## Installation
+1. Follow the steps below to install app perfectly:
+```shell
+ > git clone https://github.com/Amirhoseindzh/Computer_Services_Repair_Form
+
+ > virtualenv venv 
+
+ > venv\scripts\activate 
+
+(venv) > cd project_folder 
+
+(venv) > pip install -r requirements.txt
+
+(venv) > python manage.py runserver 
+
+```
+
+Now you can open a browser like chrome or etc and just go to url as <a href='http://localhost:8000/'>http://localhost:8000/
+
+## Admin
+If you want to login to admin page look below:
+```login
+username/email : admin
+password : admin123456
+```
+## Resources
+
+- **[YouTube](https://www.youtube.com/)** for guides.
+- **[Google](https://www.google.com/)** for guides.
+- **[Github](https://www.github.com/)** for guides.
+- Chatgpt for guides.
+
+<a name="contributing_anchor"></a>
+## Contributing
+
+`Django online shoping` is an open-source project. I committed to a fully transparent development process and highly appreciate any contributions. Whether you are helping me fix bugs, proposing new features, improving my documentation or spreading the word - we would love to have you as a part of the Airline-booking community. 
+
+- Bug Report: If you see an error message or encounter an issue while using Amplication, please create a [bug report].
+
+
+## License
+
+A large part of this project is licensed under the [Apache 2.0](./LICENSE) license. 
