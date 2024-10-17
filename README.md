@@ -39,7 +39,7 @@ Enjoy it. :)
 ## Installation
 1. Follow the steps below to install app perfectly:
 ```shell
- > git clone https://github.com/Amirhoseindzh/Computer_Services_Repair_Form
+ > git clone https://github.com/Amirhoseindzh/django-online-shopping.git
 
  > virtualenv venv 
 
