@@ -10,13 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
-from decouple import Config
+from decouple import config, Csv
 from pathlib import Path
 
 
-import django
-from django.utils.encoding import force_str
-django.utils.encoding.force_text = force_str
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,17 +24,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = Config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1', cast=Csv()) 
 
 # custom user
 AUTH_USER_MODEL='shop.User'
 
 USE_L10N = True
+
+
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 # Application definition
 
@@ -51,12 +58,17 @@ DJANGO_DEFAULT_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    'rest_framework',
-    'rest_framework.authtoken',
+    # 'rest_framework',
+    # 'rest_framework.authtoken',
+    'django.contrib.sites',  # Required for allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 LOCAL_APPS = [
     'shop.apps.ShopConfig',
+    'accounts.apps.AccountsConfig',
     'bootstrap',
     'fontawesome',
     'svg',
@@ -64,7 +76,7 @@ LOCAL_APPS = [
     'django.contrib.humanize',
 ]
 
-INSTALLED_APPS =DJANGO_DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = DJANGO_DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -74,6 +86,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Add the account middleware:
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -104,10 +119,15 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config("DB_USER"),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT', cast=int),
     }
 }
+
 
 
 # Password validation
@@ -162,27 +182,46 @@ SVG_DIRS=[
 
 #REST_FRAMEWORK
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.TokenAuthentication',
         
-    ],
-}
+#     ],
+# }
 
 
-
+# Celery settings
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+# Redis for Celery
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+SITE_ID = 1  # Update this if needed
+
+# Email Verification Settings
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Force email verification
+ACCOUNT_AUTHENTICATION_METHOD = 'email'  # or you can Use username_email or username
+ACCOUNT_SIGNUP_REDIRECT_URL = 'profile/' 
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3  # Expiration period for email verification links
+ACCOUNT_RATE_LIMITS = {
+    "login_failed": "10/m",
+    "email_verification_sent": "5/h",  # Limit email verification requests
+    "password_reset": "3/h",  # Limit password reset requests
+}
 
 # Smtp server settings
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  
-MAILER_EMAIL_BACKEND = EMAIL_BACKEND  
-EMAIL_HOST = Config('EMAIL_HOST')  
-EMAIL_HOST_PASSWORD = Config('EMAIL_HOST_PASSWORD')  
-EMAIL_HOST_USER = Config('EMAIL_HOST_USER') 
-EMAIL_PORT = Config('EMAIL_PORT') 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # instead console put smtp in production
+EMAIL_HOST = config('EMAIL_HOST')  
+EMAIL_PORT = config('EMAIL_PORT', cast=int) 
 EMAIL_USE_TLS = True  
+EMAIL_HOST_USER = config('EMAIL_HOST_USER') 
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  
+MAILER_EMAIL_BACKEND = EMAIL_BACKEND  
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER 
