@@ -22,7 +22,10 @@ from django.urls import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('shop.urls')),
+    path('accounts/', include('allauth.urls')),  # Include allauth URLs
+    path('', include('accounts.urls') ),
 ]
+
 
 
 
