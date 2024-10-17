@@ -192,7 +192,7 @@
 						<div class="mobile-links__item-sub-links" data-collapse-content>
 							<ul class="mobile-links mobile-links--level--1">
 								<li class="mobile-links__item" data-collapse-item>
-									<div class="mobile-links__item-title"><a href="account-login.html" class="mobile-links__item-link">ورود</a></div>
+									<div class="mobile-links__item-title"><a href="account_login.html" class="mobile-links__item-link">ورود</a></div>
 								</li>
 								<li class="mobile-links__item" data-collapse-item>
 									<div class="mobile-links__item-title"><a href="account-dashboard.html" class="mobile-links__item-link">داشبورد</a></div>
@@ -210,7 +210,7 @@
 									<div class="mobile-links__item-title"><a href="account-password.html" class="mobile-links__item-link">تغییر رمز عبور</a></div>
 								</li>
 								<li class="mobile-links__item" data-collapse-item>
-									<div class="mobile-links__item-title"><a href="{% url 'register' %}" target="_blank" class="mobile-links__item-link">خروج</a></div>
+									<div class="mobile-links__item-title"><a href="{% url 'account_signup' %}" target="_blank" class="mobile-links__item-link">خروج</a></div>
 								</li>
 							</ul>
 						</div>
@@ -731,8 +731,8 @@
 														<li><a href="{% url 'track_order' %}">پیگیری سفارش</a></li>
 														<li><a href="{% url 'change-password' %}">تغییر رمز عبور</a></li>
 													{% else %}
-														<li><a href='{% url "register" %}'> ثبت نام</a></li>
-														<li><a href='{% url "login" %}'> ورود</a></li>
+														<li><a href='{% url "account_signup" %}'> ثبت نام</a></li>
+														<li><a href='{% url "account_login" %}'> ورود</a></li>
 													{% endif %}
 
 												</ul>

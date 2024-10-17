@@ -304,7 +304,7 @@
 														{% endfor %}
 														
 													{% else %}
-														<a href={% url 'login' %}> <button type="button" id="Login" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
+														<a href={% url 'account_login' %}> <button type="button" id="Login" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
 													{% endif %}
 
 													<input type='hidden'  name='kala' value="{{ k.id }}" >
@@ -352,7 +352,7 @@
 						<div class="block-header__divider"></div>
 					</div>
 					<div class="block-products__body">
-						{% for k in mostSalled %}
+						{% for k in most_sold %}
 						{% if  forloop.counter <= 7 %}	
 						{% if forloop.first %}
 						<div class="block-products__featured">
@@ -472,7 +472,7 @@
 												<input type="text" name="Material" value="{{ k.material_id }}"> <span>{{ k.material }}</span>
 											</label>
 											<label>
-												<input type="text" name="Saller" value="{{ k.saller_id }}"> <span>{{ k.saller }}</span>
+												<input type="text" name="Saller" value="{{ k.seller_id }}"> <span>{{ k.seller }}</span>
 											</label>
 
 											<li>سرعت: 750 RPM</li>
@@ -484,20 +484,20 @@
 									</div>
 									<div class="product-card__actions">
 										<div class="product-card__availability">موجودی: <span class="text-success">موجود در انبار</span></div>
-										{% if k.saller.instock == 0 %}
+										{% if k.seller.instock == 0 %}
 										{% else %}
-										<div class="product-card__prices">{% if k.saller.off == 0 %}<span class="new-price">{{ k.saller.new_price }}</span>{% else %}<span class="product-card__new-price">{{ k.saller.new_price }} تومان</span>{% endif %}{% if k.saller.off == 0 %}{% else %}<span  class="product-card__old-price">{{ k.saller.price }} تومان</span>{% endif %}</div>
+										<div class="product-card__prices">{% if k.seller.off == 0 %}<span class="new-price">{{ k.seller.new_price }}</span>{% else %}<span class="product-card__new-price">{{ k.seller.new_price }} تومان</span>{% endif %}{% if k.seller.off == 0 %}{% else %}<span  class="product-card__old-price">{{ k.seller.price }} تومان</span>{% endif %}</div>
 										{% endif %}
 										<div class="product-card__buttons">
 											
 											{% if user.is_authenticated %}
-												{% if k.saller.instock != 0 %}
+												{% if k.seller.instock != 0 %}
 												<button class="btn btn-primary product-card__addtocart" type="submit" id="button-cart" name='addCart'>افزودن به سبد</button>
 												{% else %}
 												<button type="submit" class="btn btn-danger btn-lg" disabled>ناموجود</button>
 												{% endif %}
 											{% else %}
-											<a href={% url 'login' %}> <button type="button" id="Login" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
+											<a href={% url 'account_login' %}> <button type="button" id="Login" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
                 							{% endif %}
 											<input type='hidden'  name='kala' value="{{ k.product.id }}" >
 											<button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist" type="submit" name="addWishlist" >
@@ -634,7 +634,7 @@
 													<input type="text" name="Material" value="{{ k.material_id }}"> <span>{{ k.material }}</span>
 												</label>
 												<label>
-													<input type="text" name="Saller" value="{{ k.saller_id }}"> <span>{{ k.saller }}</span>
+													<input type="text" name="Saller" value="{{ k.seller_id }}"> <span>{{ k.seller }}</span>
 												</label>
 												
 												
@@ -648,18 +648,18 @@
 										<div class="product-card__availability">موجودی: <span class="text-success">موجود در انبار</span></div>
 										{% if k.saller.instock == 0 %}
 										{% else %}
-										<div class="product-card__prices">{% if k.saller.off == 0 %}<span class="new-price">{{ k.saller.new_price }}</span>{% else %}<span class="product-card__new-price">{{ k.saller.new_price }} تومان</span>{% endif %}{% if k.saller.off == 0 %}{% else %}<span  class="product-card__old-price">{{ k.saller.price }} تومان</span>{% endif %}</div>
+										<div class="product-card__prices">{% if k.seller.off == 0 %}<span class="new-price">{{ k.seller.new_price }}</span>{% else %}<span class="product-card__new-price">{{ k.seller.new_price }} تومان</span>{% endif %}{% if k.seller.off == 0 %}{% else %}<span  class="product-card__old-price">{{ k.seller.price }} تومان</span>{% endif %}</div>
 										{% endif %}
 										
 										<div class="product-card__buttons">
 											{% if user.is_authenticated %}
-												{% if k.saller.instock != 0 %}
+												{% if k.seller.instock != 0 %}
 												<button class="btn btn-primary product-card__addtocart" type="submit" id="button-cart" name='addCart'>افزودن به سبد</button>
 												{% else %}
 												<button type="submit" class="btn btn-danger btn-lg" disabled>ناموجود</button>
 												{% endif %}
 											{% else %}
-											<a href={% url 'login' %}> <button type="button" id="Login" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
+											<a href={% url 'account_login' %}> <button type="button" id="Login" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
                 							{% endif %}
 											<input type='hidden'  name='kala' value="{{ k.product.id }}" >
 											<button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist" type="submit" name="addWishlist">
@@ -849,7 +849,7 @@
 						<div class="block-products-carousel__preloader"></div>
 						<div class="owl-carousel">
 							{% for k in kala %}
-							{% for i in k.kalainstance.all %}
+							{% for i in k.kala_instance.all %}
 							{% if i.instock != 0 %}
 							<div class="block-products-carousel__column">
 								<div class="block-products-carousel__cell">
