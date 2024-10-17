@@ -7,9 +7,9 @@
 *.pot
 *.pyc
 __pycache__/
-local_settings.py
+local_*
 db.sqlite3-journal
-
+db.json
 
 .env
 #add this personaly
