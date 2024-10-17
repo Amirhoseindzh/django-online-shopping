@@ -1,0 +1,7 @@
+Hi {{ user.username }},
+
+It looks like you've tried to sign up for an account that already exists.
+
+If you've forgotten your password, you can reset it here: {{ password_reset_url }}
+
+Thanks!

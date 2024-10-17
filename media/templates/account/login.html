@@ -1,0 +1,110 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load allauth account %}
+
+{% block title %}{{ block.super }} | حساب کاربری {% endblock %}
+
+{% block body %}
+<!-- site__body -->
+<div class="site__body">
+    <div class="page-header">
+        <div class="page-header__container container">
+            <div class="page-header__breadcrumb">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'index' %}" target="_blank">خانه</a>
+                            <svg class="breadcrumb-arrow" width="6px" height="9px">
+                                <use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+                            </svg>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">حساب کاربری</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="page-header__title">
+                <h1 class="display-4">ورود به حساب کاربری</h1>
+            </div>
+        </div>
+    </div>
+    <div class="block">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body text-right">
+                            <h3 class="card-title mb-4">ورود</h3>
+                            <form method="POST" action="{% url 'account_login' %}" class="needs-validation" novalidate>
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
+                                <div class="form-group">
+                                    <label for="id_login">نام کاربری/ایمیل</label>
+                                    {{ form.login|add_class:"form-control" }}
+                                    {% if form.login.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.login.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_password">رمز عبور</label>
+                                    {{ form.password|add_class:"form-control" }}
+                                    <small class="form-text text-muted">
+                                        <a href="#" data-toggle="modal" data-target="#passwordRecoveryModal">فراموشی رمز عبور؟</a>
+                                    </small>
+                                    {% if form.password.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.password.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group form-check">
+                                    <input class="form-check-input" type="checkbox" name="remember" id="login-remember">
+                                    <label class="form-check-label" for="login-remember">به خاطر سپاری</label>
+                                </div>
+                                {{ redirect_field }}
+                                <div class="text-center mb-3">
+                                    <p>حسابی ندارید؟ <a href="{% url 'account_signup' %}">ثبت نام کنید</a></p>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block rounded-pill mt-3">ورود</button>
+                                
+                                {% if SOCIALACCOUNT_ENABLED %}
+                                <div class="text-center mt-4">
+                                    <p></p>
+                                    {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+                                </div>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Password Recovery Modal -->
+<div class="modal fade" id="passwordRecoveryModal" tabindex="-1" aria-labelledby="passwordRecoveryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passwordRecoveryModalLabel">بازیابی رمز عبور</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="بستن">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>لطفاً ایمیل خود را وارد کنید تا لینک بازیابی رمز عبور برای شما ارسال شود.</p>
+                <form method="POST" action="{% url 'account_reset_password' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="recovery-email">ایمیل</label>
+                        <input type="email" class="form-control" name="email" id="recovery-email" required>
+                        <div class="invalid-feedback">لطفاً یک ایمیل معتبر وارد کنید.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-3">ارسال لینک بازیابی</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- site__body / end -->
+{% endblock %}

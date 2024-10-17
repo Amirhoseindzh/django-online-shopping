@@ -1,0 +1,110 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block title %}{{ block.super }} ثبت نام {% endblock %}
+
+{% block body %}
+<div class="site__body">
+    <div class="container">
+        <div class="page-header text-center">
+            <div class="page-header__breadcrumb">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'index' %}">خانه</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">ثبت نام</li>
+                    </ol>
+                </nav>
+            </div>
+            <br><br>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">ایجاد حساب کاربری</h3>
+
+                        <p class="text-center">در حال حاضر حساب دارید؟ 
+                            <a href="{{ login_url }}">وارد شوید</a>.
+                        </p>
+
+                        <form action="{% url 'account_signup' %}" method="POST">
+                            {% csrf_token %}
+
+                            <!-- Email Field -->
+                            <div class="form-group">
+                                <label for="id_email">ایمیل</label>
+                                {{ form.email|add_class:"form-control" }}
+                                {% if form.email.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.email.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Username Field -->
+                            <div class="form-group">
+                                <label for="id_username">نام کاربری</label>
+                                {{ form.username|add_class:"form-control" }}
+                                {% if form.username.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.username.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Password Fields -->
+                            <div class="form-group">
+                                <label for="id_password1">رمز عبور</label>
+                                {{ form.password1|add_class:"form-control" }}
+                                {% if form.password1.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.password1.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="id_password2">تأیید رمز عبور</label>
+                                {{ form.password2|add_class:"form-control" }}
+                                {% if form.password2.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.password2.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-block mt-4">ثبت نام</button>
+                            </div>
+                        </form>
+
+                        <!-- Passkey Signup -->
+                        {% if PASSKEY_SIGNUP_ENABLED %}
+                        <hr>
+                        <div class="text-center">
+                            <a href="{{ signup_by_passkey_url }}" class="btn btn-outline-primary">
+                                ثبت نام با استفاده از کلید عبور
+                            </a>
+                        </div>
+                        {% endif %}
+
+                        <!-- Social Signup -->
+                        {% if SOCIALACCOUNT_ENABLED %}
+                        <hr>
+                        <div class="text-center">
+                            {% include "socialaccount/snippets/login.html" %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
