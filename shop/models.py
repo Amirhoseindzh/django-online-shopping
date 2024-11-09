@@ -1,54 +1,15 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, UserManager
-from time import gmtime, strftime
 from django.utils import timezone
-from .validators import phone_validator
-from django.utils.text import slugify
 from django.template.defaultfilters import truncatechars
-from unidecode import unidecode
 from django.utils.translation import gettext_lazy as _
+from django.conf import settings 
+from time import gmtime, strftime
 import random
 
+User = settings.AUTH_USER_MODEL
 
 PRODUCT_IMAGE_ADDRESS = "static/images/products/{0}"
 DEFAULt_IMAGE_ADDRESS = "no-image.jpg"
-
-
-class CustomUserManager(UserManager):
-    """
-    Custom manager for User model where email is the unique identifier
-    and users are inactive by default, except for superusers.
-    """
-
-    def create_user(self, email, username=None, password=None, **extra_fields):
-        """
-        Create and return a regular user with is_active=False.
-        """
-        if not email:
-            raise ValueError("The Email field must be set")
-
-        email = self.normalize_email(email)
-        user = self.model(email=email, username=username, **extra_fields)
-        user.set_password(password)
-        user.is_active = False  # Regular users are inactive by default
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, username=None, password=None, **extra_fields):
-        """
-        Create and return a superuser with is_active=True.
-        """
-        extra_fields.setdefault("is_staff", True)
-        extra_fields.setdefault("is_superuser", True)
-
-        if extra_fields.get("is_staff") is not True:
-            raise ValueError("Superuser must have is_staff=True.")
-        if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Superuser must have is_superuser=True.")
-
-        return self.create_user(
-            email, username=username, password=password, is_active=True, **extra_fields
-        )
 
 
 class States(models.Model):
@@ -60,68 +21,6 @@ class States(models.Model):
 
     def __str__(self):
         return f"{self.name}"
-
-
-class User(AbstractUser):
-    class GenderChoice(models.TextChoices):
-        MALE = "M", "Male"
-        FEMALE = "F", "Female"
-        UNSET = "FM", "Unset"
-
-    class NewsChoice(models.TextChoices):
-        TRUE = "T", "مشترک خبرنامه"
-        FALSE = "F", "عدم اشتراک در خبرنامه"
-
-    id = models.AutoField(primary_key=True)
-
-    first_name = models.CharField(max_length=20, null=True, blank=True)
-    last_name = models.CharField(max_length=20, null=True, blank=True)
-    age = models.IntegerField(blank=True, null=True)
-    password = models.CharField(max_length=255)
-    gender = models.CharField(
-        max_length=2, choices=GenderChoice.choices, default=GenderChoice.UNSET
-    )
-    address = models.CharField(max_length=60, null=True, blank=True)
-    phone = models.CharField(max_length=15, validators=[phone_validator], blank=True)
-    email = models.EmailField(
-        _("email address"), unique=True, max_length=30, blank=True, null=True
-    )
-    city = models.CharField(max_length=100, null=True, blank=True)
-    state = models.ForeignKey(States, on_delete=models.CASCADE, null=True, blank=True)
-    postcode = models.CharField(max_length=10, null=True, blank=True)
-    date_joined = models.DateField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    is_superuser = models.BooleanField(default=False)
-    last_login = models.DateField(blank=True, null=True)
-    newsletter = models.CharField(
-        max_length=5,
-        choices=NewsChoice.choices,
-        default=NewsChoice.FALSE,
-        blank=True,
-    )
-    avatar = models.ImageField(
-        upload_to="static/images/profile/{0}".format(
-            strftime("%Y%m%d-%H%M%S", gmtime())
-        ),
-        default=DEFAULt_IMAGE_ADDRESS,
-        width_field="image_width",
-        height_field="image_height",
-    )
-
-    image_width = models.PositiveIntegerField(editable=False, default=65)
-    image_height = models.PositiveIntegerField(editable=False, default=65)
-
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
-
-    objects = CustomUserManager()
-
-    class Meta:
-        verbose_name_plural = "User"
-
-
-    def __str__(self):
-        return self.email
 
 
 class KalaCategory(models.Model):

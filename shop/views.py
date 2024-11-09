@@ -2,22 +2,19 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.mail import EmailMessage, send_mail
 from django.db.models import Count, Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
-from django.utils.encoding import force_bytes, force_str
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView
 from django.views.generic.base import ContextMixin
 from django.views.generic.edit import UpdateView
 from .forms import CommentForm
-from .forms import CheckoutForm, PriceFilter, ProfileForm
+from .forms import CheckoutForm, PriceFilter
 from .models import (
     Brand,
     Cart,
@@ -67,16 +64,6 @@ def activate(request, uidb64, token):
     else:
         messages.success(request, "Activation failed please try again")
         return redirect("register")
-
-
-class Profile(LoginRequiredMixin, UpdateView):
-    model = User
-    template_name = "account-profile.html"
-    form_class = ProfileForm
-    success_url = reverse_lazy("profile")
-
-    def get_object(self):
-        return User.objects.get(pk=self.request.user.pk)
 
 
 class KalaListView(ListView):
@@ -737,7 +724,7 @@ def is_authenticated(user):
     return not user.is_authenticated
 
 
-@login_required(login_url="login")
+@login_required
 def cart_(request):
     objs = Cart.objects.filter(username=request.user, payed="F")
 
@@ -833,7 +820,7 @@ def contact_us(request):
     return render(request, "contact-us.html", context)
 
 
-@login_required(login_url="login")
+@login_required
 def checkout(request):
     carts = Cart.objects.filter(username=request.user, payed="F")
 
@@ -978,7 +965,7 @@ class PostDetailView(LatestPostsMixin, DetailView):
         context["form"] = CommentForm()
         return context
 
-
+@login_required
 def create_comment(request, post_id):
     post = get_object_or_404(Post, id=post_id)
 
@@ -1042,29 +1029,20 @@ class SearchKala(KalaListView):
 
     def get_context_data(self, **kwargs):
         context = super(SearchKala, self).get_context_data(**kwargs)
-        mostsalled = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
+        most_selled = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
             "-num_kalas"
         )[:5]
         context.update(
             {
                 "is_authenticated": self.request.user.is_authenticated,
-                "mostsalled": mostsalled,
+                "most_selled": most_selled,
                 "color": Color.objects.all(),
             }
         )
         return context
 
-    # def reduce(func, items):
-    #     result = items.pop()
-    #     for item in items:
-    #         result =  func(result, item)
-    #     return result
 
-    def and_(a, b):
-        return a and b
-
-
-@login_required(login_url="login")
+@login_required
 def compare(request):
     compare = Compare.objects.filter(user=request.user)
     product = []
@@ -1109,7 +1087,7 @@ def about_us(request):
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
-@login_required(login_url="login")
+@login_required
 def account_orders(request):
     cart = Cart.objects.filter(username=request.user, payed="T")
     page = request.GET.get("page", 1)
@@ -1144,7 +1122,7 @@ def faq(request):
     return render(request, "faq.html")
 
 
-@login_required(login_url="login")
+@login_required
 def account_dashboard(request):
     cart = Cart.objects.filter(username=request.user, payed="T")
     salled = []
@@ -1164,12 +1142,12 @@ def terms_and_conditions(request):
     return render(request, "terms-and-conditions.html")
 
 
-@login_required(login_url="login")
+@login_required
 def track_order(request):
     return render(request, "track-order.html")
 
 
-@login_required(login_url="login")
+@login_required
 def wishlist(request):
     wishlist = WishList.objects.filter(user=request.user)
     product = []

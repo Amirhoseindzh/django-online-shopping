@@ -1,11 +1,6 @@
 from django.contrib import admin
-from django.contrib import messages
-from django.utils.translation import ngettext
-
-from django.contrib.auth.admin import UserAdmin as DefaultUserAdmin
 from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
-
 from .models import (
     Brand,
     Cart,
@@ -29,86 +24,6 @@ from .models import (
 User = get_user_model()
 
 IMAGE_PROPERTIES = '<img src="{url}" width="{width}" height={height} />'
-
-
-@admin.register(User)
-class UserAdmin(DefaultUserAdmin):
-    list_display = [
-        "profile_image",
-        "email",
-        "first_name",
-        "last_name",
-        "is_staff",
-        "is_active",
-    ]
-
-    list_display_links = ["email"]
-    list_editable = ["is_staff", "is_active"]
-    list_filter = ["gender", "is_staff", "is_superuser", "is_active"]
-    actions = ["make_inactive"]
-
-    fieldsets = (
-        (None, {"fields": ("email", "password")}),
-        (
-            "personal info",
-            {
-                "fields": (
-                    "first_name",
-                    "last_name",
-                    "gender",
-                    "age",
-                    "postcode",
-                    "avatar",
-                    "newsletter",
-                    "description",
-                )
-            },
-        ),
-        (
-            "contact info",
-            {
-                "fields": (
-                    "phone",
-                    "city",
-                    "state",
-                    "address",
-                )
-            },
-        ),
-        (
-            "permissions",
-            {
-                "fields": (
-                    "is_active",
-                    "is_staff",
-                    "is_superuser",
-                    "groups",
-                    "user_permissions",
-                )
-            },
-        ),
-        ("important dates", {"fields": ("last_login", "date_joined")}),
-    )
-
-    def make_inactive(self, request, queryset):
-        updated = queryset.update(is_active=False)
-        self.message_user(
-            request,
-            ngettext("%d user is inactivated", "%d user are inactivated", updated)
-            % updated,
-            messages.SUCCESS,
-        )
-
-    make_inactive.short_description = "Make inactive"
-
-    def profile_image(self, obj):
-        return mark_safe(
-            '<img src="{url}" width="{width}" height={height} />'.format(
-                url=obj.avatar.url,
-                width=70,
-                height=70,
-            )
-        )
 
 
 @admin.register(KalaCategory)
