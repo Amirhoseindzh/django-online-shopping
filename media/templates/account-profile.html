@@ -1,127 +1,302 @@
-{% extends 'main/base.html' %}
-{% load static %}
+{% extends 'main/base.html' %} 
+{% load static %} 
+{% load widget_tweaks %} 
 
-{% load widget_tweaks %}
+{% block title %}{{ block.super }} | پروفایل {% endblock %} 
 
-{% block title%}{{ block.super }} پروفایل {% endblock %}
-
-{% block body %}
+{% block body %} 
 {% if user.is_authenticated %}
-		<!-- site__body -->
-		<div class="site__body">
-			<div class="page-header">
-				<div class="page-header__container container">
-					<div class="page-header__breadcrumb">
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="{% url 'index' %}">خانه</a>
-									<svg class="breadcrumb-arrow" width="6px" height="9px">
-										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
-									</svg>
-								</li>
-								<li class="breadcrumb-item"><a href="#">تکه مسیر</a>
-									<svg class="breadcrumb-arrow" width="6px" height="9px">
-										<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
-									</svg>
-								</li>
-								<li class="breadcrumb-item active" aria-current="page">حساب کاربری</li>
-							</ol>
-						</nav>
-					</div>
-					<div class="page-header__title">
-						<h1>حساب کاربری</h1></div>
-				</div>
-			</div>
-			<div class="block">
-				<div class="container">
-					<div class="row">
-						<div class="col-12 col-lg-3 d-flex">
-							<div class="account-nav flex-grow-1">
-								
-									<h4 class="account-nav__title">ناوبری</h4>
-									<ul>
-										<li class="account-nav__item"><a href="{% url 'dashboard' %}">داشبورد</a></li>
-										<li class="account-nav__item account-nav__item--active"><a href="{% url 'profile' %}">ویرایش پروفایل</a></li>
-										<li class="account-nav__item"><a href="{% url 'orders' %}">سابقه خرید</a></li>
-										<li class="account-nav__item"><a href="{% url 'addresses' %}">آدرس ها</a></li>
-										<li class="account-nav__item"><a href="{% url 'change-password' %}">رمز عبور</a></li>
-										
-										<li class="account-nav__item"><a href="{% url 'logout'%}">خروج</a></li>
-										
-									</ul>
-								</div>
-							</div>
-							<div class="col-12 col-lg-9 mt-4 mt-lg-0">
-								<div class="card">
-									<div class="card-header">
-										<h5>ویرایش پروفایل</h5></div>
-									<div class="card-divider"></div>
-									<div class="card-body">
-										<div class="row no-gutters">
-											<div class="col-12 col-lg-7 col-xl-6">
-												<form method="POST" action="{% url 'profile' %}">{% csrf_token %}
+<div class="site__body">
+  <!-- Page Header and Breadcrumb -->
+  <div class="page-header bg-light py-4">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="{% url 'index' %}">خانه</a></li>
+          <li class="breadcrumb-item active" aria-current="page">
+            حساب کاربری
+          </li>
+        </ol>
+      </nav>
+      <h1 class="page-header__title text-right mt-3">ویرایش پروفایل</h1>
+    </div>
+  </div>
 
-													<div class="profile-card__avatar"><img src="{{ user.avatar.url }}" alt=""></div>
-		
-													<br>
-													<div class="form-group">
-														<label for="profile-username"> نام کاربری</label>
-														{{ form.username |add_class:"form-control" }}
-													</div>
-													<div class="form-group">
-														<label for="profile-first-name">نام</label>
-														{{ form.first_name |add_class:"form-control" }}
-													</div>
-													<div class="form-group">
-														<label for="profile-last-name">نام خانوادگی</label>
-														{{ form.last_name |add_class:"form-control" }}
-													</div>
-													<div class="form-group">
-														<label for="profile-email">آدرس ایمیل</label>
-														{{ form.email |add_class:"form-control" }}
-													</div>
-													<div class="form-group">
-														<label for="profile-phone">شماره تلفن</label>
-														{{ form.phone |add_class:"form-control" }}
-													</div>
-													<div class="form-group">
-														<label for="profile-city">شهر</label>
-														{{ form.city |add_class:"form-control" }}
-													</div>
-													<div class="form-group">
-														<label for="profile-state">استان</label>
-														{{ form.state |add_class:"form-control" }}
-													</div>
-													<div class="form-group">
-														<label for="profile-postcode">کد پستی</label>
-														{{ form.postcode |add_class:"form-control" }}
-													</div>
-													
-													<div class="form-group">
-														<label for="profile-newsletter">خبرنامه</label>
-														{{ form.newsletter |add_class:"form-control" }}
-													</div>
-													<div class="form-group">
-														<label for="profile-address">ادرس</label>
-														{{ form.address |add_class:"form-control" }}
-													</div>
-													<div class="form-group mt-5 mb-0">
-														<button class="btn btn-primary">ذخیره</button>
-													</div>
-										
-											
-											</form>
-										</div>
-									</div>
-								</div>
-								
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- site__body / end -->
-{% endif %}	
+  <!-- Profile Form Section -->
+  <div class="block">
+    <div class="container">
+      <div class="row">
+        <!-- Navigation Sidebar -->
+        <div class="col-12 col-lg-3 mb-4">
+          <div class="account-nav bg-white p-3 rounded shadow-sm">
+            <h4 class="account-nav__title mb-3">ناوبری</h4>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="{% url 'dashboard' %}" class="text-dark d-block"
+                  >داشبورد</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="{% url 'profile' %}" class="text-dark d-block active"
+                  >ویرایش پروفایل</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="{% url 'orders' %}" class="text-dark d-block"
+                  >سابقه خرید</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="{% url 'addresses' %}" class="text-dark d-block"
+                  >آدرس ها</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="{% url 'change-password' %}" class="text-dark d-block"
+                  >تغییر رمز عبور</a
+                >
+              </li>
+              <li>
+                <a href="{% url 'logout' %}" class="text-danger d-block"
+                  >خروج</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Profile Form -->
+        <div class="col-12 col-lg-9">
+          <div class="card shadow-sm">
+            <div class="card-header text-center bg-primary text-white">
+              <h5 class="mb-0">ویرایش پروفایل</h5>
+            </div>
+            <div class="card-body">
+              <!-- Feedback Messages -->
+              {% if messages %}
+              <div class="alert alert-info" role="alert">
+                {% for message in messages %} {{ message }} {% endfor %}
+              </div>
+              {% endif %}
+
+              <form
+                method="POST"
+                action="{% url 'profile' %}"
+                enctype="multipart/form-data"
+                id="profileForm"
+                novalidate
+              >
+                {% csrf_token %}
+
+                <!-- Avatar Preview and Upload with spacing -->
+                <div class="text-center mb-4">
+                  <div
+                    class="profile-card__avatar mx-auto position-relative mb-3"
+                  >
+                    <img
+                      id="avatarPreview"
+                      src="{{ user.profile.avatar.url }}"
+                      alt="Current Profile Picture"
+                      class="img-fluid rounded-circle border border-secondary shadow-sm"
+                      style="width: 200px; height: 100px; border-radius: 50%; object-fit: cover;"
+                    />
+                  </div>
+                  <br />
+                  <label
+                    class="btn btn-outline-primary btn-sm mt-2"
+                    for="input-avatar"
+                    aria-label="Choose Profile Picture"
+                    style="position: relative; cursor: pointer"
+                  >
+                    انتخاب تصویر
+                    <input
+                      type="file"
+                      name="avatar"
+                      id="input-avatar"
+                      class="d-none"
+                      accept="image/png, image/jpeg"
+                      onchange="previewAvatar()"
+                      aria-describedby="avatarHelp"
+                    />
+                  </label>
+                  <small id="avatarHelp" class="form-text text-muted mt-2"
+                    >آپلود یک تصویر جدید برای پروفایل خود</small
+                  >
+                  <div
+                    class="progress mt-2"
+                    id="avatarProgress"
+                    style="display: none"
+                  >
+                    <div
+                      class="progress-bar progress-bar-striped bg-info"
+                      role="progressbar"
+                      style="width: 0%"
+                      id="avatarProgressBar"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- Profile Fields with Tooltips, ARIA labels, and compact styling -->
+                <div class="row">
+                  {% for field in form %} 
+                    {% if field.name != "avatar" %}
+                    <div
+                        class="col-12 col-md-6 form-group"
+                        data-toggle="tooltip"
+                        title="{{ field.help_text }}">
+                        <label for="{{ field.id_for_label }}" class="form-label"
+                        >{{ field.label }}</label
+                        >
+                        {{ field|add_class:"form-control form-control-sm" }} 
+                        {% if field.errors %}
+                            <small class="form-text text-danger">
+                                {{ field.errors|join:", " }} </small>
+                        {% endif %}
+                    </div>
+                  {% endif %} 
+                {% endfor %}
+                </div>
+
+                <!-- Submit Button that triggers the modal -->
+                <div class="form-group text-center mt-4">
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-lg shadow-sm"
+                    data-toggle="modal"
+                    data-target="#confirmModal"
+                  >
+                    ذخیره تغییرات
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<!-- Confirmation Modal -->
+<div
+  class="modal fade"
+  id="confirmModal"
+  tabindex="-1"
+  aria-labelledby="confirmModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">تایید تغییرات</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        آیا مطمئن هستید که می‌خواهید تغییرات پروفایل خود را ذخیره کنید؟
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          لغو
+        </button>
+        <button type="button" class="btn btn-primary" id="confirmSubmit">
+          بله، ذخیره
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript for Avatar Preview, Upload Progress, Tooltips, Client-Side Validation, and Modal Confirmation -->
+<script>
+  function previewAvatar() {
+    const fileInput = document.getElementById("input-avatar");
+    const previewImage = document.getElementById("avatarPreview");
+    const progressContainer = document.getElementById("avatarProgress");
+    const progressBar = document.getElementById("avatarProgressBar");
+    const file = fileInput.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      // Show progress bar and reset progress
+      progressContainer.style.display = "block";
+      progressBar.style.width = "0%";
+
+      reader.onloadstart = function () {
+        progressBar.style.width = "0%";
+      };
+
+      reader.onprogress = function (e) {
+        if (e.lengthComputable) {
+          const percentComplete = (e.loaded / e.total) * 100;
+          progressBar.style.width = percentComplete + "%";
+        }
+      };
+
+      reader.onload = function (e) {
+        previewImage.src = e.target.result;
+        progressBar.style.width = "100%";
+        setTimeout(() => (progressContainer.style.display = "none"), 500);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // Initialize tooltips for form fields
+  document.addEventListener("DOMContentLoaded", function () {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+
+  // Client-side validation for email and phone fields
+  document
+    .getElementById("profileForm")
+    .addEventListener("submit", function (event) {
+      const emailField = document.querySelector("input[name='email']");
+      const phoneField = document.querySelector("input[name='phone']");
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const phoneRegex = /^\+?\d{10,15}$/;
+
+      let valid = true;
+
+      // Email validation
+      if (emailField && !emailRegex.test(emailField.value)) {
+        valid = false;
+        emailField.classList.add("is-invalid");
+        emailField.nextElementSibling.textContent =
+          "آدرس ایمیل معتبر وارد کنید.";
+      } else if (emailField) {
+        emailField.classList.remove("is-invalid");
+      }
+
+      // Phone validation
+      if (phoneField && !phoneRegex.test(phoneField.value)) {
+        valid = false;
+        phoneField.classList.add("is-invalid");
+        phoneField.nextElementSibling.textContent =
+          "شماره تلفن معتبر وارد کنید.";
+      } else if (phoneField) {
+        phoneField.classList.remove("is-invalid");
+      }
+
+      if (!valid) {
+        event.preventDefault(); // Stop form submission if validation fails
+      }
+    });
+
+  // Submit form after confirmation from modal
+  document
+    .getElementById("confirmSubmit")
+    .addEventListener("click", function () {
+      document.getElementById("profileForm").submit();
+    });
+</script>
 {% endblock %}
-		
