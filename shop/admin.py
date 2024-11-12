@@ -245,16 +245,16 @@ class CompareAdmin(admin.ModelAdmin):
 class SoldAdmin(admin.ModelAdmin):
     list_display = [
         "user",
-        "total",
-        "date",
-        "sent",
+        "grand_total",
+        "created_at",
+        "send_status",
     ]
     search_fields = ["products", "user"]
     list_filter = [
         "user",
-        "total",
-        "date",
-        "sent",
+        "grand_total",
+        "created_at",
+        "send_status",
     ]
 
 
@@ -266,7 +266,7 @@ class PostAdmin(admin.ModelAdmin):
         "title",
         "short_description",
     ]
-    fields = ["title", "slug", "body", "pic", "post_image", "published_date"]
+    fields = ["title", "slug", "author", "body", "pic", "post_image", "published_date"]
     prepopulated_fields = {
         "slug": ("title",),
     }
@@ -306,7 +306,7 @@ class CouponAdmin(admin.ModelAdmin):
 @admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
     list_display = [
-        "username",
+        "user",
         "product",
         "count",
         "seller",
