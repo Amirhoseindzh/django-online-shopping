@@ -136,7 +136,9 @@
 														<div class="filter-color">
 															<div class="filter-color__list">
 																{% for i in colors %}
-																<label class="filter-color__item"><span class="filter-color__check input-check-color" style="color: {{ i.name }};"><label class="input-check-color__body"><input class="input-check-color__input" type="checkbox"> <span class="input-check-color__box"></span>
+																<label class="filter-color__item">
+																<span class="filter-color__check input-check-color" style="color: {{ i.name }};">
+																	<label class="input-check-color__body"><input class="input-check-color__input" type="checkbox"> <span class="input-check-color__box"></span>
 																	<svg class="input-check-color__icon" width="12px" height="9px">
 																		<use xlink:href="{% static 'images/sprite.svg' %}#check-12x9"></use>
 																	</svg> <span class="input-check-color__stick"></span></label>
@@ -352,8 +354,8 @@
 															{% endfor %}
 														</label>
 														<label>
-															{% for saller in k.kalainstance.all %}
-															<input type="text" name="Saller" value="{{ saller.id }}"> <span>{{ saller.name }}</span>
+															{% for seller in k.kalainstance.all %}
+															<input type="text" name="seller" value="{{ seller.id }}"> <span>{{ seller.name }}</span>
 															{% endfor %}
 														
 														<li>ولتاژ: 20 ولت</li>
@@ -384,7 +386,7 @@
 														{% endfor %}
 														
 													{% else %}
-														<a href={% url 'login' %}> <button type="button" id="Login" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
+														<a href={% url 'account_login' %}> <button type="button" id="Login" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
 													{% endif %}
 
 													<input type='hidden'  name='kala' value="{{ k.id }}" >

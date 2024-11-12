@@ -272,8 +272,8 @@
 													{% endfor %}
 												</label>
 												<label>
-													{% for saller in k.kalainstance.all %}
-													<input type="text" name="Saller" value="{{ saller.id }}"> <span>{{ saller.name }}</span>
+													{% for seller in k.kalainstance.all %}
+													<input type="text" name="seller" value="{{ seller.id }}"> <span>{{ seller.name }}</span>
 													{% endfor %}
 												</label>
 												<li>سرعت: 750 RPM</li>
@@ -472,7 +472,7 @@
 												<input type="text" name="Material" value="{{ k.material_id }}"> <span>{{ k.material }}</span>
 											</label>
 											<label>
-												<input type="text" name="Saller" value="{{ k.seller_id }}"> <span>{{ k.seller }}</span>
+												<input type="text" name="seller" value="{{ k.seller_id }}"> <span>{{ k.seller }}</span>
 											</label>
 
 											<li>سرعت: 750 RPM</li>
@@ -634,7 +634,7 @@
 													<input type="text" name="Material" value="{{ k.material_id }}"> <span>{{ k.material }}</span>
 												</label>
 												<label>
-													<input type="text" name="Saller" value="{{ k.seller_id }}"> <span>{{ k.seller }}</span>
+													<input type="text" name="seller" value="{{ k.seller_id }}"> <span>{{ k.seller }}</span>
 												</label>
 												
 												
@@ -646,7 +646,7 @@
 									</div>
 									<div class="product-card__actions">
 										<div class="product-card__availability">موجودی: <span class="text-success">موجود در انبار</span></div>
-										{% if k.saller.instock == 0 %}
+										{% if k.seller.instock == 0 %}
 										{% else %}
 										<div class="product-card__prices">{% if k.seller.off == 0 %}<span class="new-price">{{ k.seller.new_price }}</span>{% else %}<span class="product-card__new-price">{{ k.seller.new_price }} تومان</span>{% endif %}{% if k.seller.off == 0 %}{% else %}<span  class="product-card__old-price">{{ k.seller.price }} تومان</span>{% endif %}</div>
 										{% endif %}
