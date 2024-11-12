@@ -54,7 +54,7 @@
 										<li>اندازه:{{ i.size.sizeno }}</li>
 									</ul>
 								</td>
-								<td class="cart-table__column cart-table__column--price" data-title="قیمت">{{ i.saller.price }}</td>
+								<td class="cart-table__column cart-table__column--price" data-title="قیمت">{{ i.seller.price }}</td>
 
 								<td class="cart-table__column cart-table__column--quantity" data-title="تعداد">
 									
@@ -63,14 +63,14 @@
 										<div class="input-number__add"></div>
 										<div class="input-number__sub" ></div>
 										<input type='hidden'  name='product_slug' value="{{ i.product.slug }}" >
-										<input class="form-control input-number__input" type="number" name="quantity"  min="1" value="{{ i.count }}" max = "{{ i.saller.instock }}" id="count" onchange="refresh()">
+										<input class="form-control input-number__input" type="number" name="quantity"  min="1" value="{{ i.count }}" max = "{{ i.seller.instock }}" id="count" onchange="refresh()">
 										
 										<script type="text/javascript">
 											function refresh()
 											{
 												var count = document.getElementById('count').value;
-												var single = "{{ i.saller.price }}";
-												var off = "{{ i.saller.off }}";
+												var single = "{{ i.seller.price }}";
+												var off = "{{ i.seller.off }}";
 												var result = (count * single) * (1 - off);
 												document.getElementById('total').innerHTML = result;
 											}
