@@ -296,9 +296,9 @@ class Cart(models.Model):
         IS_PAYED = "T", "Payed"
         IS_NOT_PAYED = "F", "Not Payed"
 
-    username = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     product = models.ForeignKey(
-        Kala, verbose_name="Products", on_delete=models.CASCADE, null=True
+        Kala, verbose_name="Products", related_name='Cart_Product', on_delete=models.CASCADE, null=True
     )
     color = models.ForeignKey(
         Color, on_delete=models.CASCADE, related_name="Color", null=True
@@ -343,56 +343,63 @@ class Cart(models.Model):
         return final_price
 
     def __str__(self):
-        return f"Product : {self.product} - Seller : {self.seller} - User : {self.username}"
+        return f"Product : {self.product} - Seller : {self.seller} - User : {self.user}"
 
 
 class Sold(models.Model):
-    SEND_CHOICES = {
-        ("T", "Package sent"),
-        ("F", "Package Wait for send"),
-        ("B", "Back to Store"),
-    }
-    FollowUpCode = models.CharField(
-        default="{}{}".format(
-            random.randint(10, 99), strftime("%Y%m%d%H%M%S", gmtime())
-        ),
-        max_length=20,
-    )
+    class SendChoice(models.TextChoices):
+        SENT = "T", "Package Sent"
+        WAITING = "F", "Package Wait for send"
+        BACK = "B", "Back to Store"
+        
+    follow_up_code = models.CharField(max_length=20, unique=True, editable=False)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, verbose_name="Buyer", null=True
     )
-    products = models.ManyToManyField(Cart, verbose_name="Products")
+    products = models.ManyToManyField(Cart, verbose_name="Products", related_name='Sold_Product')
     company = models.CharField(max_length=200, blank=True, null=True)
     address = models.CharField(max_length=500)
     zip_code = models.CharField(max_length=10, verbose_name="Zip Code")
     state = models.ForeignKey(States, on_delete=models.CASCADE)
     city = models.CharField(max_length=50)
-    total_price = models.BigIntegerField(help_text="Total Price With offers & Coupons")
-    send_price = models.IntegerField()
-    tax = models.IntegerField()
-    total = models.BigIntegerField(
-        help_text="Total Price With offers, Coupons, tax & send price."
+    total_price = models.BigIntegerField(help_text="Total price after discounts and coupons.")
+    shipping_fee  = models.IntegerField(help_text="Shipping fee applied.")
+    tax = models.IntegerField(help_text="Tax applied to the total price.")
+    grand_total = models.BigIntegerField(
+        help_text="Total Price With discounts, coupons, tax & shipping fee."
     )
-    desc = models.TextField(blank=True, null=True)
-    date = models.DateField(auto_now=True)
-    sent = models.CharField(
-        help_text="Is package sent?",
-        default="F",
+    description  = models.TextField(blank=True, null=True)
+    created_at = models.DateField(auto_now=True)
+    send_status = models.CharField(
+        help_text="Current shipping status of the order",
+        default=SendChoice.WAITING,
         verbose_name="Send Status",
-        choices=SEND_CHOICES,
+        choices=SendChoice.choices,
         max_length=1,
     )
 
-    def followup(self):
-        r = random.randint(10000, 99999)
-        return "{}{}".format(r, self.pk)
+    def save(self, *args, **kwargs):
+        if not self.follow_up_code:
+            self.follow_up_code = self.generate_followup_code()
+        super().save(*args, **kwargs)
+
+    def generate_followup_code(self):
+        """Generates a unique follow-up code for each order."""
+        return f"{random.randint(10, 99)}{timezone.now().strftime('%Y%m%d%H%M%S')}"
 
     def __str__(self):
-        if self.user is not None:
-            return "{0} - {1}".format(self.user.username, self.date)
+        buyer = self.user.username if self.user else "Unknown Buyer"
+        return f"Order by {buyer} on {self.created_at}"
 
+    def get_shipping_status_display(self):
+        """Returns a human-readable shipping status.
+            uses Django's built-in functionality to retrieve 
+            the human-readable label for a field defined with 'choices'.
+        """
+        return self.get_send_status_display()
+    
     class Meta:
-        verbose_name_plural = "Sold"
+        verbose_name_plural = "Sold Orders"
 
 
 class ContactUs(models.Model):
