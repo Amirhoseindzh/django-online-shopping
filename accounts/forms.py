@@ -152,6 +152,14 @@ class UserProfileForm(ModelForm):
                 "ایمیل دیگری را انتخاب کنید، این ایمیل قبلاً استفاده شده است."
             )
         return email
+    
+    def clean_postcode(self):
+        data = self.cleaned_data["postcode"]
+        if not data.isdigit():
+            raise ValidationError(_("کد پستی فقط شامل اعداد است."))
+        if len(data) != 10:
+            raise ValidationError(_("کد پستی باید 10 رقم باشد."))
+        return data
 
     def save(self, commit=True):
         # Update User model fields
