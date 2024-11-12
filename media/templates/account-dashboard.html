@@ -89,17 +89,16 @@
 													</tr>
 												</thead>
 												<tbody>
-													{% for cart in salled %}
-													{% if  forloop.counter < lenSalled %}
-													<tr>
-														<td><a href="#">#{{ cart.id }}</a></td>
-														<td>{{ cart.product }}</td>
-														<td>{{ cart.payed }}</td>
-														<td>{{ cart.saller }}</td>
-														<td>{{ cart.count }}</td>
-														<td>{{ cart.finally_price }}</td>
-													</tr>
-													{% endif %}
+													{% for cart in sold %}
+														
+															<tr>
+																<td><a href="#">#{{ cart.id }}</a></td>
+																<td>{{ cart.product }}</td>
+																<td>{{ cart.payed }}</td>
+																<td>{{ cart.seller }}</td>
+																<td>{{ cart.count }}</td>
+																<td>{{ cart.finally_price }}</td>
+															</tr>
 													{% endfor %}
 												</tbody>
 											</table>
