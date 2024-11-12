@@ -4,11 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, Q
+from django.forms import ValidationError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse, reverse_lazy
-from django.utils.encoding import force_str
-from django.utils.http import urlsafe_base64_decode
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView
 from django.views.generic.base import ContextMixin
@@ -44,26 +43,6 @@ def logout_user(request):
     logout(request)
     messages.success(request, (_("شما از حساب خود خارج شدید!")))
     return redirect("account_login")
-
-
-def activate(request, uidb64, token):
-    try:
-        uid = force_str(urlsafe_base64_decode(uidb64))
-        my_user = User.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-        my_user = None
-
-    if my_user is not None and generateToken.check_token(my_user, token):
-        my_user.is_active = True
-        my_user.save()
-        messages.success(
-            request,
-            "You are account is activated you can login by filling the form below.",
-        )
-        return redirect("login")
-    else:
-        messages.success(request, "Activation failed please try again")
-        return redirect("register")
 
 
 class KalaListView(ListView):
@@ -186,7 +165,7 @@ def kala_detail_view(request, kalaslug):
         elif "addCart" in request.POST:
             try:
                 color_id = request.POST.get("Color")
-                seller_id = request.POST.get("Saller")
+                seller_id = request.POST.get("Seller")
                 size_id = request.POST.get("Size")
                 material_id = request.POST.get("Material")
                 users_products = Cart.objects.filter(username=request.user, payed="F")
@@ -376,7 +355,7 @@ class CategoryListViewInstock(CategoryListView):
         lst = category_or_instock_slugger(catslug)
         form = PriceFilter()
         kalas = JustInstock(lst[0])
-        mostsalled = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
+        most_sold = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
             "-num_kalas"
         )[:5]
         context.update(
@@ -384,7 +363,7 @@ class CategoryListViewInstock(CategoryListView):
                 "kalas": kalas,
                 "cate": lst[1],
                 "brands": Brand.objects.all(),
-                "mostsalled": mostsalled,
+                "most_sold": most_sold,
                 "is_authenticated": self.request.user.is_authenticated,
                 "form": form,
             }
@@ -426,7 +405,7 @@ class CategoryPriceFilterListView(ListView):
         lst = category_or_instock_slugger(self.kwargs["catslug"])
         kalas = MaxMinPrice(lst[0], minPrice, maxPrice)
         form = PriceFilter()
-        mostsalled = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
+        most_sold = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
             "-num_kalas"
         )[:5]
         context.update(
@@ -434,7 +413,7 @@ class CategoryPriceFilterListView(ListView):
                 "kalas": kalas,
                 "cate": lst[1],
                 "brands": Brand.objects.all(),
-                "mostsalled": mostsalled,
+                "most_sold": most_sold,
                 "is_authenticated": self.request.user.is_authenticated,
                 "form": form,
             }
@@ -467,15 +446,15 @@ class BrandListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(BrandListView, self).get_context_data(**kwargs)
         maker = get_object_or_404(Brand, slug=self.kwargs["brandslug"])
-        products = maker.objects.all()
-        mostsalled = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
+        products = maker.__class__.objects.all()
+        most_sold = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
             "-num_kalas"
         )[:5]
         context.update(
             {
                 "kalas": products,
                 "brand": maker,
-                "mostsalled": mostsalled,
+                "most_sold": most_sold,
                 "brands": Brand.objects.all(),
                 "is_authenticated": self.request.user.is_authenticated,
                 "form": PriceFilter(),
@@ -510,14 +489,14 @@ class BrandListViewInstock(ListView):
         context = super(BrandListViewInstock, self).get_context_data(**kwargs)
         maker = get_object_or_404(Brand, slug=self.kwargs["brandslug"])
         products = JustInstock(maker.objects.all())
-        mostsalled = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
+        most_sold = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
             "-num_kalas"
         )[:5]
         context.update(
             {
                 "kalas": products,
                 "brand": maker,
-                "mostsalled": mostsalled,
+                "most_sold": most_sold,
                 "brands": Brand.objects.all(),
                 "is_authenticated": self.request.user.is_authenticated,
                 "form": PriceFilter(),
@@ -554,14 +533,14 @@ class BrandPriceFilter(ListView):
         products = MaxMinPrice(
             maker.objects.all(), self.kwargs["minPrice"], self.kwargs["maxPrice"]
         )
-        mostsalled = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
+        most_sold = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
             "-num_kalas"
         )[:5]
         context.update(
             {
                 "kalas": products,
                 "brand": maker,
-                "mostsalled": mostsalled,
+                "most_sold": most_sold,
                 "brands": Brand.objects.all(),
                 "is_authenticated": self.request.user.is_authenticated,
                 "form": PriceFilter(),
@@ -607,14 +586,14 @@ class BrandCategory(ListView):
         catslug = self.kwargs["catslug"]
         manu = get_object_or_404(Brand, slug=brand)
         lst = BrandCategorySluger(catslug, manu)
-        mostsalled = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
+        most_sold = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
             "-num_kalas"
         )[:5]
         context.update(
             {
                 "kalas": lst[0],
                 "cate": lst[1],
-                "mostsalled": mostsalled,
+                "most_sold": most_sold,
                 "brand": manu,
                 "brands": Brand.objects.all(),
                 "is_authenticated": self.request.user.is_authenticated,
@@ -654,14 +633,14 @@ class BrandCategoryInstock(ListView):
         manu = get_object_or_404(Brand, slug=brand)
         lst = BrandCategorySluger(catslug, manu)
         kalas = JustInstock(lst[0])
-        mostsalled = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
+        most_sold = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
             "-num_kalas"
         )
         context.update(
             {
                 "kalas": kalas,
                 "cate": lst[1],
-                "mostsalled": mostsalled,
+                "most_sold": most_sold,
                 "brand": manu,
                 "brands": Brand.objects.all(),
                 "is_authenticated": self.request.user.is_authenticated,
@@ -703,14 +682,14 @@ class BrandCategoryPriceFilter(ListView):
         manu = get_object_or_404(Brand, slug=brand)
         lst = BrandCategorySluger(catslug, manu)
         kalas = MaxMinPrice(lst[0], minPrice, maxPrice)
-        mostsalled = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
+        most_sold = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
             "-num_kalas"
         )[:5]
         context.update(
             {
                 "kalas": kalas,
                 "cate": lst[1],
-                "mostsalled": mostsalled,
+                "most_sold": most_sold,
                 "brand": manu,
                 "brands": Brand.objects.all(),
                 "is_authenticated": self.request.user.is_authenticated,
@@ -822,108 +801,66 @@ def contact_us(request):
 
 @login_required
 def checkout(request):
+    from .utils import CartCalculator, CheckoutProcessor
+    
     carts = Cart.objects.filter(username=request.user, payed="F")
 
     if not carts.exists():
         return redirect("cart-empty")
 
-    # Calculate total prices and final amounts in a single loop
-    tPrice, final, CFinal = 0, 0, 0
-    for cart in carts:
-        tPrice += cart.total()
-        final += cart.total_price()
-        CFinal += cart.finally_price()
+    # Initialize CartCalculator and calculate totals
+    calculator = CartCalculator(carts)
+    totals = calculator.calculate_totals()
 
-    tax = final - tPrice
-    coupon = CFinal - final
-    sendCost = 5000 * len(carts)
-    toPay = CFinal + tax + sendCost
+    # Fetch profile for form pre-filling if available
+    profile = getattr(request.user, "profile", None)
+    initial_data = {
+        "address": profile.address if profile else "",
+        "city": profile.city if profile else "",
+        "state": profile.state.id if profile and profile.state else None,
+        "postcode": profile.postcode if profile else "",
+    }
 
     if request.method == "POST":
-        form = CheckoutForm(request.POST)
+        form = CheckoutForm(request.POST, user=request.user, profile=profile)
         if form.is_valid():
-            company = form.cleaned_data["company"]
-            address = form.cleaned_data["address"]
-            city = form.cleaned_data["city"]
-            postcode = form.cleaned_data["postcode"]
-            state = form.cleaned_data["state"]
-            description = form.cleaned_data["desc"]
-
-            # Create the Sold record
-            sell = Sold.objects.create(
+            # Initialize and process checkout with CheckoutProcessor
+            processor = CheckoutProcessor(
                 user=request.user,
-                company=company,
-                address=address,
-                zip_code=postcode,
-                state=get_object_or_404(States, id=state),
-                city=city,
-                total_price=CFinal,
-                send_price=sendCost,
-                tax=tax,
-                total=toPay,
-                desc=description,
+                form_data=form.cleaned_data,
+                carts=carts,
+                totals=totals,
             )
-
-            # Update cart items and product stock
-            for cart in carts:
-                if cart.seller:
-                    sell.products.add(cart)
-                    instance = cart.seller
-                    if instance.instock > 0:
-                        instance.instock -= 1
-                        instance.save()
-                    else:
-                        # Handle out-of-stock scenario
-                        return render(
-                            request,
-                            "checkout.html",
-                            {
-                                "form": form,
-                                "state": States.objects.all(),
-                                "error": f"Product {cart.product} is out of stock.",
-                                "carts": carts,
-                                "totalPrice": tPrice,
-                                "finalPrice": final,
-                                "tax": tax,
-                                "coupon": coupon,
-                                "sendCost": sendCost,
-                                "toPay": toPay,
-                                "is_authenticated": True,
-                                "usr": request.user,
-                            },
-                        )
-
-            # Bulk update all cart items to mark them as "payed"
-            carts.update(payed="T")
-            sell.save()
-
-            # Redirect to cart page after successful checkout
-            return HttpResponseRedirect(reverse("cart"))
+            try:
+                processor.process()
+                return HttpResponseRedirect(reverse("orders"))
+            except ValidationError as e:
+                # Handle out-of-stock error and re-render with error
+                context = _get_context(form, totals, carts, error=str(e))
+                return render(request, "checkout.html", context)
     else:
-        form = CheckoutForm(
-            initial={
-                "address": getattr(request.user, "address", ""),
-                "city": getattr(request.user, "city", ""),
-                "state": getattr(request.user, "state", None),
-                "postcode": getattr(request.user, "postcode", ""),
-            }
-        )
+        form = CheckoutForm(initial=initial_data, profile=profile)
 
-    context = {
+    context = _get_context(form, totals, carts)
+    return render(request, "checkout.html", context)
+
+
+def _get_context(form, totals, carts, error=None):
+    """Helper function to build the context dictionary for rendering the template."""
+    return {
         "form": form,
         "state": States.objects.all(),
         "carts": carts,
-        "totalPrice": tPrice,
-        "finalPrice": final,
-        "tax": tax,
-        "coupon": coupon,
-        "sendCost": sendCost,
-        "toPay": toPay,
+        "totalPrice": totals["tPrice"],
+        "finalPrice": totals["final"],
+        "tax": totals["tax"],
+        "coupon": totals["coupon"],
+        "sendCost": totals["sendCost"],
+        "toPay": totals["toPay"],
         "is_authenticated": True,
-        "usr": request.user,
+        "usr": form.user if form else None,
+        "error": error,
     }
-
-    return render(request, "checkout.html", context)
 
 
 class PostListView(ListView):
@@ -964,6 +901,7 @@ class PostDetailView(LatestPostsMixin, DetailView):
         # Add the comment form to the context
         context["form"] = CommentForm()
         return context
+
 
 @login_required
 def create_comment(request, post_id):
@@ -1029,13 +967,13 @@ class SearchKala(KalaListView):
 
     def get_context_data(self, **kwargs):
         context = super(SearchKala, self).get_context_data(**kwargs)
-        most_selled = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
+        most_sold = Cart.objects.annotate(num_kalas=Count("seller")).order_by(
             "-num_kalas"
         )[:5]
         context.update(
             {
                 "is_authenticated": self.request.user.is_authenticated,
-                "most_selled": most_selled,
+                "most_sold": most_sold,
                 "color": Color.objects.all(),
             }
         )
@@ -1086,27 +1024,62 @@ def about_us(request):
 
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
+def get_cart_items(cart_queryset):
+    """Extracts cart item details."""
+    return [
+        {
+            "product": item.product.name,
+            "seller": item.seller if item.product else "Unknown Seller",
+            "count": item.count,
+        }
+        for item in cart_queryset
+    ]
+
+def get_sold_data(sold_queryset):
+    """Extracts sold order details, including human-readable status."""
+    return [
+        {
+            "id": order.id,
+            "grand_total": order.grand_total,
+            "send_status": order.get_send_status_display(),
+            "created_at": order.created_at,
+            "zip_code": order.zip_code,
+            "state": order.state.name,
+            "city": order.city,
+            "follow_up_code": order.follow_up_code,
+        }
+        for order in sold_queryset
+    ]
 
 @login_required
 def account_orders(request):
-    cart = Cart.objects.filter(username=request.user, payed="T")
+    # Fetch sold orders and prefetch related cart products
+    sold_orders = Sold.objects.filter(user=request.user).prefetch_related('products')
+    cart_items = Cart.objects.select_related('product').filter(user=request.user, payed='T')
+
+    # Prepare cart and sold data
+    cart_data = get_cart_items(cart_items)
+    sold_data = get_sold_data(sold_orders)
+
+    # Combine sold orders with their corresponding cart items
+    combined_data = []
+    for sold, cart in zip(sold_data, cart_data):
+        combined_data.append({**sold, **cart})
+
+    # Pagination for combined data
     page = request.GET.get("page", 1)
-    paginator = Paginator(cart, 5)
+    paginator = Paginator(combined_data, 5)
     try:
-        carts = paginator.page(page)
+        orders_page = paginator.page(page)
     except PageNotAnInteger:
-        carts = paginator.page(1)
+        orders_page = paginator.page(1)
     except EmptyPage:
-        carts = paginator.page(paginator.num_pages)
+        orders_page = paginator.page(paginator.num_pages)
 
-    salled = []
-    for product in cart:
-        salled.append(product)
-
-    reverse_list = salled[::-1]
+    # Render context
     context = {
-        "salled": reverse_list,
-        "page_obj": carts,
+        "orders_data": orders_page,
+        "page_obj": orders_page,  # for pagination controls in the template
     }
     return render(request, "account-orders.html", context)
 
@@ -1125,14 +1098,14 @@ def faq(request):
 @login_required
 def account_dashboard(request):
     cart = Cart.objects.filter(username=request.user, payed="T")
-    salled = []
+    sold = []
     for product in cart:
-        salled.append(product)
+        sold.append(product)
 
-    reverse_list = salled[::-1]
+    reverse_list = sold[::-1]
     len_Sold = len(reverse_list) // 2
     context = {
-        "salled": reverse_list,
+        "sold": reverse_list,
         "lenSold": len_Sold,
     }
     return render(request, "account-dashboard.html", context)
