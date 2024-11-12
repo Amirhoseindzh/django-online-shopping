@@ -1,18 +1,13 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model
 from .models import States
+
+User = get_user_model
 
 
 class CheckoutForm(forms.Form):
-    @staticmethod
-    def choices():
-        s = States.objects.all()
-        lst = []
-        for i in s:
-            lst.append((i.id, i.name))
-        return tuple(lst)
-    
     company = forms.CharField(
         required=False,
         max_length=200,
@@ -22,7 +17,6 @@ class CheckoutForm(forms.Form):
                 "class": "form-control",
                 "id": "input-payment-company",
                 "placeholder": "شرکت",
-                "name": "company",
             }
         ),
     )
@@ -34,7 +28,6 @@ class CheckoutForm(forms.Form):
                 "class": "form-control",
                 "id": "input-address",
                 "placeholder": "آدرس",
-                "name": "address",
             }
         ),
     )
@@ -46,7 +39,6 @@ class CheckoutForm(forms.Form):
                 "class": "form-control",
                 "id": "input-post-code",
                 "placeholder": "کد پستی",
-                "name": "postcode",
             }
         ),
     )
@@ -58,19 +50,16 @@ class CheckoutForm(forms.Form):
                 "class": "form-control",
                 "id": "input-city",
                 "placeholder": "شهر",
-                "name": "city",
             }
         ),
     )
     state = forms.ChoiceField(
         label="استان",
-        choices=choices,
         widget=forms.Select(
             attrs={
                 "class": "form-control",
                 "id": "input-state",
                 "placeholder": "استان",
-                "name": "state",
             }
         ),
     )
@@ -82,16 +71,31 @@ class CheckoutForm(forms.Form):
                 "rows": "4",
                 "class": "form-control",
                 "id": "confirm_comment",
-                "name": "desc",
             }
         ),
     )
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        # Accept a 'profile' parameter to pre-fill fields from the user's profile
+        profile = kwargs.pop("profile", None)
+        super().__init__(*args, **kwargs)
+        # Pre-fill fields with data from the profile if provided
+        if profile:
+            self.fields["address"].initial = profile.address
+            self.fields["postcode"].initial = profile.postcode
+            self.fields["city"].initial = profile.city
+
+        # Dynamically set state choices from the database
+        self.fields["state"].choices = [
+            (state.id, state.name) for state in States.objects.all()
+        ]
 
     def clean_postcode(self):
         data = self.cleaned_data["postcode"]
         if not data.isdigit():
             raise ValidationError(_("کد پستی فقط شامل اعداد است."))
-        elif len(data) != 10:
+        if len(data) != 10:
             raise ValidationError(_("کد پستی باید 10 رقم باشد."))
         return data
 
