@@ -11,7 +11,6 @@ from .views import (
     BrandCategoryInstock,
     BrandCategoryPriceFilter,
     SearchKala,
-    Address,
     PostListView,
     PostDetailView,
     kala_detail_view,
@@ -31,6 +30,7 @@ from .views import (
     track_order,
     error_404,
     error_500,
+    update_cart_status,
 )
 
 
@@ -88,12 +88,12 @@ urlpatterns = [
     path("compare/", compare, name="compare"),
     path("search/", SearchKala.as_view(), name="search_kala"),
     path("about_us/", about_us, name="about-us"),
-    path("address/", Address.as_view(), name="addresses"),
     path("dashboard/", account_dashboard, name="dashboard"),
     path("logout/", logout_user, name="logout"),
     path("orders/", account_orders, name="orders"),
     path("brands/", brands, name="brands"),
     path("cart/", cart_, name="cart"),
+    path("update-cart-status/", update_cart_status, name="update_cart_status"),
     path("checkout/", checkout, name="checkout"),
     path("contact-us/", contact_us, name="contact-us"),
     path("faq/", faq, name="faq"),
