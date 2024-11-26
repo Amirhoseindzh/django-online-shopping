@@ -34,7 +34,7 @@
                             <li class="account-nav__item"><a href="{% url 'dashboard' %}">داشبورد</a></li>
                             <li class="account-nav__item"><a href="{% url 'profile' %}">ویرایش پروفایل</a></li>
                             <li class="account-nav__item account-nav__item--active"><a href="{% url 'orders' %}">سابقه خرید</a></li>
-                            <li class="account-nav__item"><a href="{% url 'addresses' %}">آدرس ها</a></li>
+                            <li class="account-nav__item"><a href="{% url 'address_list' %}">آدرس ها</a></li>
                             <li class="account-nav__item"><a href="{% url 'change-password' %}">رمز عبور</a></li>
                             {% if user.is_authenticated %}
                             <li class="account-nav__item"><a href="{% url 'logout' %}">خروج</a></li>

@@ -167,7 +167,12 @@
 								<li>ظرفیت باتری: 2 ساعت</li>
 							</ul>
 							<ul class="product__meta">
-								<li class="product__meta-availability">موجودی: {% if inst %} <span class="text-success">موجود در انبار</span>{% else %}<span class="text-danger">ناموجود</span>{% endif %}</li>
+								<li class="product__meta-availability">موجودی: {% if inst %}
+									<span class="text-success">موجود در انبار</span>
+									{% else %}
+									<span class="text-danger">ناموجود</span>
+									{% endif %}
+								</li>
 								<li>برند: <a href="#">{{ kala.brand }}</a></li>
 								<li>شناسه: {{ kala.id }}</li>
 								
@@ -176,10 +181,23 @@
 						<!-- .product__info / end -->
 						<!-- .product__sidebar -->
 						<div class="product__sidebar">
-							<div class="product__availability">موجودی: {% if inst %} <span class="text-success">موجود در انبار</span>{% else %}<span class="text-danger">ناموجود</span>{% endif %}</div>
+							<div class="product__availability">موجودی: {% if inst %}
+								<span class="text-success">موجود در انبار</span>
+								{% else %}
+								<span class="text-danger">ناموجود</span>
+								{% endif %}
+							</div>
 							<div class="product__prices">
 								{% if inst %}
-								{% if finst.off == 0 %}<span class="new-price">{{ finst.new_price }}</span>{% else %}<span class="product-card__new-price">{{ finst.new_price }} تومان</span>{% endif %}{% if finst.off == 0 %}{% else %}<span  class="product-card__old-price">{{ finst.price }} تومان</span>{% endif %}
+								{% if finst.off == 0 %}
+									<span class="new-price">{{ finst.new_price }}</span>
+								{% else %}
+									<span class="product-card__new-price">{{ finst.new_price }} تومان</span>
+								{% endif %}
+								{% if finst.off == 0 %}
+								{% else %}
+									<span  class="product-card__old-price">{{ finst.price }} تومان</span>
+								{% endif %}
 								{% endif %}
 							</div>
 							<!-- .product__options -->
@@ -189,9 +207,9 @@
 									<label class="product__option-label">رنگ</label>
 									<div class="input-radio-color">
 										<div class="input-radio-color__list">
-											{% for i in kala.color.all %}
-											<label class="input-radio-color__item input-radio-color__item--white" style="color: {{ i.name }}" data-toggle="tooltip" title="{{ i.name }}">
-												<input type="radio" name="Color" value="{{ i.id }}"> <span></span>
+											{% for color in kala.color.all %}
+											<label class="input-radio-color__item input-radio-color__item--white" style="color: {{ color.name }};" data-toggle="tooltip" title="{{ color.name }}">
+												<input type="radio" name="Color" value="{{ color.id }}" {% if color == finst.color or forloop.first %}checked{% endif %}> <span></span>
 											</label>
 											
 											{% endfor %}
@@ -202,9 +220,10 @@
 									<label class="product__option-label">جنس</label>
 									<div class="input-radio-label">
 										<div class="input-radio-label__list">
-											{% for k in kala.material.all %}
+											{% for material in kala.material.all %}
 											<label>
-												<input type="radio" name="Material" value="{{ k.id }}"> <span>{{ k.name }}</span>
+												<input type="radio" name="Material" value="{{ material.id }}" {% if material.id == finst.material.id or forloop.first %}checked{% endif %}>
+												<span>{{ material.name }}</span>
 											</label>
 											
 											{% endfor %}
@@ -215,9 +234,13 @@
 									<label class="product__option-label">اندازه</label>
 									<div class="input-radio-label">
 										<div class="input-radio-label__list">
-											{% for k in kala.size.all %}
+											{% for size in kala.size.all %}
 											<label>
-												<input type="radio" name="Size" value="{{ k.id }}"> <span>{{ k.size_no }}</span>
+												<input 
+												type="radio"
+												name="Size"
+												value="{{ size.id }}" {% if size == finst.size or forloop.first %}checked{% endif %} >
+												<span>{{ size.size_no }}</span>
 											</label>
 											
 											{% endfor %}
@@ -228,58 +251,86 @@
 									<label class="control-label">انتخاب فروشنده</label>
 									<select class="form-control" id="input-option200" name="Seller">
 									{% for i in inst %}
-									<option value ={{ i.id }}><li>نام :{{ i.seller }} &nbsp;  قیمت اصلی :{{ i.price }} &nbsp;   تخفیف :  {{ i.off }}تومان</li></option>
+									<option value ={{ i.id }} {% if i == finst or forloop.first %}selected{% endif %}>
+										<li>نام :{{ i.seller }} &nbsp;  قیمت اصلی :{{ i.price }} &nbsp;   (تخفیف :  {{ i.off }}تومان)</li></option>
 									{% endfor %}
-								</select>
+									</select>
 								</div><br/>
 								<div class="form-group product__option">
 									<label class="product__option-label" for="product-quantity">تعداد</label>
 									<div class="product__actions">
 										<div class="product__actions-item">
 											<div class="input-number product__quantity">
-												<input type='hidden' name='product_slug' value="{{ i.product.slug }}">
-												<input class="form-control input-number__input" type="number" name="quantity" min="1" value="{{ i.count|default:1 }}" max="{{ i.seller.instock }}" id="count" onchange="refresh()">
+												<input class="form-control input-number__input" type="number" name="quantity" min="1" max="{{ i.seller.instock }}" value="{{ i.count|default:1 }}" id="count" onchange="refresh()">
 												<div class="input-number__add" onclick="increment()"></div>
 												<div class="input-number__sub" onclick="decrement()"></div>
 											</div>
 										</div>
 										
+										<!-- Add to Cart Button -->
 										<div class="product__actions-item product__actions-item--addtocart">
-										{% if user.is_authenticated %}
-											{% if inst %}
-											<button type="submit" id="button-cart" class="btn btn-primary btn-lg" name='addCart'>افزودن به سبد</button>
+											{% if user.is_authenticated %}
+												{% if inst %}
+													<button 
+														type="button" 
+														class="btn {% if in_cart %}btn-success{% else %}btn-primary{% endif %} btn-lg" 
+														id="add-to-cart-btn" 
+														data-in-cart="{{ in_cart|yesno:'true,false' }}">
+														{% if in_cart %}
+															در سبد موجود است
+														{% else %}
+															افزودن به سبد
+														{% endif %}
+													</button>
+													<input type="hidden" name="product_slug" value="{{ kala.slug }}">
+												{% else %}
+													<button type="button" class="btn btn-danger btn-lg" disabled>ناموجود</button>
+												{% endif %}
 											{% else %}
-											<button type="submit" class="btn btn-danger btn-lg" disabled>ناموجود</button>
+												<a href="{% url 'account_login' %}" class="btn btn-primary btn-lg">افزودن به سبد</a>
 											{% endif %}
-										{% else %}
-											<a href={% url 'account_login' %}> <button type="button" id="Login" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
-										{% endif %}
 										</div>
-										
-										{% if user.is_authenticated %}
+									
+										<!-- Add to Wishlist Button -->
 										<div class="product__actions-item product__actions-item--wishlist">
-											<input type='hidden'  name='kala' value="{{ kala.id }}" >
-											<button type="submit"  class="btn btn-secondary btn-svg-icon btn-lg" data-toggle="tooltip" name="addWishlist" aria-pressed="false" autocomplete="off">
-												<svg width="16px" height="16px">
-													<use xlink:href="{% static 'images/sprite.svg' %}#wishlist-16"></use>
-												</svg>
-											</button>
+											<input type="hidden" name="kala" value="{{ kala.id }}">
+											{% if in_wishlist %}
+												<button type="button" class="btn btn-success btn-svg-icon btn-lg" title="In Wishlist" disabled>
+													<svg width="16px" height="16px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#wishlist-16"></use>
+													</svg>
+												</button>
+											{% else %}
+												<button type="submit" class="btn btn-secondary btn-svg-icon btn-lg" name="addWishlist" title="Add to Wishlist" aria-label="Add to Wishlist">
+													<svg width="16px" height="16px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#wishlist-16"></use>
+													</svg>
+												</button>
+											{% endif %}
 										</div>
+									
+										<!-- Add to Compare Button -->
 										<div class="product__actions-item product__actions-item--compare">
-											<input type='hidden'  name='kala' value="{{ kala.id }}" >
-											<button type="submit" class="btn btn-secondary btn-svg-icon btn-lg" data-toggle="tooltip" name="addCompare" title="Compare" aria-pressed="false" autocomplete="off">
-												<svg width="16px" height="16px">
-													<use xlink:href="{% static 'images/sprite.svg' %}#compare-16"></use>
-												</svg>
-											</button>
-											
+											<input type="hidden" name="kala" value="{{ kala.id }}">
+											{% if in_compare %}
+												<button type="button" class="btn btn-success btn-svg-icon btn-lg" title="In Compare" disabled>
+													<svg width="16px" height="16px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#compare-16"></use>
+													</svg>
+												</button>
+											{% else %}
+												<button type="submit" class="btn btn-secondary btn-svg-icon btn-lg" name="addCompare" title="Add to Compare" aria-label="Add to Compare">
+													<svg width="16px" height="16px">
+														<use xlink:href="{% static 'images/sprite.svg' %}#compare-16"></use>
+													</svg>
+												</button>
+											{% endif %}
 										</div>
-									{% endif %}
 									</div>
 								</div>
 							</form>
-							<!-- .product__options / end -->
 						</div>
+						<!-- .product__options / end -->
 						<!-- .product__end -->
 						<div class="product__footer">
 							<div class="product__tags tags">
@@ -851,9 +902,29 @@
 										</ul>
 									</div>
 									<div class="product-card__actions">
-										{% for i in ak.kalainstance.all %}
-										<div class="product-card__availability">موجودی: <span class="text-success">موجود در انبار</span></div>
-										<div class="product-card__prices">{% if i.off == 0 %}<span class="new-price">{{ i.new_price }}</span>{% else %}<span class="product-card__new-price">{{ i.new_price }} تومان</span>{% endif %}{% if i.off == 0 %}{% else %}<span  class="product-card__old-price">{{ i.price }} تومان</span>{% endif %}</div>
+										{% for instances in ak.kala_instance.all %}
+										<div class="badge badge-light">
+											{% if instances.instock %}
+												<span class="text-success">موجود در انبار</span>
+											{% else %}
+												<span class="text-danger">ناموجود</span>
+											{% endif %}
+										</div>
+
+										<div class="product-card__prices">
+											{% if instances.instock != 0 %}
+												{% if instances.off == 0 %}
+												<span class="new-price">
+													{{ instances.new_price }}</span>
+												{% else %}
+												<span class="product-card__new-price">{{ instances.new_price }} تومان</span>
+												{% endif %}
+												{% if instances.off == 0 %}
+												{% else %}
+												<span  class="product-card__old-price">{{ instances.price }} تومان</span>
+												{% endif %}
+											{% endif %}
+										</div>
 										{% endfor %}
 										<div class="product-card__buttons">
 											<button class="btn btn-primary product-card__addtocart" type="button">افزودن به سبد</button>
@@ -881,41 +952,126 @@
 	</div>
 	<!-- site__body / end -->
 	<script>
-		function refresh() {
-			// JavaScript to handle input change or form submission.
-			let quantity = document.getElementById("count").value;
-			let productSlug = document.querySelector('input[name="product_slug"]').value;
-	
-			// Example fetch call to update the quantity in the backend
-			fetch("/update-cart/", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					"X-CSRFToken": "{{ csrf_token }}"
-				},
-				body: JSON.stringify({ slug: productSlug, quantity: quantity })
-			})
-			.then(response => response.json())
-			.then(data => {
-				// Handle response data, e.g., update cart display
+		document.addEventListener("DOMContentLoaded", () => {
+			const cartButton = document.querySelector("#add-to-cart-btn");
+			const productSlug = document.querySelector('input[name="product_slug"]').value;
+
+			if (cartButton) {
+				cartButton.addEventListener("click", async () => {
+					const isInCart = cartButton.getAttribute("data-in-cart") === "true";
+					const productDetails = getProductDetails();
+					
+					if (!validateDetails(productDetails)) {
+						alert("لطفاً تمام مشخصات محصول را انتخاب کنید.");
+						return;
+					}
+
+					await toggleCartItem(cartButton, productSlug, !isInCart, productDetails);
+				});
+			}
+
+			// Add event listeners to attribute inputs
+			const attributeInputs = document.querySelectorAll(
+				'input[name="Color"], input[name="Size"], input[name="Material"], select[name="Seller"]'
+			);
+			attributeInputs.forEach(input => {
+				input.addEventListener("change", () => resetCartButton(cartButton));
 			});
+		});
+
+		/**
+		 * Retrieves the selected product details (color, size, material, seller, quantity).
+		 */
+		function getProductDetails() {
+			return {
+				quantity: parseInt(document.getElementById("count")?.value || 1),
+				color: document.querySelector('input[name="Color"]:checked')?.value || null,
+				size: document.querySelector('input[name="Size"]:checked')?.value || null,
+				material: document.querySelector('input[name="Material"]:checked')?.value || null,
+				seller: document.querySelector('select[name="Seller"]')?.value || null,
+			};
 		}
-	
-		function increment() {
-			let input = document.getElementById("count");
-			if (parseInt(input.value) < input.max) {
-				input.value = parseInt(input.value) + 1;
-				refresh();
+
+		/**
+		 * Validates that all required details are selected.
+		 */
+		function validateDetails(details) {
+			return details.color && details.size && details.material && details.seller;
+		}
+
+		/**
+		 * Resets the cart button state to its default when attributes are changed.
+		 */
+		function resetCartButton(button) {
+			button.setAttribute("data-in-cart", "false");
+			button.classList.remove("btn-success");
+			button.classList.add("btn-primary");
+			button.textContent = "افزودن به سبد";
+			button.disabled = false;
+		}
+
+		/**
+		 * Toggles the cart item state (add/remove) and updates the UI accordingly.
+		 */
+		async function toggleCartItem(button, slug, addToCart, details) {
+			try {
+				// Disable button and show loading
+				button.disabled = true;
+				button.textContent = "در حال پردازش...";
+
+				const response = await fetch("/update-cart-status/", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRFToken": "{{ csrf_token }}"
+					},
+					body: JSON.stringify({
+						slug: slug,
+						addToCart: addToCart,
+						quantity: details.quantity,
+						color: details.color,
+						size: details.size,
+						material: details.material,
+						seller: details.seller,
+					})
+				});
+
+				const data = await response.json();
+
+				if (!data.success) {
+					throw new Error(data.error || "Failed to update cart status.");
+				}
+
+				// Update UI based on success
+				updateCartButtonUI(button, addToCart);
+			} catch (error) {
+				console.error("Error updating cart status:", error);
+				alert("خطایی در به‌روزرسانی سبد خرید رخ داد. لطفاً دوباره تلاش کنید.");
+			} finally {
+				// Restore button state
+				button.disabled = false;
 			}
 		}
-	
-		function decrement() {
-			let input = document.getElementById("count");
-			if (parseInt(input.value) > input.min) {
-				input.value = parseInt(input.value) - 1;
-				refresh();
+
+		/**
+		* Updates the button's UI based on the cart state.
+		*/
+		function updateCartButtonUI(button, isInCart) {
+			if (isInCart) {
+				button.setAttribute("data-in-cart", "true");
+				button.classList.remove("btn-primary");
+				button.classList.add("btn-success");
+				button.textContent = "در سبد موجود است";
+				button.disabled = true; // Disable the button when item is added
+			} else {
+				button.setAttribute("data-in-cart", "false");
+				button.classList.remove("btn-success");
+				button.classList.add("btn-primary");
+				button.textContent = "افزودن به سبد";
+				button.disabled = false;
 			}
 		}
+
 	</script>
 
 {% endblock %}

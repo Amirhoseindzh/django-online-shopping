@@ -36,46 +36,47 @@
 									<li class="account-nav__item "><a href="{% url 'dashboard' %}">داشبورد</a></li>
 									<li class="account-nav__item"><a href="{% url 'profile' %}">ویرایش پروفایل</a></li>
 									<li class="account-nav__item"><a href="{% url 'orders' %}">سابقه خرید</a></li>
-									<li class="account-nav__item account-nav__item--active"><a href="{% url 'addresses' %}">آدرس ها</a></li>
+									<li class="account-nav__item account-nav__item--active"><a href="{% url 'address_list' %}">آدرس ها</a></li>
 									<li class="account-nav__item"><a href="{% url 'change-password' %}">رمز عبور</a></li>
-									{% if user.is_authenticated %}
-										<li class="account-nav__item"><a href="{% url 'logout'%}">خروج</a></li>
+									
+									<li class="account-nav__item"><a href="{% url 'logout'%}">خروج</a></li>
 									
 								</ul>
 							</div>
 						</div>
 						<div class="col-12 col-lg-9 mt-4 mt-lg-0">
 							<div class="addresses-list">
-								<a href="#" class="addresses-list__item addresses-list__item--new">
-								<div class="addresses-list__plus"></div>
-								<div class="btn btn-secondary btn-sm">افزودن جدید</div>
+								<!-- Button to Open Modal for Adding a New Address -->
+								<a href="#" class="addresses-list__item addresses-list__item--new" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+									<div class="addresses-list__plus"></div>
+									<div class="btn btn-secondary btn-sm">افزودن جدید</div>
 								</a>
-								
-									<div class="addresses-list__divider"></div>
-									
-									<div class="addresses-list__item card address-card">
-										<div class="address-card__badge">پیش فرض</div>
-										<div class="address-card__body">
-										
-										<div class="address-card__name">{{user.first_name}} {{user.last_name}}</div>
-										<div class="address-card__row">{{user.address}}</div>
+						
+								<div class="addresses-list__divider"></div>
+						
+								{% for address in addresses %}
+								<div class="addresses-list__item card address-card">
+									{% if address.is_default %}
+									<div class="address-card__badge">پیش فرض</div>
+									{% endif %}
+									<div class="address-card__body">
+										<div class="address-card__name">{{ address.full_name }}</div>
+										<div class="address-card__row">{{ address.postal_address }}</div>
 										<div class="address-card__row">
-										<div class="address-card__row-title">شماره تلفن</div>
-										<div class="address-card__row-content"><span class="ltr_text">{{user.phone}}</span></div>
-										
+											<div class="address-card__row-title">شماره تلفن</div>
+											<div class="address-card__row-content"><span class="ltr_text">{{ address.phone_number }}</span></div>
+										</div>
+										<div class="address-card__row">
+											<div class="address-card__row-title">آدرس ایمیل</div>
+											<div class="address-card__row-content">{{ address.user.email }}</div>
+										</div>
+										<div class="address-card__footer">
+											<!-- Add actions like "Edit" or "Delete" here if needed -->
+										</div>
 									</div>
-									<div class="address-card__row">
-									<div class="address-card__row-title">آدرس ایمیل</div>
-									<div class="address-card__row-content">{{user.email}}</div>
-										
-									</div>
-								
-									<div class="address-card__footer"><a href="#">ویرایش</a>&nbsp;&nbsp; <a href="#">حذف</a></div>
-									</div>
-								
 								</div>
-								
-								{% endif %}
+								{% endfor %}
+
 							</div>
 						</div>
 					</div>
@@ -83,5 +84,6 @@
 			</div>
 		</div>
 		<!-- site__body / end -->
+	
 {% endblock %}
 		

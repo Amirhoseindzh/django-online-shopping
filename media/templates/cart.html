@@ -33,7 +33,7 @@
 					<table class="cart__table cart-table">
 						<thead class="cart-table__head">
 							<tr class="cart-table__row">
-								<th class="cart-table__column cart-table__column--image">تصویر</th>
+								<th class="cart-table__column cart-table__column--image" >تصویر</th>
 								<th class="cart-table__column cart-table__column--product">محصول</th>
 								<th class="cart-table__column cart-table__column--price">قیمت</th>
 								<th class="cart-table__column cart-table__column--quantity">تعداد</th>
@@ -43,82 +43,90 @@
 						</thead>
 						<tbody class="cart-table__body">
 							{% for i in carts %}
-							<tr class="cart-table__row">
-								<td class="cart-table__column cart-table__column--image">
-									<a href="{% url 'KalaDetailView' i.product.slug %}"><img src='{{ i.product.pic0.url }}' alt='{{i.product.name}}' title='{{i.product.name}}'  style="width: 50px; height: 50px;" /></a>
+							<tr class="cart-table__row align-middle" >
+								<!-- Product Image -->
+								<td class="cart-table__column cart-table__column--image text-center" style="border: 1px solid #ddd; padding: 1px;">
+									<a href="{% url 'KalaDetailView' i.product.slug %}">
+										<img 
+											src="{{ i.product.pic0.url }}" 
+											alt="{{ i.product.name }}" 
+											title="{{ i.product.name }}" 
+											class="img-thumbnail rounded" 
+											style="width: 100px; height: 80px; object-fit: cover; border-radius: 1px;">
+									</a>
 								</td>
-								<td class="cart-table__column cart-table__column--product"><a href="{% url 'KalaDetailView' i.product.slug %}" class="cart-table__product-name">{{i.product.name}}</a>
-									<ul class="cart-table__options">
-										<li>رنگ: {{ i.color.name }}</li>
-										<li>جنس: {{ i.material.name }}</li>
-										<li>اندازه:{{ i.size.sizeno }}</li>
+						
+								<!-- Product Details -->
+								<td class="cart-table__column cart-table__column--product" >
+									<a href="{% url 'KalaDetailView' i.product.slug %}" class="cart-table__product-name text-dark fw-bold">
+										{{ i.product.name }}
+									</a>
+									<ul class="cart-table__options list-unstyled small text-muted mt-1">
+										<li><strong>رنگ:</strong> {{ i.color.name }}</li>
+										<li><strong>جنس:</strong> {{ i.material.name }}</li>
+										<li><strong>اندازه:</strong> {{ i.size.size_no }}</li>
 									</ul>
 								</td>
-								<td class="cart-table__column cart-table__column--price" data-title="قیمت">{{ i.seller.price }}</td>
+						
+								<!-- Price -->
+								<td class="cart-table__column cart-table__column--price text-center text-success fw-bold" data-title="قیمت">
+									{% if i.seller.off == 0 %}
+										<span class="new-price">{{ i.total }}</span>
+									{% else %}
+									<span class="product-card__new-price">{% widthratio i.seller.new_price 1 i.count %} تومان</span>
+									{% endif %}
+									{% if i.seller.off == 0 %}
+									{% else %}
+									<span  class="product-card__old-price">{{ i.total }} تومان</span>
+									{% endif %}
 
+								</td>
+						
+								<!-- Quantity with Update Button -->
 								<td class="cart-table__column cart-table__column--quantity" data-title="تعداد">
-									
-									<div class="input-number">
-										
-										<div class="input-number__add"></div>
-										<div class="input-number__sub" ></div>
-										<input type='hidden'  name='product_slug' value="{{ i.product.slug }}" >
-										<input class="form-control input-number__input" type="number" name="quantity"  min="1" value="{{ i.count }}" max = "{{ i.seller.instock }}" id="count" onchange="refresh()">
-										
-										<script type="text/javascript">
-											function refresh()
-											{
-												var count = document.getElementById('count').value;
-												var single = "{{ i.seller.price }}";
-												var off = "{{ i.seller.off }}";
-												var result = (count * single) * (1 - off);
-												document.getElementById('total').innerHTML = result;
-											}
-										</script>
-									</div>
+									<form method="POST" action="{% url 'cart' %}" class="d-flex flex-column align-items-center gap-2">
+										{% csrf_token %}
+										<input type="hidden" name="update" value="update">
+										<input type="hidden" name="cart_id" value="{{ i.id }}">
+										<div class="input-group input-group-sm" style="max-width: 120px;">
+											<input 
+												class="form-control text-center border-primary" 
+												type="number" 
+												name="quantity" 
+												min="1" 
+												max="{{ i.seller.instock }}" 
+												value="{{ i.count }}" 
+												style="width: 50px;">
+										</div>
+										<button 
+											type="submit" 
+											class="btn btn-primary btn-sm mt-1 w-100">
+											تغییر
+										</button>
+									</form>
 								</td>
-								<td class="cart-table__column cart-table__column--total" data-title="جمع کل">{{ i.total }}</td>
-								
+						
+								<!-- Total -->
+								<td class="cart-table__column cart-table__column--total text-center fw-bold text-primary" data-title="جمع کل">
+									{{ i.finally_price }} تومان
 								</td>
-								<td class="cart-table__column cart-table__column--remove">
-									<button type="submit" name="delete" class="btn btn-light btn-sm btn-svg-icon">
-										<svg width="12px" height="12px">
-											<use xlink:href="{% static 'images/sprite.svg' %}#cross-12"></use>
-										</svg>
-									</button>
+						
+								<!-- Remove Button -->
+								<td class="cart-table__column cart-table__column--remove text-center">
+									<form method="POST" action="{% url 'cart'%}">
+										{% csrf_token %}
+										<input type="hidden" name="Delete" value="delete">
+										<input type="hidden" name="cart_id" value="{{ i.id }}">
+										<button type="submit" class="btn btn-danger btn-sm" title="حذف">
+											<svg width="14px" height="14px" class="align-middle">
+												<use xlink:href="{% static 'images/sprite.svg' %}#cross-12"></use>
+											</svg>
+										</button>
+									</form>
 								</td>
 							</tr>
 							{% endfor %}
-						</tbody>
-					</table>
-					<table class="table-responsive">
-						
-						<tbody>
-							
-							<div class="cart__actions">
-								<th>
-									<form class="cart__coupon-form" method="post">
-										{% csrf_token %}
-										<label for="input-coupon-code" class="sr-only">رمز عبور</label>
-										<input type="text" class="form-control" id="input-coupon" placeholder="کد تخفیف" name="couponCode">
-									</form>
-								</th>
-								<th>
-									<button type="submit" name='applyCoupon' class="btn btn-primary" id="button-coupon">اعمال کد تخفیف</button>	
-								</th>
-								<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-								<th>
-									{% if not user.is_authenticated %}
-									<div class="cart__buttons"><a href="{% url 'track-order' %}" class="btn btn-light">ادامه خرید</a></div>
-									{% endif %}
-									<a  href="" class="btn btn-primary cart__update-button" type="submit" name="update" >به روز رسانی سبد</a></i>
-								</th>
-							</div>
-							
-						</tbody>
-						
-						
-						
+						</tbody>											
 					</table>	
 					
 					<div class="row justify-content-end pt-5">
@@ -130,7 +138,7 @@
 										<thead class="cart__totals-header">
 											<tr>
 												<th>جمع جزء</th>
-												<td>{{ totalPrice }} تومان</td>
+												<td>{{ finalPrice }} تومان</td>
 											</tr>
 										</thead>
 										<tbody class="cart__totals-body">
@@ -164,5 +172,62 @@
 			</div>
 		</div>
 		<!-- site__body / end -->
+	<script>
+		function refresh(input, slug) {
+			const count = parseInt(input.value, 10); // Get quantity value
+			const price = parseFloat(input.getAttribute('data-price')); // Get price
+			const off = parseFloat(input.getAttribute('data-off')); // Get discount
+		
+			// Calculate total price after discount
+			const total = count * price * (1 - off);
+		
+			// Update the total display for the specific product
+			document.getElementById(`total-${slug}`).innerText = total.toFixed(2);
+		
+			// Optional: Send an AJAX request to update the backend
+			updateCart(slug, count);
+		}
+		
+		function increment(slug) {
+			const input = document.querySelector(`input[name="quantity"][data-slug="${slug}"]`);
+			const max = parseInt(input.getAttribute('max'), 10);
+			let count = parseInt(input.value, 10);
+		
+			if (count < max) {
+				input.value = ++count; // Increment quantity
+				refresh(input, slug); // Refresh total
+			}
+		}
+		
+		function decrement(slug) {
+			const input = document.querySelector(`input[name="quantity"][data-slug="${slug}"]`);
+			const min = parseInt(input.getAttribute('min'), 10);
+			let count = parseInt(input.value, 10);
+		
+			if (count > min) {
+				input.value = --count; // Decrement quantity
+				refresh(input, slug); // Refresh total
+			}
+		}
+		
+		function updateCart(slug, quantity) {
+			fetch("/update-cart/", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"X-CSRFToken": "{{ csrf_token }}"
+				},
+				body: JSON.stringify({ product_slug: slug, quantity: quantity })
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (!data.success) {
+					alert(data.error || "خطایی در بروزرسانی سبد خرید رخ داد.");
+				}
+			})
+			.catch(error => console.error("Error updating cart:", error));
+		}
+		
+	</script>
 {% endblock %}
 		

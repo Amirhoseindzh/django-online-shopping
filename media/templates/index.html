@@ -258,7 +258,7 @@
 
 												<label>
 													{% for size in k.size.all %}
-													<input type="text" name="Size" value="{{ size.id }}"> <span>{{ k.productsize_id }}</span>
+													<input type="text" name="Size" value="{{ size.id }}"> <span>{{ k.product_size_id }}</span>
 													{% endfor %}
 												</label>
 												<label>
@@ -272,7 +272,7 @@
 													{% endfor %}
 												</label>
 												<label>
-													{% for seller in k.kalainstance.all %}
+													{% for seller in k.kala_instance.all %}
 													<input type="text" name="seller" value="{{ seller.id }}"> <span>{{ seller.name }}</span>
 													{% endfor %}
 												</label>
@@ -285,17 +285,33 @@
 										</div>
 										
 											<div class="product-card__actions">
-												<div class="product-card__availability">موجودی: <span class="text-success">موجود در انبار</span></div>
-												{% for i in k.kalainstance.all %}
-												{% if i.instock == 0 %}
-												{% else %}
-												<div class="product-card__prices">{% if i.off == 0 %}<span class="new-price">{{ i.new_price }}</span>{% else %}<span class="product-card__new-price">{{ i.new_price }} تومان</span>{% endif %}{% if i.off == 0 %}{% else %}<span  class="product-card__old-price">{{ i.price }} تومان</span>{% endif %}</div>
-												{% endif %}
+												{% for instances in k.kala_instance.all %}
+												<div class="badge badge-light">
+													{% if instances.instock %}
+														<span class="text-success">موجود در انبار</span>
+													{% else %}
+														<span class="text-danger">ناموجود</span>
+													{% endif %}
+												</div>
+													{% if instances.instock == 0 %}
+													{% else %}
+														<div class="product-card__prices">
+															{% if instances.off == 0 %}
+															<span class="new-price">{{ instances.new_price }}</span>
+															{% else %}
+															<span class="product-card__new-price">{{ instances.new_price }} تومان</span>
+															{% endif %}
+															{% if instances.off == 0 %}
+															{% else %}
+															<span  class="product-card__old-price">{{ instances.price }} تومان</span>
+															{% endif %}
+														</div>
+													{% endif %}
 												{% endfor %}
 												<div class="product-card__buttons">
 													{% if user.is_authenticated %}
 														
-														{% for stok in k.kalainstance.all %}
+														{% for stok in k.kala_instance.all %}
 														{% if stok.instock != 0 %}
 															<button class="btn btn-primary product-card__addtocart" type="submit" id="button-cart" name='addCart'>افزودن به سبد</button>
 														{% else %}
@@ -482,17 +498,35 @@
 											<li>ظرفیت باتری: 2 ساعت</li>
 										</ul>
 									</div>
+									<br>
 									<div class="product-card__actions">
-										<div class="product-card__availability">موجودی: <span class="text-success">موجود در انبار</span></div>
+										<div class="badge badge-light">
+											{% if k.seller.instock %}
+												<span class="text-success">موجود در انبار</span>
+											{% else %}
+												<span class="text-danger">ناموجود</span>
+											{% endif %}
+										</div>
 										{% if k.seller.instock == 0 %}
 										{% else %}
-										<div class="product-card__prices">{% if k.seller.off == 0 %}<span class="new-price">{{ k.seller.new_price }}</span>{% else %}<span class="product-card__new-price">{{ k.seller.new_price }} تومان</span>{% endif %}{% if k.seller.off == 0 %}{% else %}<span  class="product-card__old-price">{{ k.seller.price }} تومان</span>{% endif %}</div>
+										<br>
+										<div class="product-card__prices">
+											{% if k.seller.off == 0 %}
+											<span class="new-price">{{ k.seller.new_price }}</span>
+											{% else %}
+											<span class="product-card__new-price">{{ k.seller.new_price }} تومان</span>
+											{% endif %}
+											{% if k.seller.off == 0 %}
+											{% else %}
+											<span  class="product-card__old-price">{{ k.seller.price }} تومان</span>
+											{% endif %}
+										</div>
 										{% endif %}
 										<div class="product-card__buttons">
 											
 											{% if user.is_authenticated %}
 												{% if k.seller.instock != 0 %}
-												<button class="btn btn-primary product-card__addtocart" type="submit" id="button-cart" name='addCart'>افزودن به سبد</button>
+												<button class="btn btn-primary product-card__addtocart" type="submit" id="button-cart" name='addToCart'>افزودن به سبد</button>
 												{% else %}
 												<button type="submit" class="btn btn-danger btn-lg" disabled>ناموجود</button>
 												{% endif %}
@@ -518,7 +552,7 @@
 								</div>
 							</div>
 							<div class="block-products__list">
-							{% else %}	
+								{% else %}	
 								<div class="block-products__list-item">
 								<div class="product-card">
 									<button class="product-card__quickview" type="button">
@@ -645,10 +679,26 @@
 										</ul>
 									</div>
 									<div class="product-card__actions">
-										<div class="product-card__availability">موجودی: <span class="text-success">موجود در انبار</span></div>
+										<div class="badge badge-light">
+											{% if k.seller.instock %}
+												<span class="text-success">موجود در انبار</span>
+											{% else %}
+												<span class="text-danger">ناموجود</span>
+											{% endif %}
+										</div>
 										{% if k.seller.instock == 0 %}
 										{% else %}
-										<div class="product-card__prices">{% if k.seller.off == 0 %}<span class="new-price">{{ k.seller.new_price }}</span>{% else %}<span class="product-card__new-price">{{ k.seller.new_price }} تومان</span>{% endif %}{% if k.seller.off == 0 %}{% else %}<span  class="product-card__old-price">{{ k.seller.price }} تومان</span>{% endif %}</div>
+										<div class="product-card__prices">
+											{% if k.seller.off == 0 %}
+											<span class="new-price">{{ k.seller.new_price }}</span>
+											{% else %}
+											<span class="product-card__new-price">{{ k.seller.new_price }} تومان</span>
+											{% endif %}
+											{% if k.seller.off == 0 %}
+											{% else %}
+											<span  class="product-card__old-price">{{ k.seller.price }} تومان</span>
+											{% endif %}
+										</div>
 										{% endif %}
 										
 										<div class="product-card__buttons">
@@ -849,8 +899,8 @@
 						<div class="block-products-carousel__preloader"></div>
 						<div class="owl-carousel">
 							{% for k in kala %}
-							{% for i in k.kala_instance.all %}
-							{% if i.instock != 0 %}
+							{% for instances in k.kala_instance.all %}
+							{% if instances.instock != 0 %}
 							<div class="block-products-carousel__column">
 								<div class="block-products-carousel__cell">
 									<div class="product-card">
@@ -962,9 +1012,23 @@
 											</ul>
 										</div>
 										<div class="product-card__actions">
-											<div class="product-card__availability">موجودی: <span class="text-success">موجود در انبار</span></div>
-							
-											<div class="product-card__prices">{% if i.off == 0 %}<span class="new-price">{{ i.new_price }}</span>{% else %}<span class="product-card__new-price">{{ i.new_price }} تومان</span>{% endif %}{% if i.off == 0 %}{% else %}<span  class="product-card__old-price">{{ i.price }} تومان</span>{% endif %}</div>
+											<div class="badge badge-light">
+												{% if instances.instock %}
+													<span class="text-success">موجود در انبار</span>
+												{% else %}
+													<span class="text-danger">ناموجود</span>
+												{% endif %}
+											</div>
+											<div class="product-card__prices">
+												{% if instances.off == 0 %}
+												<span class="new-price">{{ instances.new_price }}</span>
+												{% else %}
+												<span class="product-card__new-price">{{ instances.new_price }} تومان</span>
+												{% endif %}
+												{% if instances.off == 0 %}
+												{% else %}<span  class="product-card__old-price">{{ instances.price }} تومان</span>
+												{% endif %}
+											</div>
 											
 										</div>
 									</div>

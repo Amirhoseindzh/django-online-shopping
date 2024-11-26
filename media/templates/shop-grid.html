@@ -45,6 +45,7 @@
 								<div class="widget-filters widget" data-collapse data-collapse-opened-class="filter--opened">
 									<h4 class="widget__title">فیلتر ها</h4>
 									<div class="widget-filters__list">
+										<!-- Categories Filter -->
 										<div class="widget-filters__item">
 											<div class="filter filter--opened" data-collapse-item>
 												<button type="button" class="filter__title" data-collapse-trigger>دسته ها
@@ -55,17 +56,15 @@
 												<div class="filter__body" data-collapse-content>
 													<div class="filter__container">
 														<div class="filter-categories">
-															
 															<ul class="filter-categories__list">
 																{% if cate %}
-																
 																<li class="filter-categories__item filter-categories__item--parent">
 																	<svg class="filter-categories__arrow" width="6px" height="9px">
 																		<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-left-6x9"></use>
-																	</svg> <a href="{% url 'CategoryListView' cate.slug %}">{{ category.name }}</a>
+																	</svg> 
+																	<a href="{% url 'CategoryListView' cate.slug %}">{{ category.name }}</a>
 																	<div class="filter-categories__counter">254</div>
 																</li>
-																
 																{% endif %}
 															</ul>
 														</div>
@@ -73,6 +72,8 @@
 												</div>
 											</div>
 										</div>
+										
+										<!-- Price Filter -->
 										<div class="widget-filters__item">
 											<div class="filter filter--opened" data-collapse-item>
 												<button type="button" class="filter__title" data-collapse-trigger>قیمت
@@ -84,12 +85,16 @@
 													<div class="filter__container">
 														<div class="filter-price" data-min="5000" data-max="500000000" data-from="25000" data-to="110000">
 															<div class="filter-price__slider"></div>
-															<div class="filter-price__title"><span class="filter-price__min-value"></span> تومان - <span class="filter-price__max-value"></span> تومان</div>
+															<div class="filter-price__title">
+																<span class="filter-price__min-value"></span> تومان - <span class="filter-price__max-value"></span> تومان
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
+										
+										<!-- Brands Filter -->
 										<div class="widget-filters__item">
 											<div class="filter filter--opened" data-collapse-item>
 												<button type="button" class="filter__title" data-collapse-trigger>برند
@@ -101,29 +106,31 @@
 													<div class="filter__container">
 														<div class="filter-list">
 															<div class="filter-list__list">
-																<label class="filter-list__item"><span class="filter-list__input input-check"><span class="input-check__body"><input class="input-check__input" type="checkbox"> <span class="input-check__box"></span>
-																	<svg class="input-check__icon" width="9px" height="7px">
-																		<use xlink:href="{% static 'images/sprite.svg' %}#check-9x7"></use>
-																	</svg>
+																{% for brand in brands %}
+																<label class="filter-list__item">
+																	<span class="filter-list__input input-check">
+																		<span class="input-check__body">
+																			<input class="input-check__input" type="checkbox"> 
+																			<span class="input-check__box"></span>
+																			<svg class="input-check__icon" width="9px" height="7px">
+																				<use xlink:href="{% static 'images/sprite.svg' %}#check-9x7"></use>
+																			</svg>
+																		</span>
 																	</span>
-																</span>
-																{% for b in brands %}
-																<span class="filter-list__title">
-																	<li><a href="{% if cate %}{% url 'BrandCategory' cate.slug b.slug %}{% else %}{% url 'BrandListView' b.slug %}{% endif %}">{{ b.name }}</a></li>
-																</span><span class="filter-list__counter">7</span></label>
-																<label class="filter-list__item"><span class="filter-list__input input-check"><span class="input-check__body"><input class="input-check__input" type="checkbox" checked> <span class="input-check__box"></span>
-																	<svg class="input-check__icon" width="9px" height="7px">
-																		<use xlink:href="{% static 'images/sprite.svg' %}#check-9x7"></use>
-																	</svg>
+																	<span class="filter-list__title">
+																		<a href="{% if cate %}{% url 'BrandCategory' cate.slug brand.slug %}{% else %}{% url 'BrandListView' brand.slug %}{% endif %}">{{ brand.name }}</a>
 																	</span>
-																	</span>
-																{% endfor %}	
+																	<span class="filter-list__counter">{{ brand.brand.count }}</span>
+																</label>
+																{% endfor %}
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
-										</div>							
+										</div>
+										
+										<!-- Colors Filter -->
 										<div class="widget-filters__item">
 											<div class="filter filter--opened" data-collapse-item>
 												<button type="button" class="filter__title" data-collapse-trigger>رنگ
@@ -134,53 +141,72 @@
 												<div class="filter__body" data-collapse-content>
 													<div class="filter__container">
 														<div class="filter-color">
-															<div class="filter-color__list">
-																{% for i in colors %}
-																<label class="filter-color__item">
-																<span class="filter-color__check input-check-color" style="color: {{ i.name }};">
-																	<label class="input-check-color__body"><input class="input-check-color__input" type="checkbox"> <span class="input-check-color__box"></span>
-																	<svg class="input-check-color__icon" width="12px" height="9px">
-																		<use xlink:href="{% static 'images/sprite.svg' %}#check-12x9"></use>
-																	</svg> <span class="input-check-color__stick"></span></label>
-																</span>
-																</label>
-																{% endfor %}
-															</div>
+															<form id="color-filter-form" action="" method="get">
+																<div class="filter-color__list">
+																	{% for color in colors %}
+																	<label class="filter-color__item">
+																		<span class="filter-color__check input-check-color" style="color: {{ color.name }};">
+																			<label class="input-check-color__body">
+																				<input class="input-check-color__input" type="checkbox" name="color" value="{{ color.id }}"
+																					{% if color.id in selected_colors %}checked{% endif %} 
+																					onchange="document.getElementById('color-filter-form').submit()"> 
+																				<span class="input-check-color__box"></span>
+																				<svg class="input-check-color__icon" width="12px" height="9px">
+																					<use xlink:href="{% static 'images/sprite.svg' %}#check-12x9"></use>
+																				</svg>
+																				<span class="input-check-color__stick"></span>
+																			</label>
+																		</span>
+																	</label>
+																	{% endfor %}
+																</div>
+															</form>
+															
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
+								
 									</div>
+									
+									<!-- Filter Actions -->
 									<div class="widget-filters__actions d-flex">
 										<button class="btn btn-primary btn-sm">فیلتر</button>
 										<button class="btn btn-secondary btn-sm">بازنشانی</button>
 									</div>
 								</div>
+								
 							</div>
 							<div class="block-sidebar__item d-none d-lg-block">
 								<div class="widget-products widget">
 									<h4 class="widget__title">محصولات جدید</h4>
 									<div class="widget-products__list">
 										{% for k in kalas %}
-										{% if  forloop.counter <= 4 %}
 										<div class="widget-products__item">
 											<div class="widget-products__image">
 												<a href="{% url 'KalaDetailView' k.slug %}">
-													<img src='{{ k.pic0.url }}' alt='{{ k.name }}' title='{{ k.name }}' class="img-responsive" />
+													<img src="{{ k.pic0.url }}" alt="{{ k.name }}" title="{{ k.name }}" class="img-responsive" />
 												</a>
 											</div>
 											<div class="widget-products__info">
 												<div class="widget-products__name"><a href="{% url 'KalaDetailView' k.slug %}">{{ k.name }}</a></div>
-												{% for i in k.kalainstance.all %}
-												<div class="product-card__prices">{% if i.off == 0 %}<span class="new-price">{{ i.new_price }}</span>{% else %}<span class="product-card__new-price">{{ i.new_price }} تومان</span>{% endif %}{% if i.off == 0 %}{% else %}<span  class="product-card__old-price">{{ i.price }} تومان</span>{% endif %}</div>
+												{% for i in k.kala_instance.all %}
+												<div class="product-card__prices">
+													{% if i.off == 0 %}
+														<span class="new-price">{{ i.new_price }}</span>
+													{% else %}
+														<span class="product-card__new-price">{{ i.new_price }} تومان</span>
+														<span class="product-card__old-price">{{ i.price }} تومان</span>
+													{% endif %}
+												</div>
 												{% endfor %}
 											</div>
 										</div>
-										{% endif %}
 										{% endfor %}
 									</div>
 								</div>
+								
 							</div>
 						</div>
 					</div>
@@ -337,39 +363,47 @@
 														<div class="product-card__rating-legend">9 نقد و بررسی</div>
 													</div>
 													<ul class="product-card__features-list">
-														
-														<label>
+														<li>
+															<span>اندازه:</span>
 															{% for size in k.size.all %}
-															<input type="text" name="Size" value="{{ size.id }}"> <span>{{ k.productsize_id }}</span>
+															<span> {{ size.id }},</span>
 															{% endfor %}
-														</label>
-														<label>
+														</li>
+														<li>
+															<span>رنگ:</span>
 															{% for color in k.color.all %}
-															<input type="text" name="Color" value="{{ color.id }}"> <span>{{ k.color.name }}</span>
+															<span>{{ color.name }},</span>
 															{% endfor %}
-														</label>
-														<label>
+														</li>
+														<li>
+															<span>جنس:</span>
 															{% for material in k.material.all %}
-															<input type="text" name="Material" value="{{ material.id }}"> <span>{{ k.material.name }}</span>
+															<span> {{ material.name }},</span>
 															{% endfor %}
-														</label>
-														<label>
-															{% for seller in k.kalainstance.all %}
-															<input type="text" name="seller" value="{{ seller.id }}"> <span>{{ seller.name }}</span>
+														</li>
+														<li>
+															<span>فروشنده:</span>
+															{% for seller in k.kala_instance.all %}
+															<span>{{ seller.seller }},</span>
 															{% endfor %}
-														
-														<li>ولتاژ: 20 ولت</li>
-														<li>ظرفیت باتری: 2 ساعت</li>
-														
+														</li>
 													</ul>
 												</div>
 												<div class="product-card__actions">
-													{% for i in k.kalainstance.all %}
-													{% if i.instock == 0 %}
+													{% for instance in k.kala_instance.all %}
+													{% if instance.instock == 0 %}
 													{% else %}
 													<div class="product-card__prices">
 														
-														{% if i.off == 0 %}<span class="new-price">{{ i.new_price }}</span>{% else %}<span class="product-card__new-price">{{ i.new_price }} تومان</span>{% endif %}{% if i.off == 0 %}{% else %}<span  class="product-card__old-price">{{ i.price }} تومان</span>{% endif %}
+														{% if instance.off == 0 %}
+														<span class="new-price">{{ instance.new_price }}</span>
+														{% else %}
+														<span class="product-card__new-price">{{ instance.new_price }} تومان</span>
+														{% endif %}
+														{% if instance.off == 0 %}
+														{% else %}
+														<span  class="product-card__old-price">{{ instance.price }} تومان</span>
+														{% endif %}
 													</div>
 													{% endif %}
 													{% endfor %}
@@ -377,8 +411,8 @@
 													<div class="product-card__buttons">
 														{% if user.is_authenticated %}
 														
-														{% for stok in k.kalainstance.all %}
-														{% if stok.instock != 0 %}
+														{% for stock in k.kala_instance.all %}
+														{% if stock.instock != 0 %}
 															<button class="btn btn-primary product-card__addtocart" type="submit" id="button-cart" name='addCart'>افزودن به سبد</button>
 														{% else %}
 															<button type="submit" class="btn btn-danger btn-lg" disabled>ناموجود</button>

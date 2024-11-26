@@ -46,7 +46,7 @@
                         </div>
                     {% endif %}
 
-                    <div class="col-12 col-lg-6 col-xl-7">
+                    <div class="col-10 col-lg-6 col-xl-6">
                         <div class="card mb-lg-0">
                             <div class="card-body">
                                 <h3 class="card-title">جزئیات پرداخت</h3>
@@ -63,6 +63,7 @@
                                     </div>
                                 {% endfor %}
                                 
+                                {% if not user.is_authenticated %}
                                 <div class="form-check">
                                     <span class="form-check-input input-check">
                                         <span class="input-check__body">
@@ -75,6 +76,7 @@
                                     </span>
                                     <label class="form-check-label" for="checkout-create-account">ساخت حساب کاربری؟</label>
                                 </div>
+                                {% endif %}
                             </div>
                             
                             <div class="card-divider"></div>
@@ -88,7 +90,7 @@
                         </div>
                     </div>
 
-                    <div class="col-12 col-lg-6 col-xl-5 mt-4 mt-lg-0">
+                    <div class="col-12 col-lg-6 col-xl-6 mt-4 mt-lg-0">
                         <div class="card mb-0">
                             <div class="card-body">
                                 <h3 class="card-title">سفارش شما</h3>
@@ -96,9 +98,9 @@
                                     <thead class="checkout__totals-header">
                                         <tr>
                                             <th>محصول</th>
-                                            <th>تعداد</th>
-                                            <th>قیمت محصول</th>
-                                            <th>تخفیف</th>
+                                            <th class="text-right">تعداد</th>
+                                            <th class="text-left">قیمت محصول</th>
+                                            <th class="text-left">تخفیف</th>
                                             <th>جمع کل</th>
                                         </tr>
                                     </thead>
@@ -112,12 +114,13 @@
                                                 <br/>
                                                 <a href="{% url 'KalaDetailView' item.product.slug %}">{{ item.product.name }}</a>
                                             </td>
-                                            <td class="text-right">{{ item.count }}</td>
-                                            <td class="text-right">{{ item.seller.price }}</td>
-                                            <td class="text-right">
+                                            <td class="text-center">{{ item.count }}</td>
+                                            <td class="text-center">{{ item.seller.price }}</td>
+                                            <td class="text-left">
                                                 {% if item.seller.off %}{{ item.seller.off }}{% else %} ندارد {% endif %}
                                             </td>
-                                            <td class="text-right">{{ item.finally_price }}</td>
+                                            
+                                            <td class="text-left">{{ item.finally_price }}</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

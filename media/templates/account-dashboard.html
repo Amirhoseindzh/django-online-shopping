@@ -37,7 +37,7 @@
 									<li class="account-nav__item account-nav__item--active"><a href="{% url 'dashboard' %}">داشبورد</a></li>
 									<li class="account-nav__item"><a href="{% url 'profile' %}">ویرایش پروفایل</a></li>
 									<li class="account-nav__item"><a href="{% url 'orders' %}">سابقه خرید</a></li>
-									<li class="account-nav__item"><a href="{% url 'addresses' %}">آدرس ها</a></li>
+									<li class="account-nav__item"><a href="{% url 'address_list' %}">آدرس ها</a></li>
 									<li class="account-nav__item"><a href="{% url 'change-password' %}">رمز عبور</a></li>
 									
 									<li class="account-nav__item"><a href="{% url 'logout'%}">خروج</a></li>
@@ -49,8 +49,8 @@
 							<div class="dashboard">
 								<div class="dashboard__profile card profile-card">
 									<div class="card-body profile-card__body">
-										<div class="profile-card__avatar"><img src="{{ user.avatar.url }}" alt=""></div>
-										<div class="profile-card__name">{{user.first_name}} {{user.last_name}}</div>
+										<div class="profile-card__avatar"><img src="{{ user.profile.avatar.url }}" alt=""></div>
+										<div class="profile-card__name">{{user.profile.first_name}} {{user.profile.last_name}}</div>
 										<div class="profile-card__email">{{user.email}}</div>
 										<div class="profile-card__edit"><a href="{% url 'profile' %}" class="btn btn-secondary btn-sm">ویرایش پروفایل</a></div>
 									</div>
@@ -58,7 +58,7 @@
 								<div class="dashboard__address card address-card address-card--featured">
 									<div class="address-card__badge">آدرس پیشفرض</div>
 									<div class="address-card__body">
-										<div class="address-card__name">{{user.first_name}} {{user.last_name}}</div>
+										<div class="address-card__name">{{user.profile.first_name}} {{user.profile.last_name}}</div>
 										<div class="address-card__row">{{user.address}}</div>
 										<div class="address-card__row">
 											<div class="address-card__row-title">شماره تلفن</div>
@@ -94,8 +94,8 @@
 															<tr>
 																<td><a href="#">#{{ cart.id }}</a></td>
 																<td>{{ cart.product }}</td>
-																<td>{{ cart.payed }}</td>
-																<td>{{ cart.seller }}</td>
+																<td>{% if cart.paid == 'T' %}ارسال شده {% else %}در انتظار تایید{% endif %}</td>
+																<td>{{ cart.seller.seller }}</td>
 																<td>{{ cart.count }}</td>
 																<td>{{ cart.finally_price }}</td>
 															</tr>

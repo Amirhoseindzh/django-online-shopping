@@ -145,23 +145,18 @@
 								<td class="wishlist__column wishlist__column--stock">
 									<div class="badge badge-light">
 										{% for dtl in detail %}
-										{% if p.product.id == dtl.kala_id %}
-											{% if dtl.instock != 0 %}
+											{% if p.product.id == dtl.kala_id %}
+												{% if dtl.instock %}
 													<span class="text-success">موجود در انبار</span>
+												{% else %}
+												<span class="text-danger">ناموجود</span>
 										
-											{% else %}
-										
-											<span class="text-danger">ناموجود</span>
-										
-										{% endif %}
-										{% endif %}
+												{% endif %}
+											{% endif %}
 										{% endfor %}
 									</div>
-										
 								</td>
 								<td class="wishlist__column wishlist__column--price">
-									
-									
 									{% for dtl in detail %}
 									{% if dtl.instock != 0 %}
 									{% if p.product.id == dtl.kala_id %}	
@@ -170,21 +165,16 @@
 									{% endif %}		
 									{% endfor %}
 								</td>
-								
-								
-								<td class="wishlist__column wishlist__column--tocart"  >
-									<button type="button" class="btn btn-primary btn-sm">افزودن به سبد</button>
-								</td>
 								<form method="post">
-								{% csrf_token %}
-								<td class="wishlist__column wishlist__column--remove"  >
-									<input type='hidden'  name='product_slug' value="{{ p.product.slug }}" >
-									<button type="submit"  class="btn btn-light btn-sm btn-svg-icon"  name="delete" >
-										<svg width="12px" height="12px">
-											<use xlink:href="{% static 'images/sprite.svg' %}#cross-12"></use>
-										</svg>
-									</button>
-								</td>
+									{% csrf_token %}
+								<!-- <td class="wishlist__column wishlist__column--tocart"  >
+									<button type="button" name="addToCart" class="btn btn-primary btn-sm">افزودن به سبد</button>
+								</td> -->
+									<td></td>
+									<td class="wishlist__column wishlist__column--remove"  >
+										<input type='hidden'  name='product_slug' value="{{ p.product.slug }}">
+										<button type="submit" name="delete" class="btn btn-secondary btn-sm">حذف </button>
+									</td>
 								</form>
 							</tr>
 							{% endfor %}
