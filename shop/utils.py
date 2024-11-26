@@ -19,16 +19,15 @@ class CheckoutProcessor:
             state = get_object_or_404(States, id=self.form_data["state"])
             sell = Sold.objects.create(
                 user=self.user,
-                company=self.form_data["company"],
-                address=self.form_data["address"],
-                zip_code=self.form_data["postcode"],
+                address=self.form_data["postal_address"],
+                zip_code=self.form_data["postal_code"],
                 state=state,
                 city=self.form_data["city"],
                 total_price=self.totals["CFinal"],
-                send_price=self.totals["sendCost"],
+                shipping_fee=self.totals["sendCost"],
                 tax=self.totals["tax"],
-                total=self.totals["toPay"],
-                desc=self.form_data["desc"],
+                grand_total=self.totals["toPay"],
+                description=self.form_data["desc"],
             )
 
             # Add cart items to sold record and update stock
@@ -44,7 +43,7 @@ class CheckoutProcessor:
                         )
 
             # Mark all cart items as "payed"
-            self.carts.update(payed="T")
+            self.carts.update(paid="T")
             sell.save()
 
         return sell
@@ -67,7 +66,7 @@ class CartCalculator:
         tax = final - tPrice
         coupon = CFinal - final
         sendCost = 5000 * len(self.carts)
-        toPay = CFinal + tax + sendCost
+        toPay = CFinal + (-tax) + sendCost
 
         return {
             "tPrice": tPrice,
