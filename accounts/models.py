@@ -57,7 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     password = models.CharField(max_length=255)
     phone = models.CharField(max_length=15, validators=[phone_validator], blank=True)
     date_joined = models.DateField(auto_now_add=True)
-    last_login = models.DateField(blank=True, null=True)
+    last_login = models.DateField(auto_now=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -69,6 +69,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         verbose_name_plural = "User"
+        
+    def get_full_name(self):
+        return self.username
     
     def __str__(self):
         return self.email
@@ -99,13 +102,9 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=20, null=True, blank=True)
     last_name = models.CharField(max_length=20, null=True, blank=True)
     age = models.IntegerField(blank=True, null=True)
-    address = models.CharField(max_length=60, null=True, blank=True)
     gender = models.CharField(
         max_length=2, choices=GenderChoice.choices, default=GenderChoice.UNSET
     )
-    city = models.CharField(max_length=100, null=True, blank=True)
-    state = models.ForeignKey(States, on_delete=models.CASCADE, null=True, blank=True)
-    postcode = models.CharField(max_length=10, null=True, blank=True)
     description = models.TextField(blank=True, null=True)
     newsletter = models.CharField(
         max_length=5,
@@ -129,6 +128,9 @@ class Profile(models.Model):
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
     
+    def get_short_name(self):
+        return self.user.username
+    
     def save(self, *args, **kwargs):
         # save the profile first
         super().save(*args, **kwargs)
@@ -144,4 +146,24 @@ class Profile(models.Model):
     
     def __str__(self):
         return self.user.username
+    
+    
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="addresses")
+    postal_address = models.TextField(max_length=50, help_text="Your exact address")
+    full_name = models.CharField(max_length=100, help_text="Recipient's full name")
+    phone_number = models.CharField(max_length=15)
+    neighborhood = models.CharField(max_length=1000, help_text="Street address, P.O. box, company name, etc.")
+    city = models.CharField(max_length=100)
+    state = models.ForeignKey(States, on_delete=models.CASCADE)
+    postal_code = models.PositiveIntegerField()
+    license_plate = models.PositiveIntegerField()
+    unit = models.CharField(max_length=15, help_text="Apartment or house unit")
+    is_default = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.postal_address} - {self.user.username}"
+
+    class Meta:
+        ordering = ['-is_default', 'id']  # Default address appears first
     
