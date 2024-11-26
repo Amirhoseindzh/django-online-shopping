@@ -8,19 +8,7 @@ User = get_user_model
 
 
 class CheckoutForm(forms.Form):
-    company = forms.CharField(
-        required=False,
-        max_length=200,
-        label="شرکت",
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "id": "input-payment-company",
-                "placeholder": "شرکت",
-            }
-        ),
-    )
-    address = forms.CharField(
+    postal_address = forms.CharField(
         max_length=500,
         label="آدرس",
         widget=forms.TextInput(
@@ -31,7 +19,7 @@ class CheckoutForm(forms.Form):
             }
         ),
     )
-    postcode = forms.CharField(
+    postal_code = forms.CharField(
         max_length=10,
         label="کد پستی",
         widget=forms.TextInput(
@@ -78,21 +66,23 @@ class CheckoutForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         # Accept a 'profile' parameter to pre-fill fields from the user's profile
-        profile = kwargs.pop("profile", None)
+        address = kwargs.pop("address", None)
         super().__init__(*args, **kwargs)
         # Pre-fill fields with data from the profile if provided
-        if profile:
-            self.fields["address"].initial = profile.address
-            self.fields["postcode"].initial = profile.postcode
-            self.fields["city"].initial = profile.city
+        
+        if address:
+            for data in address:
+                self.fields["postal_address"].initial = data.postal_address
+                self.fields["postal_code"].initial = data.postal_code
+                self.fields["city"].initial = data.city
 
         # Dynamically set state choices from the database
         self.fields["state"].choices = [
             (state.id, state.name) for state in States.objects.all()
         ]
 
-    def clean_postcode(self):
-        data = self.cleaned_data["postcode"]
+    def clean_postal_code(self):
+        data = self.cleaned_data["postal_code"]
         if not data.isdigit():
             raise ValidationError(_("کد پستی فقط شامل اعداد است."))
         if len(data) != 10:
@@ -112,22 +102,21 @@ class PriceFilter(forms.Form):
         widget=forms.TextInput(attrs={"type": "number", "value": "0"}),
     )
 
-    def clean_min_price(self):
-        data = self.cleaned_data["minPrice"]
-        data_max = self.cleaned_data["maxPrice"]
-        if data > data_max:
+    def clean_minPrice(self):
+        min_price = self.cleaned_data.get("minPrice")
+        max_price = self.cleaned_data.get("maxPrice")
+        if min_price is not None and max_price is not None and min_price > max_price:
             raise ValidationError(_("مقدار نادرست است لطفا چک کنید!"))
-        return data
+        return min_price
 
-    def clean_max_Price(self):
-        data_min = self.cleaned_data["minPrice"]
-        data = self.cleaned_data["maxPrice"]
-        if data < data_min:
+    def clean_maxPrice(self):
+        min_price = self.cleaned_data.get("minPrice")
+        max_price = self.cleaned_data.get("maxPrice")
+        if min_price is not None and max_price is not None and max_price < min_price:
             raise ValidationError(_("مقدار نادرست است لطفا چک کنید!"))
-        return data
+        return max_price
 
 
 # ist not complete and usable price filter
-
 class CommentForm(forms.Form):
     content = forms.CharField(widget=forms.Textarea, required=True)
