@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from django.utils.safestring import mark_safe
-from .models import Profile
+from .models import Profile, Address
 
 User = get_user_model()
 
@@ -14,10 +14,16 @@ class ProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'Profile'
     fk_name = 'user'
+
+class AddressInline(admin.StackedInline):
+    model = Address
+    can_delete = False
+    verbose_name_plural = 'Addresses'
+    fk_name = 'user'
     
     
 class CustomUserAdmin(UserAdmin):
-    inlines = (ProfileInline, )
+    inlines = (ProfileInline, AddressInline )
     
     list_display = [
         "profile_image",
@@ -27,12 +33,12 @@ class CustomUserAdmin(UserAdmin):
         "is_active",
         "last_login",
     ]
-    list_select_related = ('profile', )
+    list_select_related = ('profile',)
     list_display_links = ["email", "profile_image"]
     list_editable = ["is_staff", "is_active"]
     list_filter = ["is_staff", "is_superuser", "is_active"]
     actions = ["make_inactive"]
-    readonly_fields = ('date_joined',)
+    readonly_fields = ('date_joined','last_login',)
 
     fieldsets = (
         (None, {"fields": ("password",)}),
