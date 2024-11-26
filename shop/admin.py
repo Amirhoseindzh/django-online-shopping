@@ -311,16 +311,16 @@ class CartAdmin(admin.ModelAdmin):
         "count",
         "seller",
         "coupon",
-        "payed",
+        "paid",
     ]
     list_filter = [
         "product",
         "seller",
-        "payed",
+        "paid",
     ]
     search_fields = [
         "username",
-        "saller",
+        "seller",
         "product",
     ]
 
@@ -362,7 +362,7 @@ class ProductCommentAdmin(admin.ModelAdmin):
 class PostCommentAdmin(admin.ModelAdmin):
     list_display = [
         "author",
-        "text",
+        "body",
         "post",
         "status",
         "created_at",
