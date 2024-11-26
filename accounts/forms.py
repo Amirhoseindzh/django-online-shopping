@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
-from accounts.models import Profile
+from .models import Profile, Address
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from .validators import phone_validator
@@ -53,10 +53,10 @@ class UserProfileForm(ModelForm):
             "age",
             "gender",
             "newsletter",
-            "postcode",
-            "city",
-            "state",
-            "address",
+            # "postcode",
+            # "city",
+            # "state",
+            # "address",
             "description",
         ]
         widgets = {
@@ -69,13 +69,7 @@ class UserProfileForm(ModelForm):
             "newsletter": forms.Select(
                 attrs={"class": "form-control", "id": "input-newsletter"}
             ),
-            "postcode": forms.TextInput(
-                attrs={
-                    "class": "form-control",
-                    "id": "input-postcode",
-                    "placeholder": "کد پستی را وارد نمایید",
-                }
-            ),
+            
             "first_name": forms.TextInput(
                 attrs={
                     "class": "form-control",
@@ -90,26 +84,7 @@ class UserProfileForm(ModelForm):
                     "placeholder": "نام خانوادگی را وارد نمایید",
                 }
             ),
-            "address": forms.TextInput(
-                attrs={
-                    "class": "form-control",
-                    "id": "input-address",
-                    "placeholder": "ادرس را وارد نمایید",
-                }
-            ),
-            "city": forms.TextInput(
-                attrs={
-                    "class": "form-control",
-                    "id": "input-city",
-                    "placeholder": "شهر را وارد نمایید",
-                }
-            ),
-            "state": forms.Select(
-                attrs={
-                    "class": "form-control",
-                    "id": "input-state",
-                }
-            ),
+            
             "age": forms.NumberInput(
                 attrs={
                     "class": "form-control",
@@ -178,3 +153,43 @@ class UserProfileForm(ModelForm):
         if commit:
             profile.save()
         return profile
+
+
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = [
+            'postal_address', 'full_name', 'phone_number',
+            'neighborhood', 'city', 'state', 'license_plate', 'unit',
+            'postal_code', 'is_default'
+        ]
+        widgets = {
+            'is_default': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            "postal_address": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "id": "input-address",
+                    "placeholder": "ادرس را وارد نمایید",
+                }
+            ),
+            "city": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "id": "input-city",
+                    "placeholder": "شهر را وارد نمایید",
+                }
+            ),
+            "state": forms.Select(
+                attrs={
+                    "class": "form-control",
+                    "id": "input-state",
+                }
+            ),
+            "postal_code": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "id": "input-postcode",
+                    "placeholder": "کد پستی را وارد نمایید",
+                }
+            ),
+        }
