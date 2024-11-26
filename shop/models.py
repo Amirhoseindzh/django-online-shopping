@@ -2,7 +2,9 @@ from django.db import models
 from django.utils import timezone
 from django.template.defaultfilters import truncatechars
 from django.utils.translation import gettext_lazy as _
-from django.conf import settings 
+from django.core.validators import MinLengthValidator, MaxLengthValidator
+from django.conf import settings
+from decimal import Decimal
 from time import gmtime, strftime
 import random
 
@@ -229,39 +231,83 @@ class Post(models.Model):
         return self.title
 
 
-class ProductComments(models.Model):
-    class StatusChoice(models.TextChoices):
-        OK = "T", "It's Ok"
-        WAITING = "W", "Waiting"
-
-    kala = models.ForeignKey(Kala, on_delete=models.SET_NULL, null=True)
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    body = models.CharField(max_length=500)
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Kala, on_delete=models.CASCADE, related_name="ratings")
+    score = models.PositiveSmallIntegerField(validators=[
+        MinLengthValidator(1), MaxLengthValidator(5)
+    ])
+    review = models.TextField(blank=True, null=True)  # Optional review
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ("user", "product")  # Ensure one rating per user per product
+        ordering = ["-created_at"]  # Show the latest reviews first
+
+    def __str__(self):
+        return f"{self.user} rated {self.product.name} ({self.score or 'No Rating'})"
+
+    @property
+    def has_rating(self):
+        return self.score is not None
+
+class ProductComments(models.Model):
+    class StatusChoice(models.TextChoices):
+        APPROVED = "A", "Approved"
+        PENDING = "P", "Pending"
+        REJECTED = "R", "Rejected"
+
+    kala = models.ForeignKey(
+        "Kala", on_delete=models.SET_NULL, null=True, related_name="comments"
+    )
+    author = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="comments"
+    )
+    parent = models.ForeignKey(
+        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="replies"
+    )
+    body = models.TextField(max_length=1000, null=True, help_text="Write your comment here.")
+    rating = models.OneToOneField(
+        Rating, on_delete=models.SET_NULL, null=True, blank=True, related_name="comment"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
+
     status = models.CharField(
-        max_length=1, choices=StatusChoice.choices, default=StatusChoice.WAITING
+        max_length=1, choices=StatusChoice.choices, default=StatusChoice.PENDING
     )
 
     class Meta:
+        verbose_name = "Product Comment"
         verbose_name_plural = "Product Comments"
+        ordering = ["-created_at"]
 
     def __str__(self):
-        if self.author and self.kala is not None:
-            return f"Comment by {self.author.username} on {self.kala.name}"
+        return f"Comment by {self.author.username if self.author else 'Unknown'} on {self.kala.name if self.kala else 'Unknown'}"
+
+    @property
+    def is_reply(self):
+        return self.parent is not None
 
 
 class PostComments(models.Model):
     class StatusChoice(models.TextChoices):
-        OK = "T", "It's Ok"
-        WAITING = "W", "Waiting"
+        APPROVED = "A", "Approved"
+        PENDING = "P", "Pending"
+        REJECTED = "R", "Rejected"
 
-    post = models.ForeignKey(Post, related_name="comments", on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    text = models.TextField()
+    post = models.ForeignKey(Post, related_name="comments", on_delete=models.CASCADE)
+    body = models.TextField(max_length=1000, null=True, help_text="Write your comment here.")
+    parent = models.ForeignKey(
+        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="replies"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
     status = models.CharField(
-        max_length=1, choices=StatusChoice.choices, default=StatusChoice.WAITING
+        max_length=1, choices=StatusChoice.choices, default=StatusChoice.PENDING
     )
 
     class Meta:
@@ -269,7 +315,11 @@ class PostComments(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return f"Comment by {self.author.username} on {self.post.title}"
+        return f"{self.author.username} commented on {self.post.title}"
+    
+    @property
+    def is_reply(self):
+        return self.parent is not None
 
 
 class Coupon(models.Model):
@@ -293,12 +343,16 @@ class Coupon(models.Model):
 
 class Cart(models.Model):
     class SendChoice(models.TextChoices):
-        IS_PAYED = "T", "Payed"
-        IS_NOT_PAYED = "F", "Not Payed"
+        IS_PAID = "T", "Paid"
+        IS_NOT_PAID = "F", "Not Paid"
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     product = models.ForeignKey(
-        Kala, verbose_name="Products", related_name='Cart_Product', on_delete=models.CASCADE, null=True
+        Kala,
+        verbose_name="Products",
+        related_name="Cart_Product",
+        on_delete=models.CASCADE,
+        null=True,
     )
     color = models.ForeignKey(
         Color, on_delete=models.CASCADE, related_name="Color", null=True
@@ -314,22 +368,25 @@ class Cart(models.Model):
     )
     count = models.IntegerField(default=1)
     coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, null=True, blank=True)
-    payed = models.CharField(
-        max_length=1, choices=SendChoice.choices, default=SendChoice.IS_NOT_PAYED
+    paid = models.CharField(
+        max_length=1, choices=SendChoice.choices, default=SendChoice.IS_NOT_PAID
     )
 
     class Meta:
         verbose_name_plural = "Carts"
 
     def total(self):
-        if self.seller is not None:
+        """
+        Calculates the total price for the product (price * count).
+        """
+        if self.seller and self.seller.price is not None:
             return self.seller.price * self.count
         else:
             return 0
 
     def _get_discount(self, discount):
         """Helper method to safely return discount or 0 if None."""
-        return discount if discount is not None else 0
+        return Decimal(discount) if discount is not None else Decimal(0)
 
     def total_price(self):
         seller_discount = self._get_discount(self.seller.off) if self.seller else 0
@@ -351,24 +408,28 @@ class Sold(models.Model):
         SENT = "T", "Package Sent"
         WAITING = "F", "Package Wait for send"
         BACK = "B", "Back to Store"
-        
+
     follow_up_code = models.CharField(max_length=20, unique=True, editable=False)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, verbose_name="Buyer", null=True
     )
-    products = models.ManyToManyField(Cart, verbose_name="Products", related_name='Sold_Product')
+    products = models.ManyToManyField(
+        Cart, verbose_name="Products", related_name="Sold_Product"
+    )
     company = models.CharField(max_length=200, blank=True, null=True)
     address = models.CharField(max_length=500)
     zip_code = models.CharField(max_length=10, verbose_name="Zip Code")
     state = models.ForeignKey(States, on_delete=models.CASCADE)
     city = models.CharField(max_length=50)
-    total_price = models.BigIntegerField(help_text="Total price after discounts and coupons.")
-    shipping_fee  = models.IntegerField(help_text="Shipping fee applied.")
+    total_price = models.BigIntegerField(
+        help_text="Total price after discounts and coupons."
+    )
+    shipping_fee = models.IntegerField(help_text="Shipping fee applied.")
     tax = models.IntegerField(help_text="Tax applied to the total price.")
     grand_total = models.BigIntegerField(
         help_text="Total Price With discounts, coupons, tax & shipping fee."
     )
-    description  = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     created_at = models.DateField(auto_now=True)
     send_status = models.CharField(
         help_text="Current shipping status of the order",
@@ -393,11 +454,11 @@ class Sold(models.Model):
 
     def get_shipping_status_display(self):
         """Returns a human-readable shipping status.
-            uses Django's built-in functionality to retrieve 
-            the human-readable label for a field defined with 'choices'.
+        uses Django's built-in functionality to retrieve
+        the human-readable label for a field defined with 'choices'.
         """
         return self.get_send_status_display()
-    
+
     class Meta:
         verbose_name_plural = "Sold Orders"
 
