@@ -7,11 +7,24 @@ from django.conf import settings
 from decimal import Decimal
 from time import gmtime, strftime
 import random
+import os
+from uuid import uuid4
 
 User = settings.AUTH_USER_MODEL
 
 PRODUCT_IMAGE_ADDRESS = "static/images/products/{0}"
 DEFAULt_IMAGE_ADDRESS = "no-image.jpg"
+
+
+def kala_directory_path(instance, filename):
+    # Extract the file extension
+    ext = filename.split('.')[-1]
+    # Use the product's ID if available, otherwise generate a unique identifier
+    kala_id = instance.kala.id if instance.kala and instance.kala.id else uuid4().hex[:8]
+    # Generate a unique filename using a UUID and timestamp
+    unique_filename = f"user_{kala_id}_{strftime('%Y%m%d-%H%M%S', gmtime())}_{uuid4().hex[:8]}.{ext}"
+    # Construct the path, grouping by product ID for organization if available
+    return os.path.join('static', 'images', 'products', f"product_{kala_id}", unique_filename)
 
 
 class States(models.Model):
@@ -105,31 +118,31 @@ class Kala(models.Model):
         Materials, help_text="Select Material of the Product"
     )
     pic0 = models.ImageField(
-        upload_to=PRODUCT_IMAGE_ADDRESS.format(strftime("%Y%m%d-%H%M%S", gmtime())),
+        upload_to=kala_directory_path,
         default=DEFAULt_IMAGE_ADDRESS,
         width_field="image_width",
         height_field="image_height",
     )
     pic1 = models.ImageField(
-        upload_to=PRODUCT_IMAGE_ADDRESS.format(strftime("%Y%m%d - %H%M%S", gmtime())),
+        upload_to=kala_directory_path,
         default=DEFAULt_IMAGE_ADDRESS,
         null=True,
         blank=True,
     )
     pic2 = models.ImageField(
-        upload_to=PRODUCT_IMAGE_ADDRESS.format(strftime("%Y%m%d - %H%M%S", gmtime())),
+        upload_to=kala_directory_path,
         default=DEFAULt_IMAGE_ADDRESS,
         null=True,
         blank=True,
     )
     pic3 = models.ImageField(
-        upload_to=PRODUCT_IMAGE_ADDRESS.format(strftime("%Y%m%d - %H%M%S", gmtime())),
+        upload_to=kala_directory_path,
         default=DEFAULt_IMAGE_ADDRESS,
         null=True,
         blank=True,
     )
     pic4 = models.ImageField(
-        upload_to=PRODUCT_IMAGE_ADDRESS.format(strftime("%Y%m%d - %H%M%S", gmtime())),
+        upload_to=kala_directory_path,
         default=DEFAULt_IMAGE_ADDRESS,
         null=True,
         blank=True,
@@ -446,7 +459,7 @@ class Sold(models.Model):
 
     def generate_followup_code(self):
         """Generates a unique follow-up code for each order."""
-        return f"{random.randint(10, 99)}{timezone.now().strftime('%Y%m%d%H%M%S')}"
+        return f"{random.randint(10, 99)}{timezone.now().strftime('%Y%m%d-%H%M%S')}"
 
     def __str__(self):
         buyer = self.user.username if self.user else "Unknown Buyer"
