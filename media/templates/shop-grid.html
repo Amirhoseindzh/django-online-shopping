@@ -56,17 +56,19 @@
 												<div class="filter__body" data-collapse-content>
 													<div class="filter__container">
 														<div class="filter-categories">
+															{% for category in categories %}
 															<ul class="filter-categories__list">
-																{% if cate %}
-																<li class="filter-categories__item filter-categories__item--parent">
+																<li class="filter-categories__item filter-categories__item">
 																	<svg class="filter-categories__arrow" width="6px" height="9px">
 																		<use xlink:href="{% static 'images/sprite.svg' %}#arrow-rounded-left-6x9"></use>
 																	</svg> 
-																	<a href="{% url 'CategoryListView' cate.slug %}">{{ category.name }}</a>
-																	<div class="filter-categories__counter">254</div>
+																	<span>
+																		<a href="{% if cate %}{% url 'CategoryListView' category.slug %}{% endif %}">{{ category.name }}</a>
+																	</span>
+																	<span class="filter-list__counter" style="margin-right: auto;">{{category.Category.count}}</span>
 																</li>
-																{% endif %}
 															</ul>
+															{% endfor %}
 														</div>
 													</div>
 												</div>
@@ -260,6 +262,7 @@
 								</div>
 								<div class="products-view__list products-list" data-layout="grid-3-sidebar" data-with-features="false">
 									<div class="products-list__body">
+									{% if kalas %}
 										{% for k in kalas %}
 										<div class="products-list__item">
 											<div class="product-card">
@@ -438,7 +441,11 @@
 												</div>
 											</div>
 										</div>
-										{% endfor %}		
+										{% endfor %}
+									{% else %}
+									<center class="text-danger">کالایی در این دسته وجود ندارد.</center>
+					
+									{% endif %}	
 									</div>	
 								</div>
 								<div class="products-view__pagination">

@@ -317,6 +317,7 @@ class CategoryListView(ListView):
                 "most_sold": self.get_most_sold_items(),
                 "form": PriceFilter(),
                 "colors": Color.objects.all(),
+                "categories": KalaCategory.objects.all(),
                 "is_authenticated": self.request.user.is_authenticated,
             }
         )
@@ -365,6 +366,7 @@ class CategoryListViewInstock(CategoryListView):
                 "cate": lst[1],
                 "brands": Brand.objects.all(),
                 "most_sold": most_sold,
+                "categories": KalaCategory.objects.all(),
                 "is_authenticated": self.request.user.is_authenticated,
                 "form": form,
             }
@@ -457,6 +459,7 @@ class BrandListView(ListView):
                 "kalas": products,
                 "brand": maker,
                 "most_sold": most_sold,
+                "categories": KalaCategory.objects.all(),
                 "brands": Brand.objects.all(),
                 "colors": Color.objects.all(),
                 "is_authenticated": self.request.user.is_authenticated,
@@ -500,6 +503,7 @@ class BrandListViewInstock(ListView):
                 "kalas": products,
                 "brand": maker,
                 "most_sold": most_sold,
+                "categories": KalaCategory.objects.all(),
                 "brands": Brand.objects.all(),
                 "is_authenticated": self.request.user.is_authenticated,
                 "form": PriceFilter(),
@@ -545,6 +549,7 @@ class BrandPriceFilter(ListView):
                 "brand": maker,
                 "most_sold": most_sold,
                 "brands": Brand.objects.all(),
+                "categories": KalaCategory.objects.all(),
                 "is_authenticated": self.request.user.is_authenticated,
                 "form": PriceFilter(),
             }
@@ -598,6 +603,7 @@ class BrandCategory(ListView):
                 "cate": lst[1],
                 "most_sold": most_sold,
                 "brand": brand,
+                "categories": KalaCategory.objects.all(),
                 "brands": Brand.objects.all(),
                 "is_authenticated": self.request.user.is_authenticated,
                 "form": PriceFilter(),
@@ -646,6 +652,7 @@ class BrandCategoryInstock(ListView):
                 "most_sold": most_sold,
                 "brand": brand,
                 "brands": Brand.objects.all(),
+                "categories": KalaCategory.objects.all(),
                 "is_authenticated": self.request.user.is_authenticated,
                 "form": PriceFilter(),
             }
@@ -695,6 +702,7 @@ class BrandCategoryPriceFilter(ListView):
                 "most_sold": most_sold,
                 "brand": brand,
                 "brands": Brand.objects.all(),
+                "categories": KalaCategory.objects.all(),
                 "is_authenticated": self.request.user.is_authenticated,
                 "form": PriceFilter(),
             }
@@ -963,6 +971,7 @@ class SearchKala(KalaListView):
                 "is_authenticated": self.request.user.is_authenticated,
                 "most_sold": most_sold,
                 "color": Color.objects.all(),
+                "categories": KalaCategory.objects.all(),
             }
         )
         return context
