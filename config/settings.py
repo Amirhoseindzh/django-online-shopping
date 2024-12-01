@@ -59,8 +59,9 @@ DJANGO_DEFAULT_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    # 'rest_framework',
-    # 'rest_framework.authtoken',
+    'drf_yasg',
+    'rest_framework',
+    'rest_framework.authtoken',
     'django.contrib.sites',  # Required for allauth
     'allauth',
     'allauth.account',
@@ -70,6 +71,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'shop.apps.ShopConfig',
     'accounts.apps.AccountsConfig',
+    'api.apps.ApiConfig',
     'bootstrap',
     'fontawesome',
     'svg',
@@ -190,13 +192,12 @@ SVG_DIRS=[
 
 
 #REST_FRAMEWORK
-
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': [
-#         'rest_framework.authentication.TokenAuthentication',
-        
-#     ],
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+       
+    ],
+ }
 
 
 # Celery settings
