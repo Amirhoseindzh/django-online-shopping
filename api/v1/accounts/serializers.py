@@ -61,7 +61,7 @@ class ProfileSerializer(ModelSerializer):
         
 class AddressSerializer(HyperlinkedModelSerializer):
     state = serializers.PrimaryKeyRelatedField(queryset=States.objects.all())
-    user = serializers.SerializerMethodField()
+    user = serializers.SerializerMethodField('get_user')
     
     class Meta:
         model = Address
