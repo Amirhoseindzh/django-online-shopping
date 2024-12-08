@@ -1,9 +1,9 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from django.contrib.auth import get_user_model
-from rest_framework.generics import (
-    RetrieveUpdateAPIView,
-    )
+from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.filters import OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from accounts.models import Profile, Address
 from .serializers import (
     ProfileSerializer,
@@ -32,6 +32,13 @@ class AddressViewSet(ModelViewSet):
     """
     serializer_class = AddressSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = (DjangoFilterBackend, OrderingFilter, )
+    filterset_fields = ('city', 'full_name', 'phone_number', 'is_default',)
+    ordering_fields = [
+        'city', 'full_name', 'is_default', 'neighborhood',
+        'state', 'postal_code', 'license_plate', 'unit'
+    ]
+    ordering = ['is_default']
 
     def get_queryset(self):
         # Restrict the queryset to addresses of the authenticated user
