@@ -37,7 +37,8 @@ AUTH_USER_MODEL='accounts.User'
 
 USE_L10N = True
 
-
+CSRF_USE_SESSIONS = True
+CSRF_COOKIE_SECURE = False
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -66,6 +67,9 @@ THIRD_PARTY_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    'django_filters',
 ]
 
 LOCAL_APPS = [
@@ -173,6 +177,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Default primary key field type
+# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -193,12 +200,41 @@ SVG_DIRS=[
 
 #REST_FRAMEWORK
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-       
-    ],
- }
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
 
+REST_AUTH = {
+    'USE_JWT': True,
+    # If you want it to only be managed through a cookie, do not change this,
+    # if you want to manage your auth state in your JS, you need to change it.
+    'JWT_AUTH_HTTPONLY':False, 
+    
+    'JWT_AUTH_COOKIE': 'access',
+    'JWT_AUTH_REFRESH_COOKIE': 'refresh',
+
+    'LOGOUT_ON_PASSWORD_CHANGE': False,
+    
+    'JWT_AUTH_RETURN_EXPIRATION': True,
+}
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Access token valid for 15 minutes
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=2),     # Refresh token valid for 7 days
+    'ROTATE_REFRESH_TOKENS': True,                  # Optional: Automatically rotate refresh tokens
+    'BLACKLIST_AFTER_ROTATION': True,               # Optional: Blacklist old tokens after rotation
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+SITE_ID = 1  # Update this if needed
 
 # Celery settings
 CELERY_BROKER_URL = "redis://localhost:6379/0"
@@ -207,12 +243,6 @@ CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-SITE_ID = 1  # Update this if needed
 
 # Email Verification Settings
 ACCOUNT_EMAIL_REQUIRED = True
