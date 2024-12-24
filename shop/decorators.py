@@ -21,7 +21,7 @@ def check_wishlist_compare_cart(view_func):
         if request.user.is_authenticated:
             in_wishlist = WishList.objects.filter(user=request.user, product_id=product_id).exists()
             in_compare = Compare.objects.filter(user=request.user, product_id=product_id).exists()
-            in_cart = Cart.objects.filter(user=request.user, product_id=product_id, payed="F").exists()
+            in_cart = Cart.objects.filter(user=request.user, product_id=product_id, paid="F").exists()
         
         request.in_wishlist = in_wishlist
         request.in_compare = in_compare
